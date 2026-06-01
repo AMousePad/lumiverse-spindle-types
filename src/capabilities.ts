@@ -29,11 +29,13 @@ export type SpindleCapability =
    * (image bytes, binary asset I/O). Pair with `dynamic_code_execution`
    * only when the extension actually needs both.
    */
-  | "base64_decode";
+  | "base64_decode"
+  | "dynamic_module";
 
 export const ALL_CAPABILITIES: readonly SpindleCapability[] = [
   "dynamic_code_execution",
   "base64_decode",
+  "dynamic_module",
 ] as const;
 
 export function isValidCapability(c: string): c is SpindleCapability {

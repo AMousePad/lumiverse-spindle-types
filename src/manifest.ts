@@ -27,6 +27,7 @@ export interface SpindleManifest {
   entry_backend?: string;
   /** Frontend entry point (default: "dist/frontend.js") */
   entry_frontend?: string;
+  host_module?: string;
   /** Minimum Lumiverse version required */
   minimum_lumiverse_version?: string;
   /** Files/directories to seed into extension storage on install/import/update */

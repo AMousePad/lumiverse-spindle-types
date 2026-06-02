@@ -27,6 +27,7 @@ export interface SpindleManifest {
   entry_backend?: string;
   /** Frontend entry point (default: "dist/frontend.js") */
   entry_frontend?: string;
+  /** Backend bundle loaded in-process for the in-host runtime (requires the dynamic_module capability) */
   host_module?: string;
   /** Minimum Lumiverse version required */
   minimum_lumiverse_version?: string;

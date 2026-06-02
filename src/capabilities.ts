@@ -30,6 +30,17 @@ export type SpindleCapability =
    * only when the extension actually needs both.
    */
   | "base64_decode"
+  /**
+   * Opt in to the in-host runtime. An extension declaring this — together
+   * with the `macro_interceptor` permission and a passing strict scan — may
+   * have its `host_module` backend bundle loaded in-process by the host
+   * instead of in an isolated worker, so its eval surface runs without the
+   * worker IPC boundary.
+   *
+   * Install-time, non-revocable consent: in-host code runs with no sandbox,
+   * so the strict static scan is the only remaining guard. Intended for
+   * first-party / trusted bundles.
+   */
   | "dynamic_module";
 
 export const ALL_CAPABILITIES: readonly SpindleCapability[] = [

@@ -1400,7 +1400,9 @@ export interface SpindleAPI {
    *
    * Fires inside `assemblePrompt` immediately before `activateWorldInfo`
    * runs. Handlers can disable, force-enable, or content-override world info
-   * entries based on chat state, message history, or external rules.
+   * entries based on chat state, message history, or external rules. They can
+   * also narrow the prompt-local activation scope by disabling recursive
+   * keyword chaining.
    * Multiple handlers chain in priority order and a later handler sees the
    * prior handlers' votes applied — useful for cross-entry injection
    * patterns where one entry merges into another and then disables itself.
@@ -1408,7 +1410,7 @@ export interface SpindleAPI {
    * Returning `void` passes the activation set through unchanged. Per-handler
    * 10s timeout; errors are logged and the chain continues.
    *
-   * @param handler  Returns the disabled / enabled / forced / mutated lists, or `void`.
+   * @param handler  Returns entry changes and/or restrictive activation overrides, or `void`.
    * @param priority Lower values run first. Default `100`.
    *
    * @example

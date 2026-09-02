@@ -8,6 +8,7 @@ import type {
   ProviderRuntimeMessage,
   SpindleComponentOverrideHandle,
   SpindleComponentOverrideOptions,
+  SpindleDockPanelHandle,
   SpindleDockPanelOptions,
   SpindleDomDecoratorHandle,
   SpindleDomDecoratorOptions,
@@ -173,6 +174,7 @@ const chromelessDockPanel: SpindleDockPanelOptions = {
 };
 declare const settings: SpindleSettingsAPI;
 declare const tabHandle: SpindleSettingsTabHandle;
+declare const dockHandle: SpindleDockPanelHandle;
 declare const geometry: SpindleGeometryAPI;
 declare const resize: SpindleResizeController;
 declare const surfaceApi: SpindleHostSurfaceAPI;
@@ -225,6 +227,9 @@ void ctxV2.host.surfaces.invoke({ kind: "command", id: "surface" }, { source: "p
 void ctxV2.ui.registerSettingsTab;
 void settingsTab.id;
 void chromelessDockPanel;
+void dockHandle.setSize(420);
+void dockHandle.setMinSize(292);
+void dockHandle.setMaxSize(620);
 void embedding;
 void tts;
 void stt;

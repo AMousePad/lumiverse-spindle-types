@@ -8,6 +8,8 @@
   the `mcp-servers-v1` host capability.
 - Added opt-in `chromeless` and `centerContent` presentation flags to
   `SpindleDockPanelOptions`.
+- Declared the runtime-supported `setSize`, `setMinSize`, and `setMaxSize`
+  methods on `SpindleDockPanelHandle`.
 - Aligned `SpindleHostSurfaceAPI` with the host's ref-based invocation and
   deep-link registration contracts.
 - Aligned settings-tab handles and settings storage reads with the concrete

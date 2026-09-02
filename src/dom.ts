@@ -468,6 +468,12 @@ export interface SpindleDockPanelHandle {
   expand(): void;
   isCollapsed(): boolean;
   setTitle(title: string): void;
+  /** Update the dock's current size, clamped to its configured bounds. */
+  setSize(size: number): void;
+  /** Update the dock's minimum size and reconcile its current bounds. */
+  setMinSize(size: number): void;
+  /** Update the dock's maximum size and reconcile its current bounds. */
+  setMaxSize(size: number): void;
   destroy(): void;
   onVisibilityChange(handler: (visible: boolean) => void): () => void;
 }

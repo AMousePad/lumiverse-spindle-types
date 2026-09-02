@@ -8,6 +8,7 @@ import type {
   ProviderRuntimeMessage,
   SpindleComponentOverrideHandle,
   SpindleComponentOverrideOptions,
+  SpindleDockPanelOptions,
   SpindleDomDecoratorHandle,
   SpindleDomDecoratorOptions,
   SpindleEmbeddingDriver,
@@ -163,6 +164,13 @@ const sidecar: SpindleSidecarEndpoint = {
 };
 
 const settingsTab: SpindleSettingsTabOptions = { id: "tab", title: "Tab" };
+const chromelessDockPanel: SpindleDockPanelOptions = {
+  edge: "right",
+  title: "Pocket",
+  size: 420,
+  chromeless: true,
+  centerContent: true,
+};
 declare const settings: SpindleSettingsAPI;
 declare const tabHandle: SpindleSettingsTabHandle;
 declare const geometry: SpindleGeometryAPI;
@@ -216,6 +224,7 @@ void ctxV2.ui.geometry.layoutViewportSize();
 void ctxV2.host.surfaces.invoke({ kind: "command", id: "surface" }, { source: "ping" });
 void ctxV2.ui.registerSettingsTab;
 void settingsTab.id;
+void chromelessDockPanel;
 void embedding;
 void tts;
 void stt;

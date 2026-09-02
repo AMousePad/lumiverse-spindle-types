@@ -453,6 +453,12 @@ export interface SpindleDockPanelOptions {
   resizable?: boolean;
   iconUrl?: string;
   startCollapsed?: boolean;
+  /** Remove the host panel chrome so the extension can render its own surface.
+   *  Defaults to false. */
+  chromeless?: boolean;
+  /** Center the extension root within the dock's content area.
+   *  Defaults to false. */
+  centerContent?: boolean;
 }
 
 export interface SpindleDockPanelHandle {

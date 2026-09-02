@@ -137,6 +137,11 @@ import type {
   WebSearchRequestDTO,
   WebSearchResponseDTO,
   WebSearchSettingsDTO,
+  McpServerDTO,
+  McpServerCreateDTO,
+  McpServerStatusDTO,
+  McpToolDTO,
+  McpToolCallOptionsDTO,
 } from "./api.js";
 import type {
   ChatChunkDTO,
@@ -799,6 +804,33 @@ export interface SpindleAPI {
      * an active interceptor callback. Requires the `generation` permission.
      */
     resolveDispatch(connectionId: string): Promise<ConnectionDispatchDescriptorDTO | null>;
+  };
+
+  /**
+   * User-owned MCP server access. Profiles are redacted and all transport
+   * creation remains subject to the host's SSRF and stdio launch policies.
+   */
+  mcp: {
+    servers: {
+      /** List redacted server profiles (permission: `mcp_servers`). */
+      list(options?: { limit?: number; offset?: number; userId?: string }): Promise<{ data: McpServerDTO[]; total: number }>;
+      get(serverId: string, userId?: string): Promise<McpServerDTO | null>;
+      /** Add a profile (permission: `mcp_servers.create`). */
+      create(input: McpServerCreateDTO, userId?: string): Promise<McpServerDTO>;
+      /** Connect through the guarded host MCP manager (permission: `mcp_servers`). */
+      connect(serverId: string, userId?: string): Promise<McpServerStatusDTO>;
+      status(serverId: string, userId?: string): Promise<McpServerStatusDTO>;
+    };
+    tools: {
+      list(serverId: string, userId?: string): Promise<McpToolDTO[]>;
+      /** Invoke only a tool currently advertised by the connected server. */
+      call(
+        serverId: string,
+        toolName: string,
+        args?: Record<string, unknown>,
+        options?: McpToolCallOptionsDTO,
+      ): Promise<string>;
+    };
   };
 
   /** Server-side token counting helpers (free tier). */

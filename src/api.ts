@@ -2291,6 +2291,58 @@ export interface PermissionChangedDetail {
   allGranted: string[];
 }
 
+export type McpTransportTypeDTO = "streamable_http" | "sse" | "stdio";
+
+/** Redacted MCP server profile. Connection locations and secret values are never exposed. */
+export interface McpServerDTO {
+  id: string;
+  name: string;
+  transport_type: McpTransportTypeDTO;
+  has_headers: boolean;
+  env_keys: string[];
+  is_enabled: boolean;
+  auto_connect: boolean;
+  last_connected_at: number | null;
+  created_at: number;
+  updated_at: number;
+}
+
+export interface McpServerCreateDTO {
+  name: string;
+  transport_type: McpTransportTypeDTO;
+  url?: string;
+  command?: string;
+  args?: string[];
+  env?: Record<string, string>;
+  headers?: Record<string, string>;
+  is_enabled?: boolean;
+  /** Defaults to false when created through Spindle; true also requires `mcp_servers`. */
+  auto_connect?: boolean;
+  metadata?: Record<string, unknown>;
+}
+
+export interface McpToolDTO {
+  server_id: string;
+  server_name: string;
+  name: string;
+  description: string;
+  input_schema: Record<string, unknown>;
+}
+
+export interface McpServerStatusDTO {
+  id: string;
+  connected: boolean;
+  tool_count: number;
+  tools: McpToolDTO[];
+  error?: string;
+}
+
+export interface McpToolCallOptionsDTO {
+  userId?: string;
+  /** Clamped by the host to 1–120 seconds. */
+  timeoutMs?: number;
+}
+
 // ─── Web Search DTOs ────────────────────────────────────────────────────
 
 /** Identifies which provider backs the user's configured web search engine. */
@@ -3415,6 +3467,13 @@ export type WorkerToHost =
       reservationId: string;
     }
   | { type: "permissions_get_granted"; requestId: string }
+  | { type: "mcp_servers_list"; requestId: string; limit?: number; offset?: number; userId?: string }
+  | { type: "mcp_servers_get"; requestId: string; serverId: string; userId?: string }
+  | { type: "mcp_servers_create"; requestId: string; input: McpServerCreateDTO; userId?: string }
+  | { type: "mcp_servers_connect"; requestId: string; serverId: string; userId?: string }
+  | { type: "mcp_servers_status"; requestId: string; serverId: string; userId?: string }
+  | { type: "mcp_tools_list"; requestId: string; serverId: string; userId?: string }
+  | { type: "mcp_tools_call"; requestId: string; serverId: string; toolName: string; args: Record<string, unknown>; timeoutMs?: number; userId?: string }
   | { type: "rpc_pool_sync"; endpoint: string; value: unknown; policy?: SharedRpcEndpointPolicyDTO; rpcPermissionScopeId?: string }
   | { type: "rpc_pool_register_handler"; endpoint: string; policy?: SharedRpcEndpointPolicyDTO; rpcPermissionScopeId?: string }
   | { type: "rpc_pool_unregister"; endpoint: string }

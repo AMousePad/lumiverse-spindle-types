@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added the permission-gated `spindle.mcp` API for redacted user MCP server
+  discovery, guarded server creation/connection, and advertised tool calls.
+- Added the `mcp_servers` and `mcp_servers.create` privileged permissions and
+  the `mcp-servers-v1` host capability.
 - Aligned `SpindleHostSurfaceAPI` with the host's ref-based invocation and
   deep-link registration contracts.
 - Aligned settings-tab handles and settings storage reads with the concrete

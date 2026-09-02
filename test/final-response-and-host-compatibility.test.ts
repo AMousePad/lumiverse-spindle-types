@@ -30,6 +30,7 @@ test("host compatibility constants are canonical and immutable", () => {
     "text-editor-close-v1": 1,
     "frontend-extensibility-v2": 1,
     "frontend-runtime-capabilities-v1": 1,
+    "mcp-servers-v1": 1,
   });
   expect(Object.isFrozen(SPINDLE_HOST_CAPABILITIES)).toBe(true);
 });
@@ -44,6 +45,13 @@ test("provider registration permissions are valid and publicly declared", () => 
   for (const perm of providerPermissions) {
     expect(ALL_PERMISSIONS).toContain(perm);
     expect(isValidPermission(perm)).toBe(true);
+  }
+});
+
+test("MCP permissions are valid and publicly declared", () => {
+  for (const permission of ["mcp_servers", "mcp_servers.create"] as const) {
+    expect(ALL_PERMISSIONS).toContain(permission);
+    expect(isValidPermission(permission)).toBe(true);
   }
 });
 

@@ -10,6 +10,7 @@ export const SPINDLE_HOST_CAPABILITIES = Object.freeze({
   "text-editor-close-v1": 1,
   "frontend-extensibility-v2": 1,
   "frontend-runtime-capabilities-v1": 1,
+  "mcp-servers-v1": 1,
 }) as Readonly<Record<string, number>>;
 /** Structured error code returned when host compatibility validation fails. */
 export const SPINDLE_COMPATIBILITY_ERROR_CODE = "SPINDLE_COMPATIBILITY_ERROR" as const;

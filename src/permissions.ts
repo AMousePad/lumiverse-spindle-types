@@ -34,6 +34,8 @@
  * - "providers.tts.register"       — register a TTS engine
  * - "providers.stt.register"       — register an STT engine
  * - "providers.sidecar.register"   — register a sidecar HTTP endpoint
+ * - "mcp_servers"                  — inspect/connect user MCP servers and invoke advertised tools
+ * - "mcp_servers.create"           — add MCP server profiles for a user
  */
 export type SpindlePermission =
   | "generation"
@@ -68,7 +70,9 @@ export type SpindlePermission =
   | "providers.embedding.register"
   | "providers.tts.register"
   | "providers.stt.register"
-  | "providers.sidecar.register";
+  | "providers.sidecar.register"
+  | "mcp_servers"
+  | "mcp_servers.create";
 
 export const ALL_PERMISSIONS: readonly SpindlePermission[] = [
   "generation",
@@ -104,6 +108,8 @@ export const ALL_PERMISSIONS: readonly SpindlePermission[] = [
   "providers.tts.register",
   "providers.stt.register",
   "providers.sidecar.register",
+  "mcp_servers",
+  "mcp_servers.create",
 ] as const;
 
 export function isValidPermission(p: string): p is SpindlePermission {

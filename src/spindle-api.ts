@@ -74,6 +74,8 @@ import type {
   ProviderManager,
   ImageGenRequestDTO,
   ImageGenResultDTO,
+  ImageGenNativeRequestDTO,
+  ImageGenNativeResultDTO,
   ImageGenStreamRequestDTO,
   ImageGenStreamEventDTO,
   ImageGenConnectionDTO,
@@ -877,6 +879,13 @@ export interface SpindleAPI {
      * and `imageId` / `imageUrl` remain populated).
      */
     generate(input: ImageGenRequestDTO): Promise<ImageGenResultDTO>;
+    /**
+     * Generate through Lumiverse's configured native image pipeline.
+     *
+     * This is deliberately separate from {@link generate}; the existing raw
+     * connection-level generation semantics remain unchanged.
+     */
+    generateNative(input: ImageGenNativeRequestDTO): Promise<ImageGenNativeResultDTO>;
     /**
      * Generate through a provider that supports WebSocket preview images and
      * status updates (currently SwarmUI and ComfyUI). The terminal `done`

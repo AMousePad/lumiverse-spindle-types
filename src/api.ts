@@ -793,6 +793,79 @@ export interface ImageGenRequestDTO {
   userId?: string;
 }
 
+/** One normalized LoRA layer for native Lumiverse image generation. */
+export interface ImageGenLoraEntryDTO {
+  /** Filename/path as understood by the configured native image provider. */
+  lora_name: string;
+  /** Model/UNet strength. */
+  weight_model: number;
+  /** CLIP/text-encoder strength. Defaults to `weight_model`. */
+  weight_clip?: number;
+}
+
+/**
+ * Selects the character identity LoRA used by native Lumiverse image
+ * generation independently from the active chat's owner.
+ */
+export type ImageGenCharacterLoraSelectionDTO =
+  | { source: "chat" }
+  | { source: "none" }
+  | { source: "character"; characterId: string }
+  | { source: "explicit"; lora: ImageGenLoraEntryDTO; base_tags?: string };
+
+/**
+ * Input for `spindle.imageGen.generateNative()`.
+ *
+ * Unlike `generate()`, this explicitly opts into Lumiverse's configured
+ * native image pipeline: active image-gen connection, prompt presets/parser,
+ * active LoRA preset, provider normalization, and native workflow handling.
+ */
+export interface ImageGenNativeRequestDTO {
+  /** Chat used for prompt/macro context and native generation lifecycle. */
+  chat_id: string;
+  /** Inline prompt. Optional when native settings/preset supply one. */
+  prompt?: string;
+  negativePrompt?: string;
+  promptMode?: "scene" | "custom" | "parsed_custom";
+  promptPresetId?: string | null;
+  /** Skip parser/scene rewriting and use the resolved prompt directly. */
+  skipParse?: boolean;
+  /** Defaults to true for extension-triggered native generation. */
+  forceGeneration?: boolean;
+  /** Omitted = native chat/default character-LoRA behavior. */
+  characterLora?: ImageGenCharacterLoraSelectionDTO;
+  /** Skip the user's active native LoRA preset for this request. */
+  bypassActiveLoraPreset?: boolean;
+  /** Ordered LoRA layers appended after preset + selected character layers. */
+  extraLoras?: ImageGenLoraEntryDTO[];
+  /** Additional positive anchor tags prepended after preset/character tags. */
+  extraBaseTags?: string;
+  /** Scale applied to the complete assembled LoRA stack. */
+  loraStrengthScale?: number;
+  /** Provider parameters merged over the active native connection defaults. */
+  parameters?: Record<string, unknown>;
+  /** Omit the base64 payload while retaining persisted IDs/URL. */
+  includeDataUrl?: boolean;
+  clientJobId?: string;
+  promptGenerationTimeoutSeconds?: number;
+  generationTimeoutSeconds?: number;
+  /** For operator-scoped extensions. */
+  userId?: string;
+}
+
+/** Result from `spindle.imageGen.generateNative()`. */
+export interface ImageGenNativeResultDTO {
+  generated: boolean;
+  reason?: string;
+  prompt: string;
+  negativePrompt?: string;
+  provider: string;
+  imageDataUrl?: string;
+  imageId?: string;
+  imageUrl?: string;
+  jobId?: string;
+}
+
 /** Result from `spindle.imageGen.generate()` */
 export interface ImageGenResultDTO {
   imageDataUrl: string;
@@ -3833,6 +3906,7 @@ export type WorkerToHost =
   | { type: "macros_resolve"; requestId: string; template: string; chatId?: string; characterId?: string; userId?: string; commit?: boolean }
   // ─── Image Generation (gated: "image_gen") ──────────────────────────
   | { type: "image_gen_generate"; requestId: string; input: ImageGenRequestDTO }
+  | { type: "image_gen_generate_native"; requestId: string; input: ImageGenNativeRequestDTO }
   /**
    * Start a WebSocket-backed image stream. Only providers that advertise
    * `websocketPreviewStreaming` accept this request.

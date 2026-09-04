@@ -3132,6 +3132,10 @@ export interface SwipeEditedPayloadDTO {
  * role boundaries directly instead of re-parsing the flattened `args.context`
  * string. Multi-part message content is flattened to its text portion before
  * being delivered. `undefined` for non-council invocation paths.
+ *
+ * Authenticated user context is intentionally NOT part of this payload. Hosts deliver
+ * it separately as the TOOL_INVOCATION handler's second argument so model-controlled
+ * args cannot spoof or collide with identity metadata.
  */
 export interface ToolInvocationPayloadDTO {
   /** The bare (unqualified) tool name, matching what was passed to `registerTool`. */
@@ -4108,6 +4112,13 @@ export type HostToWorker =
       requestId: string;
       toolName: string;
       args: Record<string, unknown>;
+      /**
+       * Trusted host context identifying the user whose generation triggered this tool invocation.
+       * This value is host-owned transport metadata: it is never sourced from, merged into, or
+       * exposed through model-controlled tool args. The worker runtime delivers it as the second
+       * argument to the TOOL_INVOCATION handler. Optional for compatibility with older hosts.
+       */
+      userId?: string;
       /**
        * Populated when the invocation originates from a council execution
        * cycle — carries the assigned council member's identity, role, chance,

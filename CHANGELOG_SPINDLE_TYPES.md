@@ -1,6 +1,9 @@
 # Lumiverse Spindle Types - Technical Changelog
 
 ## Unreleased
+- Added trusted per-user context to host-to-worker `tool_invocation` messages and the
+  `TOOL_INVOCATION` handler's second argument, while keeping identity out of the
+  model-controlled tool payload and args.
 
 - Added the permission-gated `spindle.mcp` API for redacted user MCP server
   discovery, guarded server creation/connection, and advertised tool calls.

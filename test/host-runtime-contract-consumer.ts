@@ -99,6 +99,25 @@ void result;
 void legacyManifest;
 
 declare const spindle: SpindleAPI;
+
+// Tool invocation identity is trusted host transport context, not model/tool payload data.
+const toolInvocationMessage: HostToWorker = {
+  type: "tool_invocation",
+  requestId: "tool-request-id",
+  toolName: "example_tool",
+  args: { userId: "model-controlled-spoof", value: 1 },
+  userId: "authenticated-user",
+};
+spindle.on("TOOL_INVOCATION", async (payload, userId) => {
+  const authenticatedUser: string | undefined = userId;
+  const toolName: string = payload.toolName;
+  // @ts-expect-error authenticated user context must never be merged into the tool payload
+  payload.userId;
+  void authenticatedUser;
+  return toolName;
+});
+void toolInvocationMessage;
+
 const versionedRegex = spindle.regex_scripts.create({
   name: "Versioned extension regex",
   find_regex: "example",

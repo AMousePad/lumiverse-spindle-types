@@ -185,8 +185,13 @@ export interface SpindleAPI {
      * includes a `councilMember` snapshot describing the assigned member
      * (identity, role, chance, avatar URL, and Lumia personality fields) so the
      * extension can tailor its tool output to that member's voice.
+     *
+     * The optional second `userId` argument is trusted host context identifying the
+     * user whose generation triggered the invocation. Multi-user/operator-scoped
+     * extensions should pass it through to user-scoped Spindle APIs. It is deliberately
+     * kept separate from `payload.args` so tool/model input cannot spoof identity.
      */
-    on(event: "TOOL_INVOCATION", handler: (payload: ToolInvocationPayloadDTO) => string | Promise<string> | void | Promise<void>): () => void;
+    on(event: "TOOL_INVOCATION", handler: (payload: ToolInvocationPayloadDTO, userId?: string) => string | Promise<string> | void | Promise<void>): () => void;
     /** Subscribe to a Lumiverse event. Multi-user extensions should use the optional `userId` to keep per-user state and notifications isolated. */
     on(event: string, handler: (payload: unknown, userId?: string) => void): () => void;
     /**

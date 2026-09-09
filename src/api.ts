@@ -216,6 +216,8 @@ export interface MacroDefinitionDTO {
 export interface MacroInvocationContextDTO {
   /** False when the host is performing a dry / non-committing resolve. */
   commit: boolean;
+  /** Host-trusted chat id for this invocation when a chat-scoped macro environment exists. */
+  chatId?: string;
   [key: string]: unknown;
 }
 

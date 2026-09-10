@@ -22,7 +22,7 @@
  * Components inherit the active Lumiverse theme via CSS variables, so they
  * visually match the rest of the host UI without any additional wiring.
  */
-import type { PromptBlockDTO, PromptVariableValuesDTO } from "./api.js";
+import type { PromptBlockDTO, PromptVariableValuesDTO } from "./api";
 
 // ──────────────────────────────────────────────────────────────────────────
 // Loom block editor
@@ -40,6 +40,13 @@ export interface SpindleLoomBlockEditorOptions {
   onChange?: (value: SpindleLoomBlockEditorValue) => void;
   /** Reports validated in-progress edits, or `null` when the native draft is discarded. */
   onDraftChange?: (value: SpindleLoomBlockEditorValue | null) => void;
+  /**
+   * Block opened in the native editor. Omit to let the host own selection;
+   * pass `null` to explicitly show the block list.
+   */
+  selectedBlockId?: string | null;
+  /** Reports block navigation initiated by the native editor. */
+  onSelectedBlockChange?: (blockId: string | null) => void;
   readOnly?: boolean;
   compact?: boolean;
 }
@@ -655,24 +662,6 @@ export type SpindleCloseButtonHandle = SpindleMountedComponent<SpindleCloseButto
  * picker.update({ value: "claude-opus-4-7" })
  * ```
  */
-/** Handle returned by {@link SpindleComponentsHelper.mountHostSurface}. */
-export type SpindleHostSurfaceJsonValue =
-  | null
-  | boolean
-  | number
-  | string
-  | readonly SpindleHostSurfaceJsonValue[]
-  | { readonly [key: string]: SpindleHostSurfaceJsonValue };
-
-export type SpindleHostSurfaceProps = Record<string, SpindleHostSurfaceJsonValue>;
-export type SpindleHostSurfaceEventHandler = (payload: SpindleHostSurfaceJsonValue) => void;
-
-export interface SpindleHostSurfaceHandle {
-  update(props: SpindleHostSurfaceProps): void;
-  destroy(): void;
-  on(event: string, handler: SpindleHostSurfaceEventHandler): () => void;
-}
-
 export interface SpindleComponentsHelper {
   // Text inputs
   mountTextInput(target: SpindleComponentTarget, options?: SpindleTextInputOptions): SpindleTextInputHandle;
@@ -704,10 +693,4 @@ export interface SpindleComponentsHelper {
     target: SpindleComponentTarget,
     options: SpindleLoomBlockEditorOptions,
   ): SpindleLoomBlockEditorHandle;
-  /** Mount a host-owned named surface into extension-owned DOM. */
-  mountHostSurface(
-    target: SpindleComponentTarget,
-    surfaceId: string,
-    props?: SpindleHostSurfaceProps,
-  ): SpindleHostSurfaceHandle;
 }

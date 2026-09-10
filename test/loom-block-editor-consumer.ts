@@ -32,6 +32,15 @@ export function compileLoomBlockEditorContract(
       const checked: SpindleLoomBlockEditorValue = next;
       void checked;
     },
+    onDraftChange: (next: SpindleLoomBlockEditorValue | null) => {
+      const checked: SpindleLoomBlockEditorValue | null = next;
+      void checked;
+    },
+    selectedBlockId: initial.blocks[0]?.id ?? null,
+    onSelectedBlockChange: (blockId: string | null) => {
+      const checked: string | null = blockId;
+      void checked;
+    },
     readOnly: !options.readOnly,
     compact: !options.compact,
   });

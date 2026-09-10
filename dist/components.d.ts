@@ -34,6 +34,13 @@ export interface SpindleLoomBlockEditorOptions {
     onChange?: (value: SpindleLoomBlockEditorValue) => void;
     /** Reports validated in-progress edits, or `null` when the native draft is discarded. */
     onDraftChange?: (value: SpindleLoomBlockEditorValue | null) => void;
+    /**
+     * Block opened in the native editor. Omit to let the host own selection;
+     * pass `null` to explicitly show the block list.
+     */
+    selectedBlockId?: string | null;
+    /** Reports block navigation initiated by the native editor. */
+    onSelectedBlockChange?: (blockId: string | null) => void;
     readOnly?: boolean;
     compact?: boolean;
 }

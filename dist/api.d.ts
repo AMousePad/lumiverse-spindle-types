@@ -205,6 +205,8 @@ export interface MacroDefinitionDTO {
 export interface MacroInvocationContextDTO {
     /** False when the host is performing a dry / non-committing resolve. */
     commit: boolean;
+    /** Host-trusted chat id for this invocation when a chat-scoped macro environment exists. */
+    chatId?: string;
     [key: string]: unknown;
 }
 export interface MacroResolveOptionsDTO {
@@ -1480,6 +1482,12 @@ export interface RegexScriptDTO {
     sort_order: number;
     description: string;
     folder: string;
+    /**
+     * Preset this row is bound to for the host's delete cascade, or null when
+     * unbound. Host-authored: set at creation through `preset_id`, never re-pointed
+     * by an update, so treat it as read-only here.
+     */
+    readonly preset_id?: string | null;
     /** Host-validated version badge for this Spindle-owned folder, or null when unversioned/unfiled. */
     readonly folder_version?: string | null;
     metadata: Record<string, unknown>;
@@ -1525,10 +1533,29 @@ export interface RegexScriptCreateDTO {
      * to clear an existing label.
      */
     folder_version?: string | null;
+    /**
+     * Bind the created script to one of the calling user's presets. Create-only:
+     * the host validates the id against that user's presets and rejects unknown,
+     * foreign, or malformed ids instead of storing an orphan link, and `update`
+     * never re-points or clears the binding.
+     *
+     * The link is a lifecycle binding: deleting the preset deletes the script with
+     * it, and preset activation does not change the script's `disabled` state, so
+     * the extension keeps control of its own rule's enablement. `null` and an empty
+     * string leave the script unbound.
+     */
+    preset_id?: string | null;
     metadata?: Record<string, unknown>;
     script_id?: string;
 }
-export type RegexScriptUpdateDTO = Partial<RegexScriptCreateDTO>;
+/**
+ * Every `RegexScriptCreateDTO` field is optional on update, except `preset_id`.
+ * The preset link is create-only: the host strips it from extension input, so it
+ * is excluded from the update DTO instead of accepting a field that would be
+ * ignored. Deleting and recreating the script is how an owner moves it to
+ * another preset.
+ */
+export type RegexScriptUpdateDTO = Partial<Omit<RegexScriptCreateDTO, "preset_id">>;
 /**
  * One world info entry exposed to a `registerWorldInfoInterceptor` handler.
  * Subset of `WorldBookEntryDTO` covering the fields the interceptor needs to

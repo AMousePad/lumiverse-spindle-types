@@ -1,6 +1,10 @@
 # Lumiverse Spindle Types - Technical Changelog
 
 ## Unreleased
+- Added the create-only `preset_id` link to `RegexScriptCreateDTO` and the
+  host-projected read-only `preset_id` on `RegexScriptDTO`, and excluded the field
+  from `RegexScriptUpdateDTO` so an update cannot attempt to re-point a script's
+  preset link.
 - Added trusted per-user context to host-to-worker `tool_invocation` messages and the
   `TOOL_INVOCATION` handler's second argument, while keeping identity out of the
   model-controlled tool payload and args.

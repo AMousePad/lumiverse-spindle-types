@@ -27,6 +27,11 @@ export interface SpindleManifest {
     entry_backend?: string;
     /** Frontend entry point (default: "dist/frontend.js") */
     entry_frontend?: string;
+    /**
+     * Optional lightweight frontend entry used only by native desktop
+     * floating-widget windows. The module must export setupWidget().
+     */
+    entry_frontend_widget?: string;
     /** Minimum Lumiverse version required */
     minimum_lumiverse_version?: string;
     /** Files/directories to seed into extension storage on install/import/update */

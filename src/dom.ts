@@ -1493,10 +1493,33 @@ export type SpindleFrontendContextV2 = SpindleFrontendContext & {
 /** Cleanup returned by a frontend extension setup hook. */
 export type SpindleFrontendTeardown = () => void | Promise<void>;
 
+/** Metadata for the single widget requested by a native desktop pop-out. */
+export interface SpindleFrontendWidgetTarget {
+  /** Zero-based position among this extension's visible floating widgets. */
+  index: number;
+  /** Host-provided display title for the native window. */
+  title: string;
+  /** Initial widget content width in logical pixels. */
+  width: number;
+  /** Initial widget content height in logical pixels. */
+  height: number;
+  /** Whether the extension requested a host window without title chrome. */
+  chromeless: boolean;
+}
+
 /** What a frontend extension module must export */
 export interface SpindleFrontendModule {
   setup(
     ctx: SpindleFrontendContext,
+  ): void | SpindleFrontendTeardown | Promise<void | SpindleFrontendTeardown>;
+  teardown?(): void | Promise<void>;
+}
+
+/** A lightweight native floating-widget frontend module. */
+export interface SpindleWidgetFrontendModule {
+  setupWidget(
+    ctx: SpindleFrontendContext,
+    target: SpindleFrontendWidgetTarget,
   ): void | SpindleFrontendTeardown | Promise<void | SpindleFrontendTeardown>;
   teardown?(): void | Promise<void>;
 }

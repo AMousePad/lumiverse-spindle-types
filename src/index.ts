@@ -342,6 +342,8 @@ export type {
   SpindleGroupedRecentChat,
   SpindleRecentChatsPage,
   SpindleFrontendModule,
+  SpindleFrontendWidgetTarget,
+  SpindleWidgetFrontendModule,
   SpindleFrontendTeardown,
   SpindleGuideDefinition,
   SpindleDrawerTabOptions,

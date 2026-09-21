@@ -201,3 +201,13 @@ const asyncFrontendModule = {
 };
 const typedAsyncFrontendModule: import("lumiverse-spindle-types").SpindleFrontendModule = asyncFrontendModule;
 void typedAsyncFrontendModule;
+
+const widgetFrontendModule: import("lumiverse-spindle-types").SpindleWidgetFrontendModule = {
+  setupWidget(_ctx, target) {
+    const index: number = target.index;
+    const chromeless: boolean = target.chromeless;
+    void index;
+    void chromeless;
+  },
+};
+void widgetFrontendModule;

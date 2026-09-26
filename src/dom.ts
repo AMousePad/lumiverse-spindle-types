@@ -961,6 +961,8 @@ export interface SpindleDisplayScriptsArgs {
 export interface SpindleDisplayResolver {
   /** Skip automatic formatting repairs in owned chat message bodies. Defaults to false; HTML sanitization still applies. */
   skipFormattingHealing?: boolean;
+  /** Disable automatic inline-card spacing wrappers in owned chats. Requires app_manipulation; defaults to false. Shadow DOM islands are unchanged. */
+  skipInlineCardWrapping?: boolean;
   /** Opt into finalization when no display scripts are active. Defaults to false. */
   finalizeWithoutScripts?: boolean;
   ready(chatId: string): boolean;

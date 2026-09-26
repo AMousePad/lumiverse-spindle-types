@@ -74,3 +74,8 @@ frontend.display?.registerResolver({
     return { content: state === content ? content : `changed:${content}` };
   },
 });
+
+
+const wrappingOptOut: Pick<import('lumiverse-spindle-types').SpindleDisplayResolver, 'skipInlineCardWrapping'> = { skipInlineCardWrapping: true };
+const defaultWrapping: typeof wrappingOptOut = {};
+void [wrappingOptOut, defaultWrapping];

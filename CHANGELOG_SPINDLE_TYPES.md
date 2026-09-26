@@ -1,5 +1,9 @@
 # Lumiverse Spindle Types - Technical Changelog
 
+## 0.6.37
+- Added optional `skipInlineCardWrapping` to display resolvers. Requires
+  `app_manipulation` and leaves default rendering unchanged when omitted.
+
 ## 0.6.35
 - Added capability-gated document routing, cancellable required generation hooks,
   and runtime state snapshots, mutation acknowledgements, and event metadata.

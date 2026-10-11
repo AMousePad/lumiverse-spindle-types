@@ -13,6 +13,16 @@ export type {
   SpindleHostLocale,
   SpindleHostLocaleAPI,
 } from "./host.js";
+export type {
+  SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions,
+  SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry,
+  ArchiveCreateOptions, ArchiveExtractOptions, SpindleArchiveExtractedEntry,
+  SpindleFilesAPI, SpindleArchivesAPI, SpindleFileDownloadAPI, FileTransferWorkerMessage,
+} from "./file-transfers.js";
+export {
+  SPINDLE_FILE_CHUNK_BYTES, SPINDLE_FILE_MAX_BYTES, SPINDLE_FILE_DEFAULT_MAX_BYTES,
+  SPINDLE_FILE_TTL_MS, SPINDLE_FILE_MAX_COUNT,
+} from "./file-transfers.js";
 export {
   SPINDLE_HOST_CAPABILITIES,
   SPINDLE_COMPATIBILITY_ERROR_CODE,

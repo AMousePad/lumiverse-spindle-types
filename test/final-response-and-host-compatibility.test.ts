@@ -31,6 +31,7 @@ test("host compatibility constants are canonical and immutable", () => {
     "frontend-extensibility-v2": 1,
     "frontend-runtime-capabilities-v1": 1,
     "mcp-servers-v1": 1,
+    "file-transfers-v1": 1,
   });
   expect(Object.isFrozen(SPINDLE_HOST_CAPABILITIES)).toBe(true);
 });

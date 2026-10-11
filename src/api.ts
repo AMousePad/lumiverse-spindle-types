@@ -4051,6 +4051,7 @@ export type WorkerToHost =
   // ─── Dry Run (gated: "generation") ────────────────────────────────
   | { type: "generate_dry_run"; requestId: string; input: DryRunRequestDTO; userId?: string }
   | { type: "generate_get_breakdown"; requestId: string; messageId: string; userId?: string }
+  | { type: "images_read_binary"; requestId: string; imageId: string; userId?: string }
   // ─── Chat Memories (gated: "chats") ───────────────────────────────
   | { type: "chats_get_memories"; requestId: string; chatId: string; topK?: number; userId?: string }
   // ─── Memory Cortex & Long-Term Chat Memory (gated: "memories") ────

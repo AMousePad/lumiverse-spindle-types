@@ -4309,6 +4309,11 @@ export type WorkerToHost = import("./desktop-capture.js").DesktopCaptureWorkerMe
     messageId: string;
     userId?: string;
 } | {
+    type: "images_read_binary";
+    requestId: string;
+    imageId: string;
+    userId?: string;
+} | {
     type: "chats_get_memories";
     requestId: string;
     chatId: string;

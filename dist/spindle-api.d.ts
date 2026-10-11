@@ -755,6 +755,8 @@ export interface SpindleAPI {
      * For operator-scoped extensions, pass userId to scope to a specific user.
      */
     images: {
+        /** Read original stored bytes, up to 25 MiB. Rejects missing, inaccessible, or oversized assets. */
+        readBinary(imageId: string, userId?: string): Promise<Uint8Array>;
         list(options?: ImageListOptionsDTO): Promise<{
             data: ImageDTO[];
             total: number;

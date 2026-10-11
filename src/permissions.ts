@@ -4,6 +4,7 @@
  * Free tier (no declaration needed): events, storage, macros, dom, variables
  *
  * Gated tier (must declare):
+ * - "decisions"            — inspect and invoke saved Decision model connections
  * - "generation"           — fire generations on behalf of user
  * - "interceptor"          — pre-generation prompt modification
  * - "tools"                — register LLM tools
@@ -67,6 +68,7 @@ export type SpindlePermission =
   | "media"
   | "personas"
   | "push_notification"
+  | "decisions"
   | "image_gen"
   | "images"
   | "generation_parameters"
@@ -107,6 +109,7 @@ export const ALL_PERMISSIONS: readonly SpindlePermission[] = [
   "media",
   "personas",
   "push_notification",
+  "decisions",
   "image_gen",
   "images",
   "generation_parameters",

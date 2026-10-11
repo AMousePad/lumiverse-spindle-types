@@ -3642,6 +3642,7 @@ export interface ProviderManager {
 }
 
 export type WorkerToHost =
+  | import("./decisions.js").DecisionWorkerMessage
   | import("./file-transfers.js").FileTransferWorkerMessage
   | import("./desktop-capture.js").DesktopCaptureWorkerMessage
   | { type: "subscribe_event"; event: string }

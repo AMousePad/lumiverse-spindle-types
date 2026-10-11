@@ -4,6 +4,7 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
+  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -89,7 +90,7 @@ try {
           lib: ["ESNext", "DOM"],
           noEmit: true,
         },
-        include: ["stt-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
+        include: ["api-*-consumer.ts", "stt-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
       },
       null,
       2,
@@ -99,6 +100,9 @@ try {
   copyFileSync(join(repoRoot, "test/stt-consumer.ts"), join(fixtureDir, "stt-consumer.ts"));
   copyFileSync(join(repoRoot, "test/system-audio-consumer.ts"), join(fixtureDir, "system-audio-consumer.ts"));
   copyFileSync(sourceConsumer, join(fixtureDir, "packed-0.6.16-consumer.ts"));
+  for (const name of readdirSync(join(repoRoot, "test")).filter(name => /^api-.*-consumer\.ts$/.test(name))) {
+    copyFileSync(join(repoRoot, "test", name), join(fixtureDir, name));
+  }
   copyFileSync(join(repoRoot, "test/frontend-runtime-consumer.ts"), join(fixtureDir, "frontend-runtime-consumer.ts"));
   copyFileSync(join(repoRoot, "test/image-gen-native-consumer.ts"), join(fixtureDir, "image-gen-native-consumer.ts"));
   copyFileSync(join(repoRoot, "test/image-gen-0.6.37-consumer.ts"), join(fixtureDir, "image-gen-0.6.37-consumer.ts"));

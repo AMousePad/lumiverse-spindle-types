@@ -1,4 +1,5 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
+import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type { ChatDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
 import type { SpindleComponentsHelper } from "./components.js";
 import type { SpindleHostDescriptorV1, SpindleHostLocaleAPI } from "./host.js";
@@ -1042,6 +1043,8 @@ export interface SpindleRecentChatsPage<TRow = SpindleRecentChat> {
 }
 /** Context object provided to frontend extension modules */
 export interface SpindleFrontendContext {
+    /** Native downloads of completed backend files. Available with file-transfers-v1. */
+    readonly files: SpindleFileDownloadAPI;
     /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
     readonly stt?: SpindleSTTAPI;
     /** Per-document routing identity, available with frontend-session-origin-v1. */

@@ -1,6 +1,8 @@
 export type { SpindleManifest, SpindlePermission, SpindleCapability, } from "./manifest.js";
 export { IDENTIFIER_PATTERN, validateIdentifier, } from "./manifest.js";
 export type { SpindleHostDescriptorV1, SpindleHostLocale, SpindleHostLocaleAPI, } from "./host.js";
+export type { SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions, SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry, ArchiveCreateOptions, ArchiveExtractOptions, SpindleArchiveExtractedEntry, SpindleFilesAPI, SpindleArchivesAPI, SpindleFileDownloadAPI, FileTransferWorkerMessage, } from "./file-transfers.js";
+export { SPINDLE_FILE_CHUNK_BYTES, SPINDLE_FILE_MAX_BYTES, SPINDLE_FILE_DEFAULT_MAX_BYTES, SPINDLE_FILE_TTL_MS, SPINDLE_FILE_MAX_COUNT, } from "./file-transfers.js";
 export { SPINDLE_HOST_CAPABILITIES, SPINDLE_COMPATIBILITY_ERROR_CODE, } from "./host.js";
 export type { SpindleThemeAsset, SpindleThemeAssetUploadOptions, SpindleThemeAssetUpdate, SpindleThemePackComponentDraft, SpindleThemePackDraft, SpindleThemePackImportResult, SpindleThemePackInstallOptions, SpindleThemePackInstallResult, SpindleThemeComponentCatalogEntry, SpindleThemeVariableCatalogEntry, SpindleThemeEditorTarget, SpindleThemeEditorOptions, SpindleThemeAuthoringAPI, } from "./theme.js";
 export { SPINDLE_THEME_AUTHORING_HOST_CAPABILITIES } from "./theme.js";

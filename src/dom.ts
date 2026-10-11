@@ -1,4 +1,5 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
+import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type {
   ChatDTO,
   ChatMessageDTO,
@@ -1256,6 +1257,8 @@ export interface SpindleRecentChatsPage<TRow = SpindleRecentChat> {
 
 /** Context object provided to frontend extension modules */
 export interface SpindleFrontendContext {
+  /** Native downloads of completed backend files. Available with file-transfers-v1. */
+  readonly files: SpindleFileDownloadAPI;
   /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
   readonly stt?: SpindleSTTAPI;
   /** Per-document routing identity, available with frontend-session-origin-v1. */

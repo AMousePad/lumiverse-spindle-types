@@ -1,6 +1,7 @@
 import type { SpindleManifest } from "./manifest.js";
 import type { SpindleHostDescriptorV1 } from "./host.js";
 import type { SpindleDesktopAPI } from "./desktop-capture.js";
+import type { SpindleFilesAPI, SpindleArchivesAPI } from "./file-transfers.js";
 import type { SpindleTextEditorOptions, SpindleTextEditorResult } from "./dom.js";
 import type {
   CouncilMemberContext,
@@ -298,6 +299,10 @@ export interface SpindleConnectionsAPI {
 
 /** The global `spindle` object available in backend extension workers */
 export interface SpindleAPI {
+  /** Disk-backed downloads and bounded reads/writes. Available with file-transfers-v1. */
+  readonly files: SpindleFilesAPI;
+  /** Streaming ZIP64 creation and validated disk-backed extraction. */
+  readonly archives: SpindleArchivesAPI;
   readonly desktop: SpindleDesktopAPI;
   /** Immutable host compatibility descriptor for this extension runtime. */
   readonly host: SpindleHostDescriptorV1;

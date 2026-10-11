@@ -2,6 +2,11 @@ import { expect, test } from "bun:test";
 import { ALL_PERMISSIONS, isValidPermission } from "../src/index";
 import { captureWireContract, capturedContent, videoContent, deniedCapture } from "./desktop-capture-consumer";
 
+test("system_audio is a single, valid permission", () => {
+  expect(isValidPermission("system_audio")).toBe(true);
+  expect(ALL_PERMISSIONS.filter(permission => permission === "system_audio")).toHaveLength(1);
+});
+
 test("desktop capture permissions and wire/content contracts are public", () => {
   expect(isValidPermission("screen_capture")).toBe(true);
   expect(isValidPermission("screen_recording")).toBe(true);

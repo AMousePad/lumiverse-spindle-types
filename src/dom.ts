@@ -1,4 +1,5 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
+import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type {
   ChatDTO,
@@ -1261,6 +1262,8 @@ export interface SpindleFrontendContext {
   readonly files: SpindleFileDownloadAPI;
   /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
   readonly stt?: SpindleSTTAPI;
+  /** Host-managed system-audio analysis (spectrum only). Feature-detect system-audio-v1; desktop client only. */
+  readonly systemAudio?: SpindleSystemAudioAPI;
   /** Per-document routing identity, available with frontend-session-origin-v1. */
   readonly frontendSessionId?: string;
   /** Immutable host compatibility descriptor for this extension runtime. */

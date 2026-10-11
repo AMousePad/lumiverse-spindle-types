@@ -35,6 +35,7 @@
     "test/regex-script-preset-link.ts",
     "test/theme-authoring-consumer.ts",
     "test/mcp-consumer.ts",
-    "test/stt-consumer.ts"
+    "test/stt-consumer.ts",
+    "test/system-audio-consumer.ts"
   ]
 }

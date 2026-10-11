@@ -90,7 +90,7 @@ try {
           lib: ["ESNext", "DOM"],
           noEmit: true,
         },
-        include: ["api-*-consumer.ts", "stt-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
+        include: ["api-*-consumer.ts", "stt-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
       },
       null,
       2,
@@ -98,6 +98,7 @@ try {
   );
 
   copyFileSync(join(repoRoot, "test/stt-consumer.ts"), join(fixtureDir, "stt-consumer.ts"));
+  copyFileSync(join(repoRoot, "test/system-audio-consumer.ts"), join(fixtureDir, "system-audio-consumer.ts"));
   copyFileSync(sourceConsumer, join(fixtureDir, "packed-0.6.16-consumer.ts"));
   for (const name of readdirSync(join(repoRoot, "test")).filter(name => /^api-.*-consumer\.ts$/.test(name))) {
     copyFileSync(join(repoRoot, "test", name), join(fixtureDir, name));
@@ -159,7 +160,7 @@ try {
     [
       "--input-type=module",
       "-e",
-      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (m.SPINDLE_HOST_CAPABILITIES?.['file-transfers-v1'] !== 1) process.exit(1); if (m.SPINDLE_FILE_CHUNK_BYTES !== 1048576) process.exit(1); if (m.SPINDLE_FILE_MAX_BYTES !== 107374182400) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
+      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (m.SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES?.['system-audio-v1'] !== 1) process.exit(1); if (m.SPINDLE_HOST_CAPABILITIES?.['file-transfers-v1'] !== 1) process.exit(1); if (m.SPINDLE_FILE_CHUNK_BYTES !== 1048576) process.exit(1); if (m.SPINDLE_FILE_MAX_BYTES !== 107374182400) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
     ],
     {
       cwd: fixtureDir,

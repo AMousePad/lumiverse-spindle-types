@@ -89,7 +89,7 @@ try {
           lib: ["ESNext", "DOM"],
           noEmit: true,
         },
-        include: ["stt-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
+        include: ["stt-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
       },
       null,
       2,
@@ -97,6 +97,7 @@ try {
   );
 
   copyFileSync(join(repoRoot, "test/stt-consumer.ts"), join(fixtureDir, "stt-consumer.ts"));
+  copyFileSync(join(repoRoot, "test/system-audio-consumer.ts"), join(fixtureDir, "system-audio-consumer.ts"));
   copyFileSync(sourceConsumer, join(fixtureDir, "packed-0.6.16-consumer.ts"));
   copyFileSync(join(repoRoot, "test/frontend-runtime-consumer.ts"), join(fixtureDir, "frontend-runtime-consumer.ts"));
   copyFileSync(join(repoRoot, "test/image-gen-native-consumer.ts"), join(fixtureDir, "image-gen-native-consumer.ts"));
@@ -155,7 +156,7 @@ try {
     [
       "--input-type=module",
       "-e",
-      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (!m.SPINDLE_HOST_CAPABILITIES) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
+      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (m.SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES?.['system-audio-v1'] !== 1) process.exit(1); if (!m.SPINDLE_HOST_CAPABILITIES) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
     ],
     {
       cwd: fixtureDir,

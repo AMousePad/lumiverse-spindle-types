@@ -37,10 +37,14 @@
  * - "providers.sidecar.register"   — register a sidecar HTTP endpoint
  * - "mcp_servers"                  — inspect/connect user MCP servers and invoke advertised tools
  * - "mcp_servers.create"           — add MCP server profiles for a user
+ * - "system_audio"                — frontend ctx.systemAudio: a spectrum and levels of the audio the
+ *                            device is playing (never samples), desktop client only. Privileged;
+ *                            the host asks the user on every start.
  */
 export type SpindlePermission =
   | "screen_capture"
   | "screen_recording"
+  | "system_audio"
   | "generation"
   | "interceptor"
   | "tools"
@@ -80,6 +84,7 @@ export type SpindlePermission =
 export const ALL_PERMISSIONS: readonly SpindlePermission[] = [
   "screen_capture",
   "screen_recording",
+  "system_audio",
   "generation",
   "interceptor",
   "tools",

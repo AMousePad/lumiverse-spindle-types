@@ -1,5 +1,13 @@
 # Lumiverse Spindle Types - Technical Changelog
 
+## 0.6.41
+- Added the privileged `system_audio` permission and an optional, capability-gated frontend `ctx.systemAudio`
+  for desktop clients: `isAvailable()` (free, never prompts) and `start({ bands, maxFps, onFrame, onEnd })`.
+- Extensions receive analysis only (amplitude, peak and log-spaced band magnitudes, the same shape as
+  `SpindleSTTAudioFrame`): no samples, `MediaStream` or recorded audio. The host asks the user on every start.
+- Exported the options, frame, session, availability and end-reason types and the frontend-only
+  `system-audio-v1` host capability. The member is optional, so older hosts and API mocks stay valid.
+
 ## 0.6.39
 - Added optional, capability-gated frontend `ctx.stt` for provider discovery,
   background preparation, microphone sessions, and supplied-audio transcription.

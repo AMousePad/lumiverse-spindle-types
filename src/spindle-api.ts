@@ -47,6 +47,8 @@ import type {
   RegexScriptUpdateDTO,
   RegexScriptListOptionsDTO,
   RegexScriptActiveOptionsDTO,
+  ActivationPatternsOptions,
+  ActivationPatternsResult,
   DatabankDTO,
   DatabankCreateDTO,
   DatabankUpdateDTO,
@@ -1136,6 +1138,8 @@ export interface SpindleAPI {
    * For operator-scoped extensions, pass userId to scope to a specific user.
    */
   regex_scripts: {
+    /** Resolve supported activation inputs from saved context. Values are escaped for literal regex matching. */
+    prepareActivationPatterns(options: ActivationPatternsOptions): Promise<ActivationPatternsResult>;
     list(options?: RegexScriptListOptionsDTO): Promise<{ data: RegexScriptDTO[]; total: number }>;
     get(scriptId: string, userId?: string): Promise<RegexScriptDTO | null>;
     create(input: RegexScriptCreateDTO, userId?: string): Promise<RegexScriptDTO>;

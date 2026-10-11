@@ -150,6 +150,8 @@ export type {
   RegexScriptUpdateDTO,
   RegexScriptListOptionsDTO,
   RegexScriptActiveOptionsDTO,
+  ActivationPatternsOptions,
+  ActivationPatternsResult,
   WorldInfoInterceptorEntryDTO,
   WorldInfoInterceptorMessageDTO,
   WorldInfoActivationSettingsDTO,

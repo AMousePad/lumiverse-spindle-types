@@ -1757,6 +1757,20 @@ export interface RegexScriptListOptionsDTO {
   userId?: string;
 }
 
+export interface ActivationPatternsOptions {
+  presetId: string;
+  patterns: string[];
+  chatId?: string;
+  characterId?: string;
+  personaId?: string;
+  connectionId?: string;
+  userId?: string;
+}
+
+export interface ActivationPatternsResult {
+  patterns: Array<{ source: string; resolved?: string; error?: string }>;
+}
+
 export interface RegexScriptActiveOptionsDTO {
   target: RegexTargetDTO;
   characterId?: string;
@@ -2289,6 +2303,76 @@ export interface DryRunTokenCountDTO {
   tokenizer_name: string | null;
 }
 
+export interface ContextClipStatsDTO {
+  /** True when a context budget was resolved and the clip step ran. */
+  enabled: boolean;
+  /** Preset `contextSize` (→ `max_context_length`). 0 when unset. */
+  maxContext: number;
+  /** Reserved for the LLM response (`max_tokens`). */
+  maxResponseTokens: number;
+  /** Headroom for interceptors, deliberation inject, tokenizer variance. */
+  safetyMargin: number;
+  /** `maxContext - maxResponseTokens - safetyMargin`. */
+  inputBudget: number;
+  /** Tokens consumed by non-chat-history messages (system blocks, WI, prefill, …). */
+  fixedTokens: number;
+  /** `inputBudget - fixedTokens`. Can be negative when fixed overhead already exceeds budget. */
+  remainingHistoryBudget: number;
+  /** Chat-history tokens before clipping. */
+  chatHistoryTokensBefore: number;
+  /** Chat-history tokens after clipping. */
+  chatHistoryTokensAfter: number;
+  /** Number of chat-history messages excluded from the final assembly. */
+  messagesDropped: number;
+  /** Sum of tokens dropped (oldest messages). */
+  tokensDropped: number;
+  /** Display name of the tokenizer used, or "approximate" for the char/4 fallback. */
+  tokenizerUsed: string;
+  /** True when the budget computed to <= 0 (misconfigured preset); no clipping attempted. */
+  budgetInvalid?: boolean;
+  /** True when fixed prompt overhead alone is larger than the available input budget. */
+  fixedOverBudget?: boolean;
+  /** True when a context anchor set the first chat-history message the model may read. */
+  anchorActive?: boolean;
+  /** Exact tokens required by the anchored history tail. */
+  protectedHistoryTokens?: number;
+  /** Budget remaining after the anchored history tail. Negative means the anchor cannot fit. */
+  remainingBeforeAnchor?: number;
+  /** True when the anchored history tail cannot fit in the remaining history budget. */
+  anchorOverflow?: boolean;
+}
+
+export interface SavedBreakdownDTO {
+  entries: Array<{
+    name: string;
+    type: string;
+    tokens: number;
+    role?: string;
+    content?: string;
+    blockId?: string;
+    extensionId?: string;
+    extensionName?: string;
+    messageCount?: number;
+    firstMessageIndex?: number;
+  }>;
+  messages?: Array<{ role: string; content: string }>;
+  totalTokens: number;
+  chatHistoryTokens?: number;
+  maxContext: number;
+  model: string;
+  provider: string;
+  parameters?: Record<string, unknown>;
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+    provider_raw?: Record<string, unknown>;
+  };
+  presetName?: string;
+  presetId?: string;
+  tokenizer_name?: string | null;
+}
+
 export interface DryRunResultDTO {
   messages: LlmMessageDTO[];
   breakdown: AssemblyBreakdownEntryDTO[];
@@ -2296,6 +2380,8 @@ export interface DryRunResultDTO {
   model: string;
   provider: string;
   tokenCount?: DryRunTokenCountDTO;
+  chatHistoryTokens?: number;
+  contextClipStats?: ContextClipStatsDTO;
   worldInfoStats?: ActivationStatsDTO;
   memoryStats?: MemoryStatsDTO;
 }
@@ -3972,12 +4058,15 @@ export type WorkerToHost =
   // ─── Regex Scripts (gated: "regex_scripts") ────────────────────────
   | { type: "regex_scripts_list"; requestId: string; scope?: RegexScopeDTO; scopeId?: string; target?: RegexTargetDTO; limit?: number; offset?: number; userId?: string }
   | { type: "regex_scripts_get"; requestId: string; scriptId: string; userId?: string }
+  | { type: "regex_scripts_prepare_activation_patterns"; requestId: string; options: ActivationPatternsOptions }
   | { type: "regex_scripts_get_active"; requestId: string; target: RegexTargetDTO; characterId?: string; chatId?: string; userId?: string }
   | { type: "regex_scripts_create"; requestId: string; input: RegexScriptCreateDTO; userId?: string }
   | { type: "regex_scripts_update"; requestId: string; scriptId: string; input: RegexScriptUpdateDTO; userId?: string }
   | { type: "regex_scripts_delete"; requestId: string; scriptId: string; userId?: string }
   // ─── Dry Run (gated: "generation") ────────────────────────────────
   | { type: "generate_dry_run"; requestId: string; input: DryRunRequestDTO; userId?: string }
+  | { type: "generate_get_breakdown"; requestId: string; messageId: string; userId?: string }
+  | { type: "images_read_binary"; requestId: string; imageId: string; userId?: string }
   // ─── Chat Memories (gated: "chats") ───────────────────────────────
   | { type: "chats_get_memories"; requestId: string; chatId: string; topK?: number; userId?: string }
   // ─── Memory Cortex & Long-Term Chat Memory (gated: "memories") ────

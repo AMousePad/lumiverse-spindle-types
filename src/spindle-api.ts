@@ -47,6 +47,8 @@ import type {
   RegexScriptUpdateDTO,
   RegexScriptListOptionsDTO,
   RegexScriptActiveOptionsDTO,
+  ActivationPatternsOptions,
+  ActivationPatternsResult,
   DatabankDTO,
   DatabankCreateDTO,
   DatabankUpdateDTO,
@@ -63,6 +65,7 @@ import type {
   ActivatedWorldInfoEntryDTO,
   DryRunRequestDTO,
   DryRunResultDTO,
+  SavedBreakdownDTO,
   AssembleRequestDTO,
   AssembleResultDTO,
   BoundAssembleRequestDTO,
@@ -519,6 +522,8 @@ export interface SpindleAPI {
     quietStream(input: GenerationRequestDTO): AsyncGenerator<StreamChunkDTO, void, void>;
     /** Run a dry-run prompt assembly without calling the LLM. */
     dryRun(input: DryRunRequestDTO, userId?: string): Promise<DryRunResultDTO>;
+    /** Read the saved prompt breakdown. Returns null when unavailable or inaccessible. Requires generation permission. */
+    getBreakdown(messageId: string, userId?: string): Promise<SavedBreakdownDTO | null>;
     /**
      * Observe an in-flight generation on a chat.
      *
@@ -946,6 +951,8 @@ export interface SpindleAPI {
    * For operator-scoped extensions, pass userId to scope to a specific user.
    */
   images: {
+    /** Read original stored bytes, up to 25 MiB. Rejects missing, inaccessible, or oversized assets. */
+    readBinary(imageId: string, userId?: string): Promise<Uint8Array>;
     list(options?: ImageListOptionsDTO): Promise<{ data: ImageDTO[]; total: number }>;
     get(imageId: string, userId?: string): Promise<ImageDTO | null>;
     get(imageId: string, options?: ImageGetOptionsDTO): Promise<ImageDTO | null>;
@@ -1131,6 +1138,8 @@ export interface SpindleAPI {
    * For operator-scoped extensions, pass userId to scope to a specific user.
    */
   regex_scripts: {
+    /** Resolve supported activation inputs from saved context. Values are escaped for literal regex matching. */
+    prepareActivationPatterns(options: ActivationPatternsOptions): Promise<ActivationPatternsResult>;
     list(options?: RegexScriptListOptionsDTO): Promise<{ data: RegexScriptDTO[]; total: number }>;
     get(scriptId: string, userId?: string): Promise<RegexScriptDTO | null>;
     create(input: RegexScriptCreateDTO, userId?: string): Promise<RegexScriptDTO>;

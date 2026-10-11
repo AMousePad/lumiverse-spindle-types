@@ -18,6 +18,7 @@
     }
   },
   "include": [
+    "test/api-*-consumer.ts",
     "test/desktop-capture-consumer.ts",
     "test/frontend-runtime-consumer.ts",
     "test/loom-block-editor-consumer.ts",

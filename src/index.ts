@@ -183,6 +183,7 @@ export type {
   WorldInfoActivatedEventDTO,
   DryRunRequestDTO,
   DryRunResultDTO,
+  ContextClipStatsDTO,
   AssembleRequestDTO,
   AssembleResultDTO,
   BoundPrefillAttachmentDTO,

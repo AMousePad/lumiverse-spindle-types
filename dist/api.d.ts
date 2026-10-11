@@ -2096,6 +2096,44 @@ export interface DryRunTokenCountDTO {
     tokenizer_id: string | null;
     tokenizer_name: string | null;
 }
+export interface ContextClipStatsDTO {
+    /** True when a context budget was resolved and the clip step ran. */
+    enabled: boolean;
+    /** Preset `contextSize` (→ `max_context_length`). 0 when unset. */
+    maxContext: number;
+    /** Reserved for the LLM response (`max_tokens`). */
+    maxResponseTokens: number;
+    /** Headroom for interceptors, deliberation inject, tokenizer variance. */
+    safetyMargin: number;
+    /** `maxContext - maxResponseTokens - safetyMargin`. */
+    inputBudget: number;
+    /** Tokens consumed by non-chat-history messages (system blocks, WI, prefill, …). */
+    fixedTokens: number;
+    /** `inputBudget - fixedTokens`. Can be negative when fixed overhead already exceeds budget. */
+    remainingHistoryBudget: number;
+    /** Chat-history tokens before clipping. */
+    chatHistoryTokensBefore: number;
+    /** Chat-history tokens after clipping. */
+    chatHistoryTokensAfter: number;
+    /** Number of chat-history messages excluded from the final assembly. */
+    messagesDropped: number;
+    /** Sum of tokens dropped (oldest messages). */
+    tokensDropped: number;
+    /** Display name of the tokenizer used, or "approximate" for the char/4 fallback. */
+    tokenizerUsed: string;
+    /** True when the budget computed to <= 0 (misconfigured preset); no clipping attempted. */
+    budgetInvalid?: boolean;
+    /** True when fixed prompt overhead alone is larger than the available input budget. */
+    fixedOverBudget?: boolean;
+    /** True when a context anchor set the first chat-history message the model may read. */
+    anchorActive?: boolean;
+    /** Exact tokens required by the anchored history tail. */
+    protectedHistoryTokens?: number;
+    /** Budget remaining after the anchored history tail. Negative means the anchor cannot fit. */
+    remainingBeforeAnchor?: number;
+    /** True when the anchored history tail cannot fit in the remaining history budget. */
+    anchorOverflow?: boolean;
+}
 export interface DryRunResultDTO {
     messages: LlmMessageDTO[];
     breakdown: AssemblyBreakdownEntryDTO[];
@@ -2103,6 +2141,8 @@ export interface DryRunResultDTO {
     model: string;
     provider: string;
     tokenCount?: DryRunTokenCountDTO;
+    chatHistoryTokens?: number;
+    contextClipStats?: ContextClipStatsDTO;
     worldInfoStats?: ActivationStatsDTO;
     memoryStats?: MemoryStatsDTO;
 }

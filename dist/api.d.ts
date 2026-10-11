@@ -2134,6 +2134,39 @@ export interface ContextClipStatsDTO {
     /** True when the anchored history tail cannot fit in the remaining history budget. */
     anchorOverflow?: boolean;
 }
+export interface SavedBreakdownDTO {
+    entries: Array<{
+        name: string;
+        type: string;
+        tokens: number;
+        role?: string;
+        content?: string;
+        blockId?: string;
+        extensionId?: string;
+        extensionName?: string;
+        messageCount?: number;
+        firstMessageIndex?: number;
+    }>;
+    messages?: Array<{
+        role: string;
+        content: string;
+    }>;
+    totalTokens: number;
+    chatHistoryTokens?: number;
+    maxContext: number;
+    model: string;
+    provider: string;
+    parameters?: Record<string, unknown>;
+    usage?: {
+        prompt_tokens: number;
+        completion_tokens: number;
+        total_tokens: number;
+        provider_raw?: Record<string, unknown>;
+    };
+    presetName?: string;
+    presetId?: string;
+    tokenizer_name?: string | null;
+}
 export interface DryRunResultDTO {
     messages: LlmMessageDTO[];
     breakdown: AssemblyBreakdownEntryDTO[];
@@ -4269,6 +4302,11 @@ export type WorkerToHost = import("./desktop-capture.js").DesktopCaptureWorkerMe
     type: "generate_dry_run";
     requestId: string;
     input: DryRunRequestDTO;
+    userId?: string;
+} | {
+    type: "generate_get_breakdown";
+    requestId: string;
+    messageId: string;
     userId?: string;
 } | {
     type: "chats_get_memories";

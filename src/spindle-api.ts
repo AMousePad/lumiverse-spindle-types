@@ -63,6 +63,7 @@ import type {
   ActivatedWorldInfoEntryDTO,
   DryRunRequestDTO,
   DryRunResultDTO,
+  SavedBreakdownDTO,
   AssembleRequestDTO,
   AssembleResultDTO,
   BoundAssembleRequestDTO,
@@ -519,6 +520,8 @@ export interface SpindleAPI {
     quietStream(input: GenerationRequestDTO): AsyncGenerator<StreamChunkDTO, void, void>;
     /** Run a dry-run prompt assembly without calling the LLM. */
     dryRun(input: DryRunRequestDTO, userId?: string): Promise<DryRunResultDTO>;
+    /** Read the saved prompt breakdown. Returns null when unavailable or inaccessible. Requires generation permission. */
+    getBreakdown(messageId: string, userId?: string): Promise<SavedBreakdownDTO | null>;
     /**
      * Observe an in-flight generation on a chat.
      *

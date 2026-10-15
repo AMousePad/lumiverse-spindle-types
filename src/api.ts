@@ -737,6 +737,13 @@ export interface ConnectionProfileDTO {
   updated_at: number;
 }
 
+/** One model offered by an LLM connection profile. */
+export interface ConnectionModelDTO {
+  id: string;
+  /** Provider display name when available, otherwise the model ID. */
+  label: string;
+}
+
 export interface ConnectionDispatchDescriptorDTO {
   connectionId: string;
   connectionName: string;
@@ -1288,6 +1295,21 @@ export interface CharacterDTO {
   extensions: Record<string, any>;
   created_at: number;
   updated_at: number;
+}
+
+/** One image in a character's gallery, in gallery order. */
+export interface CharacterGalleryItemDTO {
+  id: string;
+  /** Lumiverse image ID; read the bytes with `spindle.images.readBinary()`. */
+  image_id: string;
+  /** Portable `gallery://` source for Markdown image embeds. */
+  reference: string;
+  caption: string;
+  sort_order: number;
+  created_at: number;
+  width: number | null;
+  height: number | null;
+  mime_type: string;
 }
 
 export interface CharacterCreateDTO {
@@ -3795,6 +3817,7 @@ export type WorkerToHost =
     }
   | { type: "connections_list"; requestId: string; userId?: string }
   | { type: "connections_get"; requestId: string; connectionId: string; userId?: string }
+  | { type: "connections_models"; requestId: string; connectionId: string; userId?: string }
   | { type: "chat_get_messages"; requestId: string; chatId: string }
   | {
       type: "chat_append_message";
@@ -3982,6 +4005,7 @@ export type WorkerToHost =
   // ─── Characters (gated: "characters") ──────────────────────────────
   | { type: "characters_list"; requestId: string; limit?: number; offset?: number; userId?: string }
   | { type: "characters_get"; requestId: string; characterId: string; userId?: string }
+  | { type: "characters_get_gallery"; requestId: string; characterId: string; userId?: string }
   | { type: "characters_create"; requestId: string; input: CharacterCreateDTO; userId?: string }
   | { type: "characters_set_avatar"; requestId: string; characterId: string; avatar: CharacterAvatarUploadDTO; userId?: string }
   | { type: "characters_update"; requestId: string; characterId: string; input: CharacterUpdateDTO; userId?: string }

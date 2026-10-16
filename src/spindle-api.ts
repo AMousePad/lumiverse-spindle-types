@@ -1,5 +1,5 @@
 import type { SpindleManifest } from "./manifest.js";
-import type { SpindleHostDescriptorV1 } from "./host.js";
+import type { LumiverseVersionInfo, SpindleHostDescriptorV1 } from "./host.js";
 import type { SpindleDesktopAPI } from "./desktop-capture.js";
 import type { SpindleFilesAPI, SpindleArchivesAPI } from "./file-transfers.js";
 import type { SpindleTextEditorOptions, SpindleTextEditorResult } from "./dom.js";
@@ -2325,13 +2325,24 @@ export interface SpindleAPI {
   /**
    * Lumiverse version info (free tier — no permission needed).
    * Returns the semantic version strings reported by the backend server
-   * and frontend bundle. Useful for feature gating or compatibility checks.
+   * and frontend bundle, plus the commit and branch the build was made
+   * from when available. Useful for feature gating or compatibility checks.
    */
   version: {
     /** Get the backend server's semantic version (e.g. `"0.8.7"`). */
     getBackend(): Promise<string>;
     /** Get the frontend's semantic version (e.g. `"0.8.7"`). */
     getFrontend(): Promise<string>;
+    /**
+     * Get the commit the running build was made from (e.g. `"26939aa5"`),
+     * or `null` when unavailable (Docker images and other builds without
+     * git metadata report `null` rather than guessing).
+     */
+    getCommit(): Promise<string | null>;
+    /** Get the branch the running build was made from, or `null` when unavailable or HEAD is detached. */
+    getBranch(): Promise<string | null>;
+    /** Get the backend/frontend semver, commit, and branch as a single report. */
+    getInfo(): Promise<LumiverseVersionInfo>;
   };
 
   /** This extension's manifest */

@@ -30,6 +30,25 @@ export interface SpindleHostDescriptorV1 {
   readonly extensionInstallationId: string;
 }
 
+/**
+ * Version report for the running Lumiverse install, returned by
+ * `spindle.version.getInfo()` (free tier — no permission needed).
+ */
+export interface LumiverseVersionInfo {
+  /** Backend server semantic version (e.g. `"1.2.5"`). */
+  readonly backend: string;
+  /** Frontend bundle semantic version (e.g. `"1.2.5"`). */
+  readonly frontend: string;
+  /**
+   * Commit the running build was made from (e.g. `"26939aa5"`), or `null`
+   * when unavailable — Docker images, detached/non-git installs, and other
+   * builds without git metadata report `null` rather than guessing.
+   */
+  readonly commit: string | null;
+  /** Branch the running build was made from, or `null` when unavailable or HEAD is detached. */
+  readonly branch: string | null;
+}
+
 /** Locale identifiers supplied by the host's active UI locale. */
 export type SpindleHostLocale = "en" | "zh" | "zh-TW" | "ja" | "fr" | "it";
 

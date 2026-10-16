@@ -11,6 +11,7 @@ export {
 } from "./manifest.js";
 
 export type {
+  LumiverseVersionInfo,
   SpindleHostDescriptorV1,
   SpindleHostLocale,
   SpindleHostLocaleAPI,

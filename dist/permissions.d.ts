@@ -1,7 +1,7 @@
 /**
  * Gated permissions that extensions must declare in spindle.json.
  *
- * Free tier (no declaration needed): events, storage, macros, dom, variables
+ * Free tier (no declaration needed): events, storage, macros, dom, variables, version
  *
  * Gated tier (must declare):
  * - "decisions"            — inspect and invoke saved Decision model connections

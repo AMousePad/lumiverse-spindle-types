@@ -4888,6 +4888,15 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     type: "version_get_frontend";
     requestId: string;
 } | {
+    type: "version_get_commit";
+    requestId: string;
+} | {
+    type: "version_get_branch";
+    requestId: string;
+} | {
+    type: "version_get_info";
+    requestId: string;
+} | {
     type: "tokens_count_text";
     requestId: string;
     text: string;

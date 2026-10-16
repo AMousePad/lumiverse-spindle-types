@@ -26,6 +26,7 @@
     "test/bound-generation-consumer.ts",
     "test/interceptor-consumer.ts",
     "test/host-runtime-contract-consumer.ts",
+    "test/version-consumer.ts",
     "test/image-gen-stream-consumer.ts",
     "test/image-gen-native-consumer.ts",
     "test/image-gen-0.6.37-consumer.ts",

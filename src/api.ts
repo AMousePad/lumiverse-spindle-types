@@ -4262,6 +4262,9 @@ export type WorkerToHost =
   // ─── Version (free tier) ───────────────────────────────────────────────
   | { type: "version_get_backend"; requestId: string }
   | { type: "version_get_frontend"; requestId: string }
+  | { type: "version_get_commit"; requestId: string }
+  | { type: "version_get_branch"; requestId: string }
+  | { type: "version_get_info"; requestId: string }
   // ─── Token Counting (free tier) ───────────────────────────────────────
   | {
       type: "tokens_count_text";

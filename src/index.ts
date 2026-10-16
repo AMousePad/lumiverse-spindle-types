@@ -491,6 +491,8 @@ export type {
   SpindleHostSurfaceProps,
   SpindleHostSurfaceEventHandler,
   SpindleHostSurfaceHandle,
+  SpindleComponentHostSurfaceInfo,
+  SpindleMessagePreviewProps,
 } from "./components.js";
 
 export type { ExtensionInfo } from "./extension-info.js";

@@ -580,6 +580,29 @@ export type SpindleHostSurfaceJsonValue = null | boolean | number | string | rea
 };
 export type SpindleHostSurfaceProps = Record<string, SpindleHostSurfaceJsonValue>;
 export type SpindleHostSurfaceEventHandler = (payload: SpindleHostSurfaceJsonValue) => void;
+/** A named component surface returned by components.listHostSurfaces(), not UI navigation. */
+export interface SpindleComponentHostSurfaceInfo {
+    readonly id: string;
+    readonly permission: string | null;
+    readonly propsSchema: string;
+}
+/**
+ * Props for the optional `message_preview` component host surface.
+ * Feature-detect it with components.listHostSurfaces() before mounting.
+ * The host reads canonical source from a message loaded in the active chat.
+ * Display resolution runs for the selected range; chat actions, tag delivery,
+ * shared widgets and shared long-message collapse state are disabled.
+ */
+export type SpindleMessagePreviewProps = {
+    chatId: string;
+    messageId: string;
+    /** Zero-based swipe index; defaults to the message's active swipe. */
+    swipeIndex?: number;
+    /** Inclusive UTF-16 source offset; defaults to zero. */
+    start?: number;
+    /** Exclusive UTF-16 source offset; defaults to source length. */
+    end?: number;
+};
 export interface SpindleHostSurfaceHandle {
     update(props: SpindleHostSurfaceProps): void;
     destroy(): void;
@@ -605,4 +628,6 @@ export interface SpindleComponentsHelper {
     mountLoomBlockEditor(target: SpindleComponentTarget, options: SpindleLoomBlockEditorOptions): SpindleLoomBlockEditorHandle;
     /** Mount a host-owned named surface into extension-owned DOM. */
     mountHostSurface(target: SpindleComponentTarget, surfaceId: string, props?: SpindleHostSurfaceProps): SpindleHostSurfaceHandle;
+    /** Discover named component surfaces supported by this host and their prop schemas. */
+    listHostSurfaces(): readonly SpindleComponentHostSurfaceInfo[];
 }

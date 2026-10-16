@@ -82,3 +82,10 @@ test("speech capabilities stay frontend-specific and immutable", async () => {
   expect(Object.isFrozen(SPINDLE_STT_HOST_CAPABILITIES)).toBe(true);
   expect(SPINDLE_HOST_CAPABILITIES["speech-to-text-v1"]).toBeUndefined();
 });
+
+test("client discovery capability stays frontend-specific and immutable", async () => {
+  const { SPINDLE_CLIENT_HOST_CAPABILITIES } = await import("../src/index");
+  expect(SPINDLE_CLIENT_HOST_CAPABILITIES["client-info-v1"]).toBe(1);
+  expect(Object.isFrozen(SPINDLE_CLIENT_HOST_CAPABILITIES)).toBe(true);
+  expect(SPINDLE_HOST_CAPABILITIES["client-info-v1"]).toBeUndefined();
+});

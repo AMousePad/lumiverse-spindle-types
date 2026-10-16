@@ -16,6 +16,8 @@ export type {
   SpindleHostLocale,
   SpindleHostLocaleAPI,
 } from "./host.js";
+export type { SpindleClientKind, SpindleClientPlatform, SpindleClientInfo, SpindleClientAPI } from "./client.js";
+export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
 export type {
   SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions,
   SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry,

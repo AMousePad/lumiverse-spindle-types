@@ -4,6 +4,8 @@ import type {
   ProviderManager,
   ProviderRuntimeMessage,
   SpindleComponentsHelper,
+  SpindleComponentHostSurfaceInfo,
+  SpindleMessagePreviewProps,
   SpindleFrontendContextV2,
   SpindleHostSurfaceHandle,
   SpindleMountPoint,
@@ -40,6 +42,29 @@ const v2Permissions: readonly SpindlePermission[] = [
 
 declare const ctx: SpindleFrontendContextV2;
 declare const components: SpindleComponentsHelper;
+const componentSurfaces: readonly SpindleComponentHostSurfaceInfo[] = components.listHostSurfaces();
+const previewProps: SpindleMessagePreviewProps = {
+  chatId: "chat", messageId: "message", swipeIndex: 1, start: 0, end: 42,
+};
+if (componentSurfaces.some(entry => entry.id === "message_preview")) {
+  const preview = components.mountHostSurface(document.body, "message_preview", previewProps);
+  preview.update({ ...previewProps, swipeIndex: 0 });
+  preview.destroy();
+}
+const descriptor: SpindleComponentHostSurfaceInfo = {
+  id: "message_preview", permission: null, propsSchema: "{ chatId: string, messageId: string }",
+};
+// @ts-expect-error Discovery metadata is read-only.
+descriptor.id = "other";
+// @ts-expect-error The list returned by the host is read-only.
+componentSurfaces.push(descriptor);
+// @ts-expect-error A preview must identify its source message.
+const missingMessage: SpindleMessagePreviewProps = { chatId: "chat" };
+// @ts-expect-error Source offsets are numeric UTF-16 indices.
+const invalidOffset: SpindleMessagePreviewProps = { chatId: "chat", messageId: "message", start: "0" };
+// @ts-expect-error Callers cannot provide arbitrary rendered content.
+const arbitraryHtml: SpindleMessagePreviewProps = { chatId: "chat", messageId: "message", content: "<div>HTML</div>" };
+void [missingMessage, invalidOffset, arbitraryHtml];
 const surface: SpindleHostSurfaceHandle = components.mountHostSurface(
   document.body,
   "inspector",

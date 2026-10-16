@@ -21,10 +21,12 @@ import type {
   ChatAppendMessageOptionsDTO,
   RequestInitDTO,
   ConnectionProfileDTO,
+  ConnectionModelDTO,
   ConnectionDispatchDescriptorDTO,
   PermissionDeniedDetail,
   PermissionChangedDetail,
   CharacterDTO,
+  CharacterGalleryItemDTO,
   CharacterCreateDTO,
   CharacterAvatarUploadDTO,
   CharacterUpdateDTO,
@@ -822,6 +824,14 @@ export interface SpindleAPI {
      */
     get(connectionId: string, userId?: string): Promise<ConnectionProfileDTO | null>;
     /**
+     * List the models available to a connection profile, fetched live from the
+     * provider with the profile's stored API key. Throws if the connection is
+     * not found or the provider request fails. Requires the `generation`
+     * permission. Optional because older hosts do not implement it;
+     * feature-detect before calling.
+     */
+    getModels?(connectionId: string, userId?: string): Promise<ConnectionModelDTO[]>;
+    /**
      * Resolve an owned concrete slot's safe current dispatch descriptor inside
      * an active interceptor callback. Requires the `generation` permission.
      */
@@ -1032,6 +1042,12 @@ export interface SpindleAPI {
   characters: {
     list(options?: { limit?: number; offset?: number; userId?: string }): Promise<{ data: CharacterDTO[]; total: number }>;
     get(characterId: string, userId?: string): Promise<CharacterDTO | null>;
+    /**
+     * List the character's gallery images in gallery order. Returns `[]` when
+     * the character has no gallery or is not found. Optional because older
+     * hosts do not implement it; feature-detect before calling.
+     */
+    getGallery?(characterId: string, userId?: string): Promise<CharacterGalleryItemDTO[]>;
     create(input: CharacterCreateDTO, userId?: string): Promise<CharacterDTO>;
     setAvatar(characterId: string, avatar: CharacterAvatarUploadDTO, userId?: string): Promise<CharacterDTO>;
     update(characterId: string, input: CharacterUpdateDTO, userId?: string): Promise<CharacterDTO>;

@@ -1313,6 +1313,7 @@ export interface PromptVariableOptionDTO {
     label: string;
     value: string;
 }
+export type PromptVariableRangeDTO = [number, number];
 export type PromptVariableDefDTO = {
     id: string;
     name: string;
@@ -1352,6 +1353,16 @@ export type PromptVariableDefDTO = {
     id: string;
     name: string;
     label: string;
+    type: "range";
+    defaultValue: PromptVariableRangeDTO;
+    min: number;
+    max: number;
+    step?: number;
+    description?: string;
+} | {
+    id: string;
+    name: string;
+    label: string;
     type: "select";
     /** Stored selection: an option id. */
     defaultValue: string;
@@ -1378,7 +1389,7 @@ export type PromptVariableDefDTO = {
     description?: string;
 };
 export type PromptVariableTypeDTO = PromptVariableDefDTO["type"];
-export type PromptVariableValueDTO = string | number | string[];
+export type PromptVariableValueDTO = string | number | string[] | PromptVariableRangeDTO;
 export type PromptVariableValuesDTO = Record<string, Record<string, PromptVariableValueDTO>>;
 export type PromptBlockRoleDTO = "system" | "user" | "assistant" | "user_append" | "assistant_append";
 export type PromptBlockPositionDTO = "pre_history" | "post_history" | "in_history";

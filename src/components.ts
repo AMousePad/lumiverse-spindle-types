@@ -263,6 +263,49 @@ export interface SpindleRangeSliderHandle extends SpindleMountedComponent<Spindl
   getValue(): number;
 }
 
+export interface SpindleDualRangeSliderOptions {
+  /** Inclusive lower bound. */
+  min: number;
+  /** Inclusive upper bound. */
+  max: number;
+  /** Initial committed `[start, end]` range. Defaults to `[min, max]` if omitted. */
+  value?: readonly [number, number];
+  /** Snap increment. Default: `1`. */
+  step?: number;
+  /** Round to integers regardless of `step` formatting. Default: `false`. */
+  integer?: boolean;
+  /**
+   * Fired once when a drag or keyboard adjustment ends with a new `[start, end]`
+   * range. Not fired during the drag itself — that's `onDragValue`.
+   */
+  onCommit?: (value: [number, number]) => void;
+  /**
+   * Fired with the live `[start, end]` range during a gesture, and with `null`
+   * if the gesture ends without committing (e.g. cancelled touch).
+   */
+  onDragValue?: (value: [number, number] | null) => void;
+  /** Optional header label rendered above the track. */
+  label?: string;
+  /** Optional helper text rendered below the header. */
+  hint?: string;
+  /**
+   * Declarative formatting for the displayed endpoint values when {@link label}
+   * is provided. Ignored if no `label` is set.
+   */
+  format?: SpindleRangeSliderFormat;
+  /** Accessible label for the start handle. Default: `"Start"`. */
+  startLabel?: string;
+  /** Accessible label for the end handle. Default: `"End"`. */
+  endLabel?: string;
+  disabled?: boolean;
+  className?: string;
+}
+
+export interface SpindleDualRangeSliderHandle extends SpindleMountedComponent<SpindleDualRangeSliderOptions> {
+  /** Read the current committed `[start, end]` range. */
+  getValue(): [number, number];
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // Boolean inputs
 // ──────────────────────────────────────────────────────────────────────────
@@ -714,6 +757,7 @@ export interface SpindleComponentsHelper {
   mountNumericInput(target: SpindleComponentTarget, options?: SpindleNumericInputOptions): SpindleNumericInputHandle;
   mountNumberStepper(target: SpindleComponentTarget, options?: SpindleNumberStepperOptions): SpindleNumberStepperHandle;
   mountRangeSlider(target: SpindleComponentTarget, options: SpindleRangeSliderOptions): SpindleRangeSliderHandle;
+  mountDualRangeSlider(target: SpindleComponentTarget, options: SpindleDualRangeSliderOptions): SpindleDualRangeSliderHandle;
 
   // Boolean inputs
   mountCheckbox(target: SpindleComponentTarget, options?: SpindleCheckboxOptions): SpindleCheckboxHandle;

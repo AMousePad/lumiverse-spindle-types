@@ -4,9 +4,14 @@ import type {
   PromptBlockPlacementDTO,
   PromptBlockSnapshotDTO,
   PromptBlockCreateDTO,
+  PromptVariableDefDTO,
+  PromptVariableRangeDTO,
+  PromptVariableValueDTO,
   SpindleAPI,
   SpindleComponentTarget,
   SpindleComponentsHelper,
+  SpindleDualRangeSliderHandle,
+  SpindleDualRangeSliderOptions,
   SpindleLoomBlockEditorHandle,
   SpindleLoomBlockEditorOptions,
   SpindleLoomBlockEditorValue,
@@ -25,6 +30,32 @@ export function compileLoomBlockEditorContract(
 ): Promise<void> {
   const handle: SpindleLoomBlockEditorHandle = helper.mountLoomBlockEditor(target, options);
   const initial: SpindleLoomBlockEditorValue = handle.getValue();
+  const rangeOptions: SpindleDualRangeSliderOptions = {
+    min: 0,
+    max: 100,
+    step: 5,
+    value: [20, 80],
+    label: "Window",
+    format: { suffix: "%" },
+    startLabel: "Window start",
+    endLabel: "Window end",
+  };
+  const rangeHandle: SpindleDualRangeSliderHandle = helper.mountDualRangeSlider(target, rangeOptions);
+  const rangeBounds: PromptVariableRangeDTO = rangeHandle.getValue();
+  const rangeDef: PromptVariableDefDTO = {
+    id: "var-range",
+    name: "window",
+    label: "Window",
+    type: "range",
+    defaultValue: rangeBounds,
+    min: 0,
+    max: 100,
+    step: 5,
+  };
+  const rangeValue: PromptVariableValueDTO = rangeBounds;
+  rangeHandle.destroy();
+  void rangeDef;
+  void rangeValue;
 
   handle.update({
     value: initial,

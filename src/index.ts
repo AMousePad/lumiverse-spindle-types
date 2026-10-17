@@ -151,6 +151,8 @@ export type {
     PromptBlockCategoryGroupDTO,
     HostResponseErrorDTO,
     UserPresetDTO,
+    ActivePresetDTO,
+    ActivePresetSourceDTO,
     UserPresetCreateDTO,
     UserPresetUpdateDTO,
     WorldBookDTO,

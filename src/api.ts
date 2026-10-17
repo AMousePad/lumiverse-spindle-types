@@ -1630,6 +1630,25 @@ export interface UserPresetCreateDTO {
 export type UserPresetUpdateDTO = Partial<UserPresetCreateDTO> & {
   expected_cache_revision: number;
 };
+
+/** Preset profile scope whose binding selected the active preset. */
+export type ActivePresetSourceDTO = "chat" | "persona" | "character" | "connection" | "defaults" | "none";
+
+/**
+ * The preset a chat generates with, after preset profile resolution.
+ * Read the preset with `presets.get(preset_id)` and apply `block_states` over
+ * its blocks' `enabled` values to get the effective state.
+ */
+export interface ActivePresetDTO {
+  /** Preset used for generation, or null when the chat uses no preset. */
+  preset_id: string | null;
+  /** Binding that applies; "none" means the preset's own block states apply. */
+  source: ActivePresetSourceDTO;
+  /** ID of the chat, persona, character, connection or preset the binding belongs to. */
+  source_id: string | null;
+  /** Block ID to enabled overrides from the binding. Empty when source is "none". */
+  block_states: Record<string, boolean>;
+}
 export type PromptBlockCreateDTO = Partial<PromptBlockDTO>;
 export type PromptBlockUpdateDTO = Partial<Omit<PromptBlockDTO, "id">>;
 

@@ -4058,6 +4058,11 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     presetId: string;
     userId?: string;
 } | {
+    type: "presets_get_active";
+    requestId: string;
+    chatId?: string;
+    userId?: string;
+} | {
     type: "presets_create";
     requestId: string;
     input: UserPresetCreateDTO;

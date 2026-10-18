@@ -1,4 +1,4 @@
-import type { ActivePresetDTO, ActivePresetSourceDTO, SpindleAPI, UserPresetDTO } from "lumiverse-spindle-types";
+import type { ActivePresetDTO, ActivePresetSourceDTO, SpindleAPI, UserPresetDTO, WorkerToHost } from "lumiverse-spindle-types";
 
 declare const spindle: SpindleAPI;
 
@@ -19,6 +19,19 @@ void spindle.presets.getActive();
 // Operator-scoped extensions pass the user explicitly.
 void spindle.presets.getActive("chat-id", "user-id");
 void effectiveBlocks("chat-id");
+
+const activePresetRequest: Extract<WorkerToHost, { type: "presets_get_active" }> = {
+  type: "presets_get_active",
+  requestId: "request-id",
+};
+const scopedActivePresetRequest: WorkerToHost = {
+  type: "presets_get_active",
+  requestId: "scoped-request-id",
+  chatId: "chat-id",
+  userId: "user-id",
+};
+void activePresetRequest;
+void scopedActivePresetRequest;
 
 // @ts-expect-error Unknown binding scope.
 const invalidSource: ActivePresetSourceDTO = "group";

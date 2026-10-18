@@ -10,4 +10,5 @@ export { ALL_FRONTEND_RUNTIME_CAPABILITIES, isValidFrontendRuntimeCapability, } 
 export { PERMISSION_DENIED_PREFIX } from "./api.js";
 export { SIDECAR_DEFAULTS, COUNCIL_SIDECAR_DEFAULTS, COUNCIL_TOOLS_DEFAULTS, COUNCIL_SETTINGS_DEFAULTS, } from "./council.js";
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
+export { SPINDLE_TTS_HOST_CAPABILITIES } from "./text-to-speech.js";
 export { SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES } from "./system-audio.js";

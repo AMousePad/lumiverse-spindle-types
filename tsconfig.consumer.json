@@ -38,6 +38,7 @@
     "test/theme-authoring-consumer.ts",
     "test/mcp-consumer.ts",
     "test/stt-consumer.ts",
+    "test/tts-consumer.ts",
     "test/system-audio-consumer.ts"
   ]
 }

@@ -18,6 +18,8 @@ export type {
 } from "./host.js";
 export type { SpindleClientKind, SpindleClientPlatform, SpindleClientInfo, SpindleClientAPI } from "./client.js";
 export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
+export type { SpindleComposerState, SpindleComposerInsertPosition, SpindleComposerAPI } from "./composer.js";
+export { SPINDLE_COMPOSER_HOST_CAPABILITIES } from "./composer.js";
 export type {
   SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions,
   SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry,

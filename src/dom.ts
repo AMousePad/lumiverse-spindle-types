@@ -1,6 +1,7 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
 import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
+import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type {
   ChatDTO,
@@ -1263,6 +1264,8 @@ export interface SpindleFrontendContext {
   readonly client?: SpindleClientAPI;
   /** Native downloads of completed backend files. Available with file-transfers-v1. */
   readonly files: SpindleFileDownloadAPI;
+  /** The chat composer draft and its send path. Feature-detect composer-v1; unavailable on older hosts. */
+  readonly composer?: SpindleComposerAPI;
   /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
   readonly stt?: SpindleSTTAPI;
   /** Host-managed system-audio analysis (spectrum only). Feature-detect system-audio-v1; desktop client only. */

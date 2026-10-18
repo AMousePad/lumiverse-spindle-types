@@ -90,3 +90,10 @@ test("client discovery capability stays frontend-specific and immutable", async 
   expect(Object.isFrozen(SPINDLE_CLIENT_HOST_CAPABILITIES)).toBe(true);
   expect(SPINDLE_HOST_CAPABILITIES["client-info-v1"]).toBeUndefined();
 });
+
+test("composer capability stays frontend-specific and immutable", async () => {
+  const { SPINDLE_COMPOSER_HOST_CAPABILITIES } = await import("../src/index");
+  expect(SPINDLE_COMPOSER_HOST_CAPABILITIES["composer-v1"]).toBe(1);
+  expect(Object.isFrozen(SPINDLE_COMPOSER_HOST_CAPABILITIES)).toBe(true);
+  expect(SPINDLE_HOST_CAPABILITIES["composer-v1"]).toBeUndefined();
+});

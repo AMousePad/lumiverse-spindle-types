@@ -29,10 +29,21 @@ export interface SpindleSTTAudioFrame {
   frequencies: number[]
 }
 
+/** One recognized word. Times are seconds from the start of the supplied audio. */
+export interface SpindleSTTWord {
+  word: string
+  start: number
+  end: number
+  /** Decoder confidence for this word, from 0 to 1. */
+  probability: number
+}
+
 export interface SpindleSTTTranscript {
   text: string
   provider: SpindleSTTProvider
   language?: string
+  /** Present when `words: true` was requested and the provider supports it (Whistle only). */
+  words?: SpindleSTTWord[]
 }
 
 /** Mono PCM for Whistle. Samples are copied; the caller's buffer is never detached. */
@@ -49,6 +60,17 @@ export interface SpindleSTTOptions {
   connectionId?: string
   signal?: AbortSignal
   onStatus?(status: SpindleSTTStatus): void
+}
+
+/** Options for transcribe(). Available with speech-to-text-options-v1. */
+export interface SpindleSTTTranscribeOptions extends SpindleSTTOptions {
+  /**
+   * Names and words to favour during recognition, e.g. character names. Whistle only;
+   * other providers ignore them. At most 500 entries of 1-100 characters, no line breaks.
+   */
+  keywords?: readonly string[]
+  /** Also return each word with its timing and probability. Whistle only; other providers omit `words`. */
+  words?: boolean
 }
 
 export interface SpindleSTTStartOptions extends SpindleSTTOptions {
@@ -84,7 +106,16 @@ export interface SpindleSTTAPI {
    * Requires media. Whistle accepts a decodable audio Blob or mono PCM; connection accepts a Blob.
    * Web Speech cannot transcribe supplied audio. Whistle is capped at ten minutes / 64 MiB.
    */
-  transcribe(audio: Blob | SpindleSTTPcmAudio, options?: SpindleSTTOptions): Promise<SpindleSTTTranscript>
+  transcribe(audio: Blob | SpindleSTTPcmAudio, options?: SpindleSTTTranscribeOptions): Promise<SpindleSTTTranscript>
+  /**
+   * Free. Calls the listener when the host's own chat microphone (the composer's speech
+   * button) starts or stops a session, including its final transcription. Recordings
+   * started by extensions through start() are not reported. Returns an unsubscribe
+   * function. Available with speech-to-text-options-v1.
+   */
+  onHostActivity?(listener: (active: boolean) => void): () => void
+  /** Free. True while the host's own chat microphone session is active. Available with speech-to-text-options-v1. */
+  isHostCapturing?(): boolean
 }
 
-export const SPINDLE_STT_HOST_CAPABILITIES = Object.freeze({ 'speech-to-text-v1': 1 })
+export const SPINDLE_STT_HOST_CAPABILITIES = Object.freeze({ 'speech-to-text-v1': 1, 'speech-to-text-options-v1': 1 })

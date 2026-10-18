@@ -33,6 +33,7 @@ import type {
   ChatDTO,
   ChatUpdateDTO,
   UserPresetDTO,
+  ActivePresetDTO,
   UserPresetCreateDTO,
   UserPresetUpdateDTO,
   PromptBlockSnapshotDTO,
@@ -1084,6 +1085,13 @@ export interface SpindleAPI {
   presets: {
     list(options?: { limit?: number; offset?: number; userId?: string }): Promise<{ data: UserPresetDTO[]; total: number }>;
     get(presetId: string, userId?: string): Promise<UserPresetDTO | null>;
+    /**
+     * Resolve the preset a chat generates with: the selected Loom preset or the
+     * connection's preset, then any chat, persona, character, connection or
+     * default preset profile binding. Without a chat, resolves the selected
+     * preset and its defaults binding only.
+     */
+    getActive(chatId?: string, userId?: string): Promise<ActivePresetDTO>;
     create(input: UserPresetCreateDTO, userId?: string): Promise<UserPresetDTO>;
     update(presetId: string, input: UserPresetUpdateDTO, userId?: string): Promise<UserPresetDTO>;
     delete(presetId: string, userId?: string): Promise<boolean>;

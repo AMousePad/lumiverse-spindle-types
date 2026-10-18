@@ -1,4 +1,5 @@
 export type { DecisionImageAsset, DecisionBox, DecisionJsonValue, DecisionDescription, DecisionState, DecisionQuestion, DecisionAnswer, DecisionAnswerFor, DecisionAnswers, DecisionResult, DecisionEvaluationInput, DecisionConnectionProfileDTO, DecisionModelDTO, DecisionProviderDTO, SpindleDecisionsAPI, DecisionWorkerMessage } from "./decisions.js";
+export type { EmbeddingConnectionDTO, EmbeddingsEmbedInput, EmbeddingsEmbedResult, SpindleEmbeddingsAPI, EmbeddingsWorkerMessage } from "./embeddings.js";
 export type { SpindleManifest, SpindlePermission, SpindleCapability, } from "./manifest.js";
 export { IDENTIFIER_PATTERN, validateIdentifier, } from "./manifest.js";
 export type { LumiverseVersionInfo, SpindleHostDescriptorV1, SpindleHostLocale, SpindleHostLocaleAPI, } from "./host.js";

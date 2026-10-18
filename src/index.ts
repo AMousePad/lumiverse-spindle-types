@@ -374,6 +374,9 @@ export type {
   SpindleFrontendWorldBooksAPI,
   SpindleFrontendTokensAPI,
   SpindleFrontendConnectionsAPI,
+  SpindleConnectionProfileKind,
+  SpindleConnectionProfileSummary,
+  SpindleActiveConnectionState,
   SpindleFrontendChatsAPI,
   SpindleFrontendMessagesAPI,
   SpindleRecentChatsQuery,
@@ -446,6 +449,7 @@ export type {
     SpindleDisplayTemplatesResult,
     SpindleTabLocation,
   } from "./dom.js";
+export { SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES } from "./dom.js";
 
 export type {
   SpindleMountedComponent,

@@ -599,7 +599,7 @@ export {
 export type {
   SpindleSTTProvider, SpindleSTTProviderOption, SpindleSTTStatus, SpindleSTTResult,
   SpindleSTTAudioFrame, SpindleSTTTranscript, SpindleSTTPcmAudio, SpindleSTTOptions,
-  SpindleSTTStartOptions, SpindleSTTSession, SpindleSTTAPI,
+  SpindleSTTStartOptions, SpindleSTTSession, SpindleSTTAPI, SpindleSTTWord, SpindleSTTTranscribeOptions,
 } from "./speech-to-text.js";
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
 

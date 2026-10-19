@@ -1207,9 +1207,50 @@ export interface SpindleFrontendTokensAPI {
   countChat(chatId: string, options?: TokenCountOptionsDTO): Promise<TokenCountResultDTO>;
 }
 
+/** Connection profile families listed by `ctx.connections.list({ kind })`. */
+export type SpindleConnectionProfileKind = "llm" | "image" | "tts" | "stt" | "embedding" | "decision";
+
+/**
+ * Credential-free view of a connection profile of any kind. It never contains
+ * API keys, endpoint URLs, headers, metadata, or provider parameters.
+ */
+export interface SpindleConnectionProfileSummary {
+  id: string;
+  kind: SpindleConnectionProfileKind;
+  name: string;
+  provider: string;
+  model: string;
+  /** Default voice of a TTS profile. Omitted for other kinds. */
+  voice?: string;
+  /** True for the profile Lumiverse uses for this kind when no connection id is given. */
+  active: boolean;
+}
+
+export interface SpindleActiveConnectionState {
+  activeProfileId: string | null;
+  provider: string | null;
+  model: string | null;
+}
+
+/** Frontend host capability for `ctx.connections.list({ kind })` and `ctx.connections.getActive(kind)`. */
+export const SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES = Object.freeze({ "connection-kinds-v1": 1 });
+
 export interface SpindleFrontendConnectionsAPI {
   list(): Promise<ConnectionProfileDTO[]>;
+  /**
+   * Lists the user's profiles of one kind as credential-free summaries. Free.
+   * Needs `connection-kinds-v1`; older hosts ignore the argument and return LLM profiles.
+   */
+  list(options: { kind: SpindleConnectionProfileKind }): Promise<SpindleConnectionProfileSummary[]>;
   get(connectionId: string): Promise<ConnectionProfileDTO | null>;
+  /**
+   * Without a kind: the active LLM profile (synchronous). With a kind: the profile
+   * Lumiverse uses for that kind (`connection-kinds-v1`). Free.
+   */
+  getActive?: {
+    (): SpindleActiveConnectionState;
+    (kind: SpindleConnectionProfileKind): Promise<SpindleActiveConnectionState>;
+  };
   setActiveAcknowledged(connectionId: string | null): void | Promise<void>;
 }
 

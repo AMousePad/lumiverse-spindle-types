@@ -78,6 +78,13 @@ test("system audio capability stays frontend-specific and immutable", async () =
   expect(SPINDLE_HOST_CAPABILITIES).not.toHaveProperty("system-audio-v1");
 });
 
+test("connection kind listing capability stays frontend-specific and immutable", async () => {
+  const { SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES } = await import("../src/index");
+  expect(SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES["connection-kinds-v1"]).toBe(1);
+  expect(Object.isFrozen(SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES)).toBe(true);
+  expect(SPINDLE_HOST_CAPABILITIES["connection-kinds-v1"]).toBeUndefined();
+});
+
 test("speech capabilities stay frontend-specific and immutable", async () => {
   const { SPINDLE_STT_HOST_CAPABILITIES } = await import("../src/index");
   expect(SPINDLE_STT_HOST_CAPABILITIES["speech-to-text-v1"]).toBe(1);

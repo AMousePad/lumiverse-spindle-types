@@ -304,6 +304,8 @@ export interface SpindleConnectionsAPI {
 export interface SpindleAPI {
   /** Typed Decision models (permission: decisions; host capability: decisions-v1). */
   decisions: import("./decisions.js").SpindleDecisionsAPI;
+  /** Embed text with the user's embedding connections (permission: embeddings; host capability: embeddings-v1). */
+  embeddings: import("./embeddings.js").SpindleEmbeddingsAPI;
   /** Disk-backed downloads and bounded reads/writes. Available with file-transfers-v1. */
   readonly files: SpindleFilesAPI;
   /** Streaming ZIP64 creation and validated disk-backed extraction. */

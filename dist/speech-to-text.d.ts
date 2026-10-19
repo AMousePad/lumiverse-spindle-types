@@ -57,7 +57,8 @@ export interface SpindleSTTOptions {
 export interface SpindleSTTTranscribeOptions extends SpindleSTTOptions {
     /**
      * Names and words to favour during recognition, e.g. character names. Whistle only;
-     * other providers ignore them. At most 500 entries of 1-100 characters, no line breaks.
+     * other providers ignore them. At most 500 entries of 1-100 characters after trimming,
+     * without line breaks or NUL characters.
      */
     keywords?: readonly string[];
     /** Also return each word with its timing and probability. Whistle only; other providers omit `words`. */

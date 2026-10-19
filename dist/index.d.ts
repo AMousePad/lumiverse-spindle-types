@@ -1,9 +1,12 @@
 export type { DecisionImageAsset, DecisionBox, DecisionJsonValue, DecisionDescription, DecisionState, DecisionQuestion, DecisionAnswer, DecisionAnswerFor, DecisionAnswers, DecisionResult, DecisionEvaluationInput, DecisionConnectionProfileDTO, DecisionModelDTO, DecisionProviderDTO, SpindleDecisionsAPI, DecisionWorkerMessage } from "./decisions.js";
+export type { EmbeddingConnectionDTO, EmbeddingsEmbedInput, EmbeddingsEmbedResult, SpindleEmbeddingsAPI, EmbeddingsWorkerMessage } from "./embeddings.js";
 export type { SpindleManifest, SpindlePermission, SpindleCapability, } from "./manifest.js";
 export { IDENTIFIER_PATTERN, validateIdentifier, } from "./manifest.js";
 export type { LumiverseVersionInfo, SpindleHostDescriptorV1, SpindleHostLocale, SpindleHostLocaleAPI, } from "./host.js";
 export type { SpindleClientKind, SpindleClientPlatform, SpindleClientInfo, SpindleClientAPI } from "./client.js";
 export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
+export type { SpindleComposerState, SpindleComposerInsertPosition, SpindleComposerAPI } from "./composer.js";
+export { SPINDLE_COMPOSER_HOST_CAPABILITIES } from "./composer.js";
 export type { SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions, SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry, ArchiveCreateOptions, ArchiveExtractOptions, SpindleArchiveExtractedEntry, SpindleFilesAPI, SpindleArchivesAPI, SpindleFileDownloadAPI, FileTransferWorkerMessage, } from "./file-transfers.js";
 export { SPINDLE_FILE_CHUNK_BYTES, SPINDLE_FILE_MAX_BYTES, SPINDLE_FILE_DEFAULT_MAX_BYTES, SPINDLE_FILE_TTL_MS, SPINDLE_FILE_MAX_COUNT, } from "./file-transfers.js";
 export { SPINDLE_HOST_CAPABILITIES, SPINDLE_COMPATIBILITY_ERROR_CODE, } from "./host.js";

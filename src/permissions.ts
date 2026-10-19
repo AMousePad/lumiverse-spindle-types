@@ -5,6 +5,7 @@
  *
  * Gated tier (must declare):
  * - "decisions"            — inspect and invoke saved Decision model connections
+ * - "embeddings"           — list the user's embedding connections and embed text with them
  * - "generation"           — fire generations on behalf of user
  * - "interceptor"          — pre-generation prompt modification
  * - "tools"                — register LLM tools
@@ -69,6 +70,7 @@ export type SpindlePermission =
   | "personas"
   | "push_notification"
   | "decisions"
+  | "embeddings"
   | "image_gen"
   | "images"
   | "generation_parameters"
@@ -110,6 +112,7 @@ export const ALL_PERMISSIONS: readonly SpindlePermission[] = [
   "personas",
   "push_notification",
   "decisions",
+  "embeddings",
   "image_gen",
   "images",
   "generation_parameters",

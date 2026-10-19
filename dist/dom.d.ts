@@ -1,6 +1,7 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
 import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
+import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type { ChatDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
 import type { SpindleComponentsHelper } from "./components.js";
@@ -873,7 +874,9 @@ export interface SpindleGeometryAPI {
     layoutElementRect(element: Element): DOMRect;
     createResizeController(element: Element, listener: (rect: DOMRect) => void): SpindleResizeController;
 }
-export type SpindleHostSurfaceKind = "drawer_tab" | "settings_tab" | "command" | "route" | "modal" | "input_bar_action" | "ext_command";
+export type SpindleHostSurfaceKind = "drawer_tab" | "settings_tab" | "command" | "route" | "modal" | "input_bar_action" | "ext_command" | "entity_action";
+/** Built-in `entity_action` ids. Hosts list the ones they support in `ctx.host.surfaces.list()`. */
+export type SpindleHostEntityActionId = "switch_persona" | "switch_preset" | "apply_theme" | "character_chat";
 export interface SpindleHostSurfaceRef {
     kind: SpindleHostSurfaceKind;
     id: string;
@@ -882,6 +885,24 @@ export type SpindleHostActionJsonValue = null | boolean | number | string | Spin
     [key: string]: SpindleHostActionJsonValue;
 };
 export type SpindleHostActionParams = Record<string, SpindleHostActionJsonValue>;
+/** One string param of an `entity_action`, as a JSON Schema subset. */
+export interface SpindleHostActionParamSchema {
+    type: "string";
+    description: string;
+    enum?: string[];
+    /** Known values with display names, e.g. the themes `apply_theme` accepts. */
+    oneOf?: Array<{
+        const: string;
+        title: string;
+    }>;
+}
+/** JSON Schema object for the params an `entity_action` accepts. */
+export interface SpindleHostActionParamsSchema {
+    type: "object";
+    properties: Record<string, SpindleHostActionParamSchema>;
+    required: string[];
+    additionalProperties: false;
+}
 export interface SpindleHostSurfaceInfo {
     kind: SpindleHostSurfaceKind;
     id: string;
@@ -894,6 +915,8 @@ export interface SpindleHostSurfaceInfo {
     role?: "admin" | "owner";
     owner?: string;
     invocable?: boolean;
+    /** Param schema for `entity_action` surfaces. */
+    params?: SpindleHostActionParamsSchema;
 }
 export interface SpindleHostSurfaceTarget {
     kind: string;
@@ -1090,6 +1113,8 @@ export interface SpindleFrontendContext {
     readonly client?: SpindleClientAPI;
     /** Native downloads of completed backend files. Available with file-transfers-v1. */
     readonly files: SpindleFileDownloadAPI;
+    /** The chat composer draft and its send path. Feature-detect composer-v1; unavailable on older hosts. */
+    readonly composer?: SpindleComposerAPI;
     /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
     readonly stt?: SpindleSTTAPI;
     /** Host-managed system-audio analysis (spectrum only). Feature-detect system-audio-v1; desktop client only. */

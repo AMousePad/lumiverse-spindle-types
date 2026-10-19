@@ -21,6 +21,7 @@ test("host compatibility constants are canonical and immutable", () => {
   expect(SPINDLE_HOST_CAPABILITIES).toEqual({
     "decisions-v1": 1,
     "decision-images-v1": 1,
+    "embeddings-v1": 1,
     "preset-extension-data-v1": 1,
     "preset-editor-v1": 1,
     "loom-block-editor-v1": 1,
@@ -87,6 +88,7 @@ test("connection kind listing capability stays frontend-specific and immutable",
 test("speech capabilities stay frontend-specific and immutable", async () => {
   const { SPINDLE_STT_HOST_CAPABILITIES } = await import("../src/index");
   expect(SPINDLE_STT_HOST_CAPABILITIES["speech-to-text-v1"]).toBe(1);
+  expect(SPINDLE_STT_HOST_CAPABILITIES["speech-to-text-options-v1"]).toBe(1);
   expect(Object.isFrozen(SPINDLE_STT_HOST_CAPABILITIES)).toBe(true);
   expect(SPINDLE_HOST_CAPABILITIES["speech-to-text-v1"]).toBeUndefined();
 });
@@ -96,4 +98,11 @@ test("client discovery capability stays frontend-specific and immutable", async 
   expect(SPINDLE_CLIENT_HOST_CAPABILITIES["client-info-v1"]).toBe(1);
   expect(Object.isFrozen(SPINDLE_CLIENT_HOST_CAPABILITIES)).toBe(true);
   expect(SPINDLE_HOST_CAPABILITIES["client-info-v1"]).toBeUndefined();
+});
+
+test("composer capability stays frontend-specific and immutable", async () => {
+  const { SPINDLE_COMPOSER_HOST_CAPABILITIES } = await import("../src/index");
+  expect(SPINDLE_COMPOSER_HOST_CAPABILITIES["composer-v1"]).toBe(1);
+  expect(Object.isFrozen(SPINDLE_COMPOSER_HOST_CAPABILITIES)).toBe(true);
+  expect(SPINDLE_HOST_CAPABILITIES["composer-v1"]).toBeUndefined();
 });

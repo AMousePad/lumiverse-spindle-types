@@ -13,6 +13,7 @@ export const SPINDLE_HOST_CAPABILITIES = Object.freeze({
   "mcp-servers-v1": 1,
   "decisions-v1": 1,
   "decision-images-v1": 1,
+  "embeddings-v1": 1,
   "file-transfers-v1": 1,
 }) as Readonly<Record<string, number>>;
 /** Structured error code returned when host compatibility validation fails. */

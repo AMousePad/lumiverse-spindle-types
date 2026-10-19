@@ -1,5 +1,6 @@
 export { IDENTIFIER_PATTERN, validateIdentifier, } from "./manifest.js";
 export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
+export { SPINDLE_COMPOSER_HOST_CAPABILITIES } from "./composer.js";
 export { SPINDLE_FILE_CHUNK_BYTES, SPINDLE_FILE_MAX_BYTES, SPINDLE_FILE_DEFAULT_MAX_BYTES, SPINDLE_FILE_TTL_MS, SPINDLE_FILE_MAX_COUNT, } from "./file-transfers.js";
 export { SPINDLE_HOST_CAPABILITIES, SPINDLE_COMPATIBILITY_ERROR_CODE, } from "./host.js";
 export { SPINDLE_THEME_AUTHORING_HOST_CAPABILITIES } from "./theme.js";

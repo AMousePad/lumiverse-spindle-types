@@ -25,6 +25,7 @@ export const ALL_PERMISSIONS = [
     "personas",
     "push_notification",
     "decisions",
+    "embeddings",
     "image_gen",
     "images",
     "generation_parameters",

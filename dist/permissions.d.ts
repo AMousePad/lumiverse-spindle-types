@@ -5,6 +5,7 @@
  *
  * Gated tier (must declare):
  * - "decisions"            — inspect and invoke saved Decision model connections
+ * - "embeddings"           — list the user's embedding connections and embed text with them
  * - "generation"           — fire generations on behalf of user
  * - "interceptor"          — pre-generation prompt modification
  * - "tools"                — register LLM tools
@@ -42,6 +43,6 @@
  *                            device is playing (never samples), desktop client only. Privileged;
  *                            the host asks the user on every start.
  */
-export type SpindlePermission = "screen_capture" | "screen_recording" | "system_audio" | "generation" | "interceptor" | "tools" | "cors_proxy" | "context_handler" | "ephemeral_storage" | "chat_mutation" | "event_tracking" | "ui_panels" | "app_manipulation" | "oauth" | "characters" | "chats" | "presets" | "world_books" | "regex_scripts" | "regex_scripts_unrestricted" | "databanks" | "memories" | "media" | "personas" | "push_notification" | "decisions" | "image_gen" | "images" | "generation_parameters" | "macro_interceptor" | "web_search" | "unsafe_eval" | "final_response" | "providers.embedding.register" | "providers.tts.register" | "providers.stt.register" | "providers.sidecar.register" | "mcp_servers" | "mcp_servers.create";
+export type SpindlePermission = "screen_capture" | "screen_recording" | "system_audio" | "generation" | "interceptor" | "tools" | "cors_proxy" | "context_handler" | "ephemeral_storage" | "chat_mutation" | "event_tracking" | "ui_panels" | "app_manipulation" | "oauth" | "characters" | "chats" | "presets" | "world_books" | "regex_scripts" | "regex_scripts_unrestricted" | "databanks" | "memories" | "media" | "personas" | "push_notification" | "decisions" | "embeddings" | "image_gen" | "images" | "generation_parameters" | "macro_interceptor" | "web_search" | "unsafe_eval" | "final_response" | "providers.embedding.register" | "providers.tts.register" | "providers.stt.register" | "providers.sidecar.register" | "mcp_servers" | "mcp_servers.create";
 export declare const ALL_PERMISSIONS: readonly SpindlePermission[];
 export declare function isValidPermission(p: string): p is SpindlePermission;

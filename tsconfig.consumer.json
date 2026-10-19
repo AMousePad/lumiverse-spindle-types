@@ -39,6 +39,7 @@
     "test/mcp-consumer.ts",
     "test/connection-kinds-consumer.ts",
     "test/stt-consumer.ts",
+    "test/tts-consumer.ts",
     "test/system-audio-consumer.ts"
   ]
 }

@@ -1,4 +1,5 @@
 import type { SpindleSTTAPI } from "./speech-to-text.js";
+import type { SpindleTTSAPI } from "./text-to-speech.js";
 import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
 import type { SpindleComposerAPI } from "./composer.js";
@@ -1336,6 +1337,8 @@ export interface SpindleFrontendContext {
   readonly composer?: SpindleComposerAPI;
   /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
   readonly stt?: SpindleSTTAPI;
+  /** Host-managed TTS playback. Feature-detect text-to-speech-v1; unavailable on older hosts. */
+  readonly tts?: SpindleTTSAPI;
   /** Host-managed system-audio analysis (spectrum only). Feature-detect system-audio-v1; desktop client only. */
   readonly systemAudio?: SpindleSystemAudioAPI;
   /** Per-document routing identity, available with frontend-session-origin-v1. */

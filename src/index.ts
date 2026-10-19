@@ -610,6 +610,9 @@ export type {
 } from "./speech-to-text.js";
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
 
+export type { SpindleTTSSpeakInput, SpindleTTSSpeakOptions, SpindleTTSAPI } from "./text-to-speech.js";
+export { SPINDLE_TTS_HOST_CAPABILITIES } from "./text-to-speech.js";
+
 export type {
   SpindleSystemAudioUnavailableReason, SpindleSystemAudioAvailability, SpindleSystemAudioFrame,
   SpindleSystemAudioChannelFrame,

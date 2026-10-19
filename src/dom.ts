@@ -2,6 +2,7 @@ import type { SpindleSTTAPI } from "./speech-to-text.js";
 import type { SpindleTTSAPI } from "./text-to-speech.js";
 import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
+import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type {
   ChatDTO,
@@ -1075,7 +1076,15 @@ export type SpindleHostSurfaceKind =
   | "route"
   | "modal"
   | "input_bar_action"
-  | "ext_command";
+  | "ext_command"
+  | "entity_action";
+
+/** Built-in `entity_action` ids. Hosts list the ones they support in `ctx.host.surfaces.list()`. */
+export type SpindleHostEntityActionId =
+  | "switch_persona"
+  | "switch_preset"
+  | "apply_theme"
+  | "character_chat";
 
 export interface SpindleHostSurfaceRef {
   kind: SpindleHostSurfaceKind;
@@ -1092,6 +1101,23 @@ export type SpindleHostActionJsonValue =
 
 export type SpindleHostActionParams = Record<string, SpindleHostActionJsonValue>;
 
+/** One string param of an `entity_action`, as a JSON Schema subset. */
+export interface SpindleHostActionParamSchema {
+  type: "string";
+  description: string;
+  enum?: string[];
+  /** Known values with display names, e.g. the themes `apply_theme` accepts. */
+  oneOf?: Array<{ const: string; title: string }>;
+}
+
+/** JSON Schema object for the params an `entity_action` accepts. */
+export interface SpindleHostActionParamsSchema {
+  type: "object";
+  properties: Record<string, SpindleHostActionParamSchema>;
+  required: string[];
+  additionalProperties: false;
+}
+
 export interface SpindleHostSurfaceInfo {
   kind: SpindleHostSurfaceKind;
   id: string;
@@ -1104,6 +1130,8 @@ export interface SpindleHostSurfaceInfo {
   role?: "admin" | "owner";
   owner?: string;
   invocable?: boolean;
+  /** Param schema for `entity_action` surfaces. */
+  params?: SpindleHostActionParamsSchema;
 }
 
 export interface SpindleHostSurfaceTarget {
@@ -1180,9 +1208,50 @@ export interface SpindleFrontendTokensAPI {
   countChat(chatId: string, options?: TokenCountOptionsDTO): Promise<TokenCountResultDTO>;
 }
 
+/** Connection profile families listed by `ctx.connections.list({ kind })`. */
+export type SpindleConnectionProfileKind = "llm" | "image" | "tts" | "stt" | "embedding" | "decision";
+
+/**
+ * Credential-free view of a connection profile of any kind. It never contains
+ * API keys, endpoint URLs, headers, metadata, or provider parameters.
+ */
+export interface SpindleConnectionProfileSummary {
+  id: string;
+  kind: SpindleConnectionProfileKind;
+  name: string;
+  provider: string;
+  model: string;
+  /** Default voice of a TTS profile. Omitted for other kinds. */
+  voice?: string;
+  /** True for the profile Lumiverse uses for this kind when no connection id is given. */
+  active: boolean;
+}
+
+export interface SpindleActiveConnectionState {
+  activeProfileId: string | null;
+  provider: string | null;
+  model: string | null;
+}
+
+/** Frontend host capability for `ctx.connections.list({ kind })` and `ctx.connections.getActive(kind)`. */
+export const SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES = Object.freeze({ "connection-kinds-v1": 1 });
+
 export interface SpindleFrontendConnectionsAPI {
   list(): Promise<ConnectionProfileDTO[]>;
+  /**
+   * Lists the user's profiles of one kind as credential-free summaries. Free.
+   * Needs `connection-kinds-v1`; older hosts ignore the argument and return LLM profiles.
+   */
+  list(options: { kind: SpindleConnectionProfileKind }): Promise<SpindleConnectionProfileSummary[]>;
   get(connectionId: string): Promise<ConnectionProfileDTO | null>;
+  /**
+   * Without a kind: the active LLM profile (synchronous). With a kind: the profile
+   * Lumiverse uses for that kind (`connection-kinds-v1`). Free.
+   */
+  getActive?: {
+    (): SpindleActiveConnectionState;
+    (kind: SpindleConnectionProfileKind): Promise<SpindleActiveConnectionState>;
+  };
   setActiveAcknowledged(connectionId: string | null): void | Promise<void>;
 }
 
@@ -1264,6 +1333,8 @@ export interface SpindleFrontendContext {
   readonly client?: SpindleClientAPI;
   /** Native downloads of completed backend files. Available with file-transfers-v1. */
   readonly files: SpindleFileDownloadAPI;
+  /** The chat composer draft and its send path. Feature-detect composer-v1; unavailable on older hosts. */
+  readonly composer?: SpindleComposerAPI;
   /** Host-managed STT. Feature-detect speech-to-text-v1; unavailable on older hosts. */
   readonly stt?: SpindleSTTAPI;
   /** Host-managed TTS playback. Feature-detect text-to-speech-v1; unavailable on older hosts. */

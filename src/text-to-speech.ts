@@ -1,7 +1,7 @@
 /** Host-managed text-to-speech playback for frontend Spindle extensions. */
 
 /** Speak caller text, or a chat message of the active chat with the host's per-character voices. */
-export type SpindleTTSSpeakInput = { text: string } | { messageId: string }
+export type SpindleTTSSpeakInput = { text: string; messageId?: never } | { messageId: string; text?: never }
 
 export interface SpindleTTSSpeakOptions {
   /** TTS connection for text input. Defaults to the user's TTS connection. Not used with messageId. */
@@ -17,7 +17,8 @@ export interface SpindleTTSAPI {
    * to the message). Resolves when this playback ends or is stopped; rejects when it cannot start
    * or synthesis fails.
    */
-  speak(input: SpindleTTSSpeakInput, options?: SpindleTTSSpeakOptions): Promise<void>
+  speak(input: SpindleTTSSpeakInput): Promise<void>
+  speak(input: Extract<SpindleTTSSpeakInput, { text: string }>, options?: SpindleTTSSpeakOptions): Promise<void>
   /** Requires media. Stops all host TTS playback, including chat auto-play and saved message audio. */
   stop(): void
   /** Free. True while any host TTS audio plays or is being prepared for playback. */

@@ -18,6 +18,10 @@ async function voiceReply() {
   unsubscribe();
   // @ts-expect-error Input is text or a message id, not both shapes at once without either field.
   void tts.speak({});
+  // @ts-expect-error Text and a message id are mutually exclusive.
+  void tts.speak({ text: "Hello", messageId: "message-id" });
+  // @ts-expect-error Connection overrides apply only to text input.
+  void tts.speak({ messageId: "message-id" }, { connectionId: "tts-connection-id" });
   void speaking;
 }
 void [legacy, voiceReply];

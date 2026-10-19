@@ -1,4 +1,5 @@
 export type { DecisionImageAsset, DecisionBox, DecisionJsonValue, DecisionDescription, DecisionState, DecisionQuestion, DecisionAnswer, DecisionAnswerFor, DecisionAnswers, DecisionResult, DecisionEvaluationInput, DecisionConnectionProfileDTO, DecisionModelDTO, DecisionProviderDTO, SpindleDecisionsAPI, DecisionWorkerMessage } from "./decisions.js";
+export type { EmbeddingConnectionDTO, EmbeddingsEmbedInput, EmbeddingsEmbedResult, SpindleEmbeddingsAPI, EmbeddingsWorkerMessage } from "./embeddings.js";
 
 export type {
   SpindleManifest,
@@ -18,6 +19,8 @@ export type {
 } from "./host.js";
 export type { SpindleClientKind, SpindleClientPlatform, SpindleClientInfo, SpindleClientAPI } from "./client.js";
 export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
+export type { SpindleComposerState, SpindleComposerInsertPosition, SpindleComposerAPI } from "./composer.js";
+export { SPINDLE_COMPOSER_HOST_CAPABILITIES } from "./composer.js";
 export type {
   SpindleFileRef, SpindleFileSource, FileOperationOptions, FileFetchOptions,
   SpindleFileCreateInput, SpindleFileChunk, SpindleArchiveEntry,
@@ -361,6 +364,9 @@ export type {
   SpindleHostSurfaceRef,
   SpindleHostActionJsonValue,
   SpindleHostActionParams,
+  SpindleHostEntityActionId,
+  SpindleHostActionParamSchema,
+  SpindleHostActionParamsSchema,
   SpindleHostSurfaceInfo,
   SpindleHostSurfaceTarget,
   SpindleHostSurfaceTargetHandler,
@@ -374,6 +380,9 @@ export type {
   SpindleFrontendWorldBooksAPI,
   SpindleFrontendTokensAPI,
   SpindleFrontendConnectionsAPI,
+  SpindleConnectionProfileKind,
+  SpindleConnectionProfileSummary,
+  SpindleActiveConnectionState,
   SpindleFrontendChatsAPI,
   SpindleFrontendMessagesAPI,
   SpindleRecentChatsQuery,
@@ -446,6 +455,7 @@ export type {
     SpindleDisplayTemplatesResult,
     SpindleTabLocation,
   } from "./dom.js";
+export { SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES } from "./dom.js";
 
 export type {
   SpindleMountedComponent,
@@ -596,7 +606,7 @@ export {
 export type {
   SpindleSTTProvider, SpindleSTTProviderOption, SpindleSTTStatus, SpindleSTTResult,
   SpindleSTTAudioFrame, SpindleSTTTranscript, SpindleSTTPcmAudio, SpindleSTTOptions,
-  SpindleSTTStartOptions, SpindleSTTSession, SpindleSTTAPI,
+  SpindleSTTStartOptions, SpindleSTTSession, SpindleSTTAPI, SpindleSTTWord, SpindleSTTTranscribeOptions,
 } from "./speech-to-text.js";
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
 

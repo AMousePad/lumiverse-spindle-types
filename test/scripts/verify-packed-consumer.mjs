@@ -90,7 +90,7 @@ try {
           lib: ["ESNext", "DOM"],
           noEmit: true,
         },
-        include: ["decisions-consumer.ts", "api-*-consumer.ts", "stt-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
+        include: ["decisions-consumer.ts", "api-*-consumer.ts", "stt-consumer.ts", "tts-consumer.ts", "system-audio-consumer.ts", "packed-0.6.16-consumer.ts", "frontend-runtime-consumer.ts", "image-gen-native-consumer.ts", "image-gen-0.6.37-consumer.ts"],
       },
       null,
       2,
@@ -99,6 +99,7 @@ try {
 
   copyFileSync(join(repoRoot, "test/decisions-consumer.ts"), join(fixtureDir, "decisions-consumer.ts"));
   copyFileSync(join(repoRoot, "test/stt-consumer.ts"), join(fixtureDir, "stt-consumer.ts"));
+  copyFileSync(join(repoRoot, "test/tts-consumer.ts"), join(fixtureDir, "tts-consumer.ts"));
   copyFileSync(join(repoRoot, "test/system-audio-consumer.ts"), join(fixtureDir, "system-audio-consumer.ts"));
   copyFileSync(sourceConsumer, join(fixtureDir, "packed-0.6.16-consumer.ts"));
   for (const name of readdirSync(join(repoRoot, "test")).filter(name => /^api-.*-consumer\.ts$/.test(name))) {

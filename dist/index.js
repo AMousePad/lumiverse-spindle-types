@@ -1,5 +1,6 @@
 export { IDENTIFIER_PATTERN, validateIdentifier, } from "./manifest.js";
 export { SPINDLE_CLIENT_HOST_CAPABILITIES } from "./client.js";
+export { SPINDLE_COMPOSER_HOST_CAPABILITIES } from "./composer.js";
 export { SPINDLE_FILE_CHUNK_BYTES, SPINDLE_FILE_MAX_BYTES, SPINDLE_FILE_DEFAULT_MAX_BYTES, SPINDLE_FILE_TTL_MS, SPINDLE_FILE_MAX_COUNT, } from "./file-transfers.js";
 export { SPINDLE_HOST_CAPABILITIES, SPINDLE_COMPATIBILITY_ERROR_CODE, } from "./host.js";
 export { SPINDLE_THEME_AUTHORING_HOST_CAPABILITIES } from "./theme.js";
@@ -8,6 +9,7 @@ export { ALL_CAPABILITIES, isValidCapability } from "./capabilities.js";
 export { SpindleEvent, CoreEventType } from "./events.js";
 export { ALL_FRONTEND_RUNTIME_CAPABILITIES, isValidFrontendRuntimeCapability, } from "./frontend-capabilities.js";
 export { PERMISSION_DENIED_PREFIX } from "./api.js";
+export { SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES } from "./dom.js";
 export { SIDECAR_DEFAULTS, COUNCIL_SIDECAR_DEFAULTS, COUNCIL_TOOLS_DEFAULTS, COUNCIL_SETTINGS_DEFAULTS, } from "./council.js";
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
 export { SPINDLE_TTS_HOST_CAPABILITIES } from "./text-to-speech.js";

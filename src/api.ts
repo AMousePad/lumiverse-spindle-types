@@ -3258,6 +3258,10 @@ export interface GenerationStartedPayloadDTO {
   chatId: string;
   model: string;
   targetMessageId?: string;
+  /** Swipe receiving generated tokens; it may differ from the selected swipe. */
+  targetSwipeId?: number;
+  /** True when generation was started without selecting its new swipe. */
+  backgroundSwipe?: boolean;
   characterId?: string;
   characterName?: string;
   breakdown?: AssemblyBreakdownEntryDTO[];

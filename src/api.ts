@@ -3329,6 +3329,12 @@ export interface GenerationStoppedPayloadDTO {
 
 // ─── Chat Message Event Payload DTOs ────────────────────────────────────
 
+/** Stored reasoning for one swipe. Durations are in milliseconds. */
+export interface SwipeReasoningDTO {
+  text: string | null;
+  duration?: number | null;
+}
+
 /**
  * Wire shape of a chat message as delivered in WebSocket event payloads
  * (e.g. `MESSAGE_SENT`, `MESSAGE_EDITED`, `MESSAGE_SWIPED`).
@@ -3903,6 +3909,7 @@ export type WorkerToHost =
         swipe_id?: number;
         swipe_dates?: number[];
         reasoning?: { text?: string | null; duration?: number | null };
+        swipe_reasoning?: (SwipeReasoningDTO | null)[];
         skipChunkRebuild?: boolean;
       };
     }

@@ -19,6 +19,7 @@ import type {
   ToolRegistrationDTO,
   GenerationRequestDTO,
   ChatAppendMessageOptionsDTO,
+  SpindleMessageMetadataDTO,
   RequestInitDTO,
   ConnectionProfileDTO,
   ConnectionModelDTO,
@@ -669,7 +670,7 @@ export interface SpindleAPI {
        */
       extra: Record<string, unknown>;
       /** Spindle-owned metadata split out from `extra.spindle_metadata`. */
-      metadata?: Record<string, unknown>;
+      metadata?: SpindleMessageMetadataDTO;
     }>>;
     appendMessage(
       chatId: string,
@@ -702,7 +703,7 @@ export interface SpindleAPI {
       messageId: string,
       patch: {
         content?: string;
-        metadata?: Record<string, unknown>;
+        metadata?: SpindleMessageMetadataDTO;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];

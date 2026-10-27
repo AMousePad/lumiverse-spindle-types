@@ -2095,6 +2095,8 @@ export interface DryRunRequestDTO {
     connectionId?: string;
     personaId?: string;
     presetId?: string;
+    /** Use presetId over the chat's preset and return variable_state. */
+    forcePresetId?: boolean;
     generationType?: string;
     parameters?: Record<string, unknown>;
 }
@@ -2231,7 +2233,26 @@ export interface SavedBreakdownDTO {
     presetId?: string;
     tokenizer_name?: string | null;
 }
+/** Variables from prompt assembly. Changes to these values are not saved. */
+export interface MacroVariableSnapshotDTO {
+    local: Record<string, string>;
+    global: Record<string, string>;
+    chat: Record<string, string>;
+    prompt_selections?: Record<string, string[]>;
+    prompt_defaults?: Record<string, string>;
+}
+/** Preset and saved variables used to render one swipe. */
+export interface MessagePresetContextDTO {
+    preset_id: string;
+    variables?: Partial<MacroVariableSnapshotDTO>;
+}
+export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
+    /** One entry per swipe; null uses normal rendering. The host keeps entries aligned. */
+    preset_contexts?: Array<MessagePresetContextDTO | null>;
+}
 export interface DryRunResultDTO {
+    /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
+    variable_state?: MacroVariableSnapshotDTO;
     messages: LlmMessageDTO[];
     breakdown: AssemblyBreakdownEntryDTO[];
     parameters: Record<string, unknown>;

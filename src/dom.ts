@@ -6,6 +6,7 @@ import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
 import type {
   ChatDTO,
+  MessagePresetContextDTO,
   ChatMessageDTO,
   ChatUpdateDTO,
   ConnectionProfileDTO,
@@ -921,6 +922,10 @@ export interface SpindleFrontendProcessRegistry {
 }
 
 export interface SpindleDisplayContext {
+  /** Preset and saved variables for the selected swipe. Keep character state separate. */
+  presetContext?: MessagePresetContextDTO;
+  /** IDs of the preset's regexes. Use presetContext variables for their templates. */
+  presetRegexIds?: string[];
   chatId?: string;
   characterId?: string;
   personaId?: string;

@@ -4,7 +4,7 @@ import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
 import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
-import type { ChatDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
+import type { ChatDTO, MessagePresetContextDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
 import type { SpindleComponentsHelper } from "./components.js";
 import type { SpindleHostDescriptorV1, SpindleHostLocaleAPI } from "./host.js";
 import type { SpindleThemeAuthoringAPI } from "./theme.js";
@@ -736,6 +736,10 @@ export interface SpindleFrontendProcessRegistry {
     register(kind: string, handler: (process: SpindleFrontendProcessContext) => void | (() => void) | Promise<void | (() => void)>): () => void;
 }
 export interface SpindleDisplayContext {
+    /** Preset and saved variables for the selected swipe. Keep character state separate. */
+    presetContext?: MessagePresetContextDTO;
+    /** IDs of the preset's regexes. Use presetContext variables for their templates. */
+    presetRegexIds?: string[];
     chatId?: string;
     characterId?: string;
     personaId?: string;

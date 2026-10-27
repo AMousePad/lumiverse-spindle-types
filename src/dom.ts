@@ -922,9 +922,9 @@ export interface SpindleFrontendProcessRegistry {
 }
 
 export interface SpindleDisplayContext {
-  /** Request-time native variables for the selected swipe's preset rules. Character rendering keeps its own state. */
+  /** Preset and saved variables for the selected swipe. Keep character state separate. */
   presetContext?: MessagePresetContextDTO;
-  /** Script ids whose macro templates use presetContext rather than the character's variables. */
+  /** IDs of the preset's regexes. Use presetContext variables for their templates. */
   presetRegexIds?: string[];
   chatId?: string;
   characterId?: string;

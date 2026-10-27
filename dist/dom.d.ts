@@ -4,7 +4,7 @@ import type { SpindleSystemAudioAPI } from "./system-audio.js";
 import type { SpindleClientAPI } from "./client.js";
 import type { SpindleComposerAPI } from "./composer.js";
 import type { SpindleFileDownloadAPI } from "./file-transfers.js";
-import type { ChatDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
+import type { ChatDTO, MessagePresetContextDTO, ChatMessageDTO, ChatUpdateDTO, ConnectionProfileDTO, LlmMessageDTO, PromptBlockDTO, PromptVariableValuesDTO, RequestInitDTO, TokenCountOptionsDTO, TokenCountResultDTO, WorldBookCreateDTO, WorldBookDTO, WorldBookEntryCreateDTO, WorldBookEntryDTO, WorldBookEntryUpdateDTO, WorldBookUpdateDTO } from "./api.js";
 import type { SpindleComponentsHelper } from "./components.js";
 import type { SpindleHostDescriptorV1, SpindleHostLocaleAPI } from "./host.js";
 import type { SpindleThemeAuthoringAPI } from "./theme.js";
@@ -736,6 +736,10 @@ export interface SpindleFrontendProcessRegistry {
     register(kind: string, handler: (process: SpindleFrontendProcessContext) => void | (() => void) | Promise<void | (() => void)>): () => void;
 }
 export interface SpindleDisplayContext {
+    /** Request-time native variables for the selected swipe's preset rules. Character rendering keeps its own state. */
+    presetContext?: MessagePresetContextDTO;
+    /** Script ids whose macro templates use presetContext rather than the character's variables. */
+    presetRegexIds?: string[];
     chatId?: string;
     characterId?: string;
     personaId?: string;

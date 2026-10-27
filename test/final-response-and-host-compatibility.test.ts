@@ -19,6 +19,7 @@ test("unrestricted regex mutation permission is valid and publicly declared", ()
 test("host compatibility constants are canonical and immutable", () => {
   expect(SPINDLE_COMPATIBILITY_ERROR_CODE).toBe("SPINDLE_COMPATIBILITY_ERROR");
   expect(SPINDLE_HOST_CAPABILITIES).toEqual({
+    "message-preset-context-v1": 1,
     "decisions-v1": 1,
     "decision-images-v1": 1,
     "embeddings-v1": 1,

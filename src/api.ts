@@ -2287,6 +2287,8 @@ export interface DryRunRequestDTO {
   connectionId?: string;
   personaId?: string;
   presetId?: string;
+  /** Use presetId instead of chat bindings and return its captured variable state. */
+  forcePresetId?: boolean;
   generationType?: string;
   parameters?: Record<string, unknown>;
 }
@@ -2427,7 +2429,29 @@ export interface SavedBreakdownDTO {
   tokenizer_name?: string | null;
 }
 
+/** Variables after non-committing prompt preparation, including configured prompt inputs. */
+export interface MacroVariableSnapshotDTO {
+  local: Record<string, string>;
+  global: Record<string, string>;
+  chat: Record<string, string>;
+  prompt_selections?: Record<string, string[]>;
+  prompt_defaults?: Record<string, string>;
+}
+
+/** Native display uses this preset's original ordered regex chain for one swipe. */
+export interface MessagePresetContextDTO {
+  preset_id: string;
+  variables?: Partial<MacroVariableSnapshotDTO>;
+}
+
+export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
+  /** Aligned with swipes; the host keeps entries aligned when swipes are removed. */
+  preset_contexts?: Array<MessagePresetContextDTO | null>;
+}
+
 export interface DryRunResultDTO {
+  /** Returned for forcePresetId dry runs on supporting hosts. No variables are committed. */
+  variable_state?: MacroVariableSnapshotDTO;
   messages: LlmMessageDTO[];
   breakdown: AssemblyBreakdownEntryDTO[];
   parameters: Record<string, unknown>;

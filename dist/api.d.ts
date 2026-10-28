@@ -2091,6 +2091,8 @@ export interface WorldInfoActivatedEventDTO {
     stats?: Record<string, unknown>;
 }
 export interface DryRunRequestDTO {
+    /** Include prepared messages with media, tool calls and reasoning intact. Requires generation-request-messages-v1. */
+    includeRequestMessages?: boolean;
     chatId: string;
     connectionId?: string;
     personaId?: string;
@@ -2251,6 +2253,9 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
     preset_contexts?: Array<MessagePresetContextDTO | null>;
 }
 export interface DryRunResultDTO {
+    /** Prepared messages returned only when includeRequestMessages is true. */
+    request_messages?: LlmMessageDTO[];
+    assistantPrefill?: string;
     /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
     variable_state?: MacroVariableSnapshotDTO;
     messages: LlmMessageDTO[];

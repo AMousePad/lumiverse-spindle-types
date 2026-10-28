@@ -34,6 +34,7 @@ import type {
   CharacterUpdateDTO,
   ChatDTO,
   ChatUpdateDTO,
+  SetSwipeVariablesDTO,
   ConditionalChatMetadataDTO,
   UserPresetDTO,
   ActivePresetDTO,
@@ -489,6 +490,11 @@ export interface SpindleAPI {
      * permission and an active interceptor callback.
      */
     quietTracked(input: QuietTrackedRequestDTO): Promise<QuietTrackedResultDTO>;
+    /** Start a tracked generation for a blank saved reply. Requires generation, chats and chat_mutation. */
+    beginMessage(input: import("./api.js").MessageGenerationInputDTO): Promise<{ id: string }>;
+    /** Process saved swipes and notify completion once for the selected successful reply. */
+    finishMessage(sessionId: string): Promise<import("./api.js").MessageGenerationResultDTO>;
+    abortMessage(sessionId: string): Promise<void>;
     raw(input: GenerationRequestDTO): Promise<unknown>;
     quiet(input: GenerationRequestDTO): Promise<unknown>;
     batch(input: GenerationRequestDTO): Promise<unknown>;
@@ -662,6 +668,8 @@ export interface SpindleAPI {
 
   /** Chat mutation helpers */
   chat: {
+    /** Save variables for a new assistant reply at the end of the chat. False means the expected state changed. Requires chat-swipe-variables-v1 and chats + chat_mutation permissions. */
+    setSwipeVariables(chatId: string, messageId: string, input: SetSwipeVariablesDTO): Promise<boolean>;
     getMessages(chatId: string): Promise<Array<ChatMessageDTO & {
       /** Normalized role derived from `is_user` and Spindle system-message metadata. */
       role: "system" | "user" | "assistant";

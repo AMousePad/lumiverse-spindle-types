@@ -156,6 +156,11 @@ try {
     cwd: fixtureDir,
     stdio: "inherit",
   });
+  runNode([tscJs, "--noEmit", "-p", join(fixtureDir, "tsconfig.json"),
+    "--module", "NodeNext", "--moduleResolution", "NodeNext", "--skipLibCheck", "false"], {
+    cwd: fixtureDir,
+    stdio: "inherit",
+  });
 
   execFileSync(
     process.execPath,

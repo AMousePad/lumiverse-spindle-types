@@ -478,6 +478,9 @@ export type GenerationDispatchSourceDTO =
     };
 
 export interface GenerationRequestDTO {
+  /** Bind a raw stream to a message generation and its swipe. */
+  sessionId?: string;
+  swipeIndex?: number;
   type: "raw" | "quiet" | "batch";
   messages?: LlmMessageDTO[];
   parameters?: Record<string, unknown>;
@@ -1380,6 +1383,8 @@ export interface ChatDTO {
   character_id: string;
   name: string;
   metadata: Record<string, unknown>;
+  /** Revision for setSwipeVariables; absent before swipe variable tracking starts. */
+  variable_revision?: string;
   created_at: number;
   updated_at: number;
 }
@@ -1387,6 +1392,14 @@ export interface ChatDTO {
 export interface ChatUpdateDTO {
   name?: string;
   metadata?: Record<string, unknown>;
+}
+
+export interface ChatVariableValuesDTO { global: Record<string, string>; chat: Record<string, string> }
+export interface SetSwipeVariablesDTO {
+  expected_variables: ChatVariableValuesDTO;
+  expected_revision: string | null;
+  expected_swipes: string[];
+  variables: ChatVariableValuesDTO[];
 }
 
 export interface ConditionalChatMetadataDTO {
@@ -2300,7 +2313,18 @@ export interface WorldInfoActivatedEventDTO {
 
 // ─── Dry Run DTOs ──────────────────────────────────────────────────────
 
+export interface MessageGenerationInputDTO {
+  chatId: string;
+  messageId: string;
+  responseContextIds: string[];
+  frontendSessionId?: string;
+  userId?: string;
+}
+export interface MessageGenerationResultDTO { messageId: string; completed: boolean }
+
 export interface DryRunRequestDTO {
+  /** Retain the response macro context for beginMessage. Expires after two minutes. */
+  retainResponseContext?: boolean;
   /** Include prepared messages with media, tool calls and reasoning intact. Requires generation-request-messages-v1. */
   includeRequestMessages?: boolean;
   chatId: string;
@@ -2470,9 +2494,10 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
 }
 
 export interface DryRunResultDTO {
+  responseContextId?: string;
   /** Prepared messages returned only when includeRequestMessages is true. */
   request_messages?: LlmMessageDTO[];
-  /** Prepared assistant prefix, already included in request_messages. Returned only with includeRequestMessages. */
+  /** Prepared assistant prefix, already included in request_messages when requested. Returned with includeRequestMessages or retainResponseContext. */
   assistantPrefill?: string;
   /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
   variable_state?: MacroVariableSnapshotDTO;
@@ -3302,6 +3327,8 @@ export interface BackendProcessStopOptionsDTO {
 
 /** Payload for `GENERATION_STARTED` events. */
 export interface GenerationStartedPayloadDTO {
+  renderMode?: "persisted-message";
+  extensionId?: string;
   generationId: string;
   chatId: string;
   model: string;
@@ -3824,6 +3851,8 @@ export type WorkerToHost =
     }
   | { type: "register_tool"; tool: ToolRegistrationDTO }
   | { type: "unregister_tool"; name: string }
+  | { type: "message_generation_begin"; requestId: string; input: MessageGenerationInputDTO }
+  | { type: "message_generation_finish" | "message_generation_abort"; requestId: string; sessionId: string }
   | { type: "request_generation"; requestId: string; input: GenerationRequestDTO }
   /**
    * Start a streaming generation. The host responds asynchronously with
@@ -3910,6 +3939,7 @@ export type WorkerToHost =
   | { type: "connections_get"; requestId: string; connectionId: string; userId?: string }
   | { type: "connections_models"; requestId: string; connectionId: string; userId?: string }
   | { type: "chat_get_messages"; requestId: string; chatId: string }
+  | { type: "chat_set_swipe_variables"; requestId: string; chatId: string; messageId: string; input: SetSwipeVariablesDTO }
   | {
       type: "chat_append_message";
       requestId: string;

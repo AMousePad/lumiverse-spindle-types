@@ -134,6 +134,8 @@ export type {
   CharacterUpdateDTO,
     ChatDTO,
     ChatUpdateDTO,
+    ChatVariableValuesDTO,
+    SetSwipeVariablesDTO,
     ConditionalChatMetadataDTO,
     ChatSwitchedPayloadDTO,
     ChatChangedPayloadDTO,
@@ -624,3 +626,5 @@ export type {
   SpindleSystemAudioEndReason, SpindleSystemAudioStartOptions, SpindleSystemAudioSession, SpindleSystemAudioAPI,
 } from "./system-audio.js";
 export { SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES } from "./system-audio.js";
+
+export type { MessageGenerationInputDTO, MessageGenerationResultDTO } from "./api.js";

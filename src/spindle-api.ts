@@ -300,6 +300,7 @@ export interface SpindleSidecarEndpoint {
 export type SpindleGenerateAPI = SpindleAPI["generate"];
 
 export interface SpindleConnectionsAPI {
+  organization?: import('./connection-organization.js').SpindleConnectionOrganizationAPI<import('./connection-organization.js').SpindleBackendConnectionOrganizationOptions>;
   /**
    * Resolve an owned concrete slot's current safe dispatch descriptor inside
    * an active interceptor callback. Requires the `generation` permission.
@@ -842,6 +843,7 @@ export interface SpindleAPI {
    * ```
    */
   connections: {
+    organization?: import('./connection-organization.js').SpindleConnectionOrganizationAPI<import('./connection-organization.js').SpindleBackendConnectionOrganizationOptions>;
     /**
      * List connection profiles visible to the current user context.
      * For user-scoped extensions, userId is inferred from the extension owner.

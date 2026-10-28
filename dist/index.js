@@ -14,3 +14,4 @@ export { SIDECAR_DEFAULTS, COUNCIL_SIDECAR_DEFAULTS, COUNCIL_TOOLS_DEFAULTS, COU
 export { SPINDLE_STT_HOST_CAPABILITIES } from "./speech-to-text.js";
 export { SPINDLE_TTS_HOST_CAPABILITIES } from "./text-to-speech.js";
 export { SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES } from "./system-audio.js";
+export { SPINDLE_CONNECTION_ORGANIZATION_HOST_CAPABILITIES } from './connection-organization.js';

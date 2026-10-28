@@ -16,7 +16,7 @@ import type {
 export type LlmMessagePartDTO =
   | { type: "video"; data: string; mime_type: string; cache_control?: Record<string, unknown> }
   | { type: "desktop_capture"; asset_id: string }
-  | { type: "text"; text: string; cache_control?: Record<string, unknown> }
+  | { type: "text"; text: string; cache_control?: Record<string, unknown>; thought_signature?: string }
   | { type: "image"; data: string; mime_type: string; cache_control?: Record<string, unknown> }
   | { type: "audio"; data: string; mime_type: string; cache_control?: Record<string, unknown> }
   | { type: "tool_use"; id: string; name: string; input: Record<string, unknown>; cache_control?: Record<string, unknown>; thought_signature?: string }
@@ -33,7 +33,11 @@ export interface LlmMessageDTO {
   role: "system" | "user" | "assistant";
   content: string | LlmMessagePartDTO[];
   name?: string;
+  /** Marks a trailing assistant message as a generation prefix. */
+  partial?: boolean;
   cache_control?: Record<string, unknown>;
+  /** Opaque Gemini signature on a non-tool response part; replay unmodified. */
+  thought_signature?: string;
   /**
    * Thinking-mode reasoning content from the previous assistant turn, echoed
    * back on the next request. Required by DeepSeek's thinking-mode models
@@ -2283,6 +2287,8 @@ export interface WorldInfoActivatedEventDTO {
 // ─── Dry Run DTOs ──────────────────────────────────────────────────────
 
 export interface DryRunRequestDTO {
+  /** Include prepared messages with media, tool calls and reasoning intact. Requires generation-request-messages-v1. */
+  includeRequestMessages?: boolean;
   chatId: string;
   connectionId?: string;
   personaId?: string;
@@ -2450,6 +2456,10 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
 }
 
 export interface DryRunResultDTO {
+  /** Prepared messages returned only when includeRequestMessages is true. */
+  request_messages?: LlmMessageDTO[];
+  /** Prepared assistant prefix, already included in request_messages. Returned only with includeRequestMessages. */
+  assistantPrefill?: string;
   /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
   variable_state?: MacroVariableSnapshotDTO;
   messages: LlmMessageDTO[];

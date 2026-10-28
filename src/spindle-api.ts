@@ -128,7 +128,9 @@ import type {
   BackendProcessStopOptionsDTO,
   ChatChangedPayloadDTO,
   ChatForkedPayloadDTO,
-  ChatMessageDTO,
+  ChatGetMessageDTO,
+  ChatGetMessagesOptionsDTO,
+  ChatGetMessagesResultDTO,
   GenerationStartedPayloadDTO,
   StreamTokenPayloadDTO,
   GenerationEndedPayloadDTO,
@@ -670,18 +672,12 @@ export interface SpindleAPI {
   chat: {
     /** Save variables for a new assistant reply at the end of the chat. False means the expected state changed. Requires chat-swipe-variables-v1 and chats + chat_mutation permissions. */
     setSwipeVariables(chatId: string, messageId: string, input: SetSwipeVariablesDTO): Promise<boolean>;
-    getMessages(chatId: string): Promise<Array<ChatMessageDTO & {
-      /** Normalized role derived from `is_user` and Spindle system-message metadata. */
-      role: "system" | "user" | "assistant";
-      /**
-       * The free-form `extra` bag minus `spindle_metadata` (which is surfaced
-       * separately on `metadata`). Carries reasoning text/duration, attachments,
-       * and any host-owned housekeeping fields.
-       */
-      extra: Record<string, unknown>;
-      /** Spindle-owned metadata split out from `extra.spindle_metadata`. */
-      metadata?: SpindleMessageMetadataDTO;
-    }>>;
+    /** Defaults to all messages. Lean options require chat-lean-messages-v1. */
+    getMessages<O extends ChatGetMessagesOptionsDTO | undefined>(
+      chatId: string,
+      options: O,
+    ): Promise<Array<ChatGetMessagesResultDTO<O>>>;
+    getMessages(chatId: string, options?: undefined): Promise<ChatGetMessageDTO[]>;
     appendMessage(
       chatId: string,
       message: {
@@ -720,6 +716,12 @@ export interface SpindleAPI {
          * combined with metadata. Requires host capability `chat-metadata-patch-v1`.
          */
         metadata_patch?: SpindleMessageMetadataDTO;
+        /**
+         * Set only this extension's manifest-identifier entry; null removes it.
+         * Applied after metadata or metadata_patch. Host-owned preset_contexts
+         * is reserved. Requires host capability chat-lean-messages-v1.
+         */
+        ownMetadata?: unknown;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];

@@ -3138,6 +3138,41 @@ export interface ChatMessageDTO {
     branch_id: string | null;
     created_at: number;
 }
+/** Opt-in lean reads. Requires host capability `chat-lean-messages-v1`. */
+export interface ChatGetMessagesOptionsDTO {
+    /** Page size, 1–1000, in chat order. Cannot be combined with tail. */
+    limit?: number;
+    /** Non-negative safe integer; requires limit. Defaults to 0. */
+    offset?: number;
+    /** Last 1–1000 messages in chat order. Cannot be combined with limit/offset. */
+    tail?: number;
+    /** Null non-active swipe text slots and omit per-swipe extra arrays. */
+    light?: boolean;
+    /** False omits extra. The top-level hidden flag remains available. */
+    includeExtra?: boolean;
+    /** Return metadata only under the calling extension's manifest identifier. */
+    ownMetadataOnly?: boolean;
+}
+/** Default getMessages result; event message DTOs retain their existing shape. */
+export type ChatGetMessageDTO = ChatMessageDTO & {
+    role: "system" | "user" | "assistant";
+    /** Mirrors extra.hidden, including when extra is omitted. */
+    hidden: boolean;
+    /** Spindle metadata split out from extra; ownMetadataOnly filters this bag. */
+    metadata?: SpindleMessageMetadataDTO;
+};
+/** Literal flags retain precise results; dynamic flags account for both outcomes. */
+export type ChatGetMessagesResultDTO<O extends ChatGetMessagesOptionsDTO | undefined = undefined> = O extends undefined ? ChatGetMessageDTO : O extends ChatGetMessagesOptionsDTO ? Omit<ChatGetMessageDTO, "extra" | "swipes"> & {
+    swipes: "light" extends keyof O ? true extends O["light"] ? Array<string | null> : string[] : string[];
+} & ("includeExtra" extends keyof O ? false extends O["includeExtra"] ? O extends {
+    includeExtra: false;
+} ? {} : {
+    extra?: Record<string, unknown>;
+} : {
+    extra: Record<string, unknown>;
+} : {
+    extra: Record<string, unknown>;
+}) : never;
 /**
  * Distinguishes the four ways a `MESSAGE_SWIPED` event can be triggered.
  *
@@ -3753,6 +3788,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     type: "chat_get_messages";
     requestId: string;
     chatId: string;
+    options?: ChatGetMessagesOptionsDTO;
 } | {
     type: "chat_set_swipe_variables";
     requestId: string;
@@ -3778,6 +3814,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
         content?: string;
         metadata?: Record<string, unknown>;
         metadata_patch?: Record<string, unknown>;
+        ownMetadata?: unknown;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];

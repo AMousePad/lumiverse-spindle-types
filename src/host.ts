@@ -1,5 +1,6 @@
 export const SPINDLE_HOST_CAPABILITIES = Object.freeze({
   "message-preset-context-v1": 1,
+  "chat-metadata-patch-v1": 1,
   "preset-extension-data-v1": 1,
   "preset-editor-v1": 1,
   "loom-block-editor-v1": 1,

@@ -518,6 +518,12 @@ export interface SpindleAPI {
         updateMessage(chatId: string, messageId: string, patch: {
             content?: string;
             metadata?: SpindleMessageMetadataDTO;
+            /**
+             * Merge top-level metadata fields with the latest stored metadata.
+             * Nested values are replaced; null is stored as a value. Cannot be
+             * combined with metadata. Requires host capability `chat-metadata-patch-v1`.
+             */
+            metadata_patch?: SpindleMessageMetadataDTO;
             swipes?: string[];
             swipe_id?: number;
             swipe_dates?: number[];

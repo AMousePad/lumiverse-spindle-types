@@ -1263,12 +1263,24 @@ export interface ChatDTO {
     character_id: string;
     name: string;
     metadata: Record<string, unknown>;
+    /** Revision for setSwipeVariables; absent before swipe variable tracking starts. */
+    variable_revision?: string;
     created_at: number;
     updated_at: number;
 }
 export interface ChatUpdateDTO {
     name?: string;
     metadata?: Record<string, unknown>;
+}
+export interface ChatVariableValuesDTO {
+    global: Record<string, string>;
+    chat: Record<string, string>;
+}
+export interface SetSwipeVariablesDTO {
+    expected_variables: ChatVariableValuesDTO;
+    expected_revision: string | null;
+    expected_swipes: string[];
+    variables: ChatVariableValuesDTO[];
 }
 /** Payload for `CHAT_SWITCHED` events. */
 export interface ChatSwitchedPayloadDTO {
@@ -3690,6 +3702,12 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     type: "chat_get_messages";
     requestId: string;
     chatId: string;
+} | {
+    type: "chat_set_swipe_variables";
+    requestId: string;
+    chatId: string;
+    messageId: string;
+    input: SetSwipeVariablesDTO;
 } | {
     type: "chat_append_message";
     requestId: string;

@@ -134,6 +134,8 @@ export type {
   CharacterUpdateDTO,
     ChatDTO,
     ChatUpdateDTO,
+    ChatVariableValuesDTO,
+    SetSwipeVariablesDTO,
     ChatSwitchedPayloadDTO,
     ChatChangedPayloadDTO,
     ChatForkedPayloadDTO,

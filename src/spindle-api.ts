@@ -34,6 +34,7 @@ import type {
   CharacterUpdateDTO,
   ChatDTO,
   ChatUpdateDTO,
+  SetSwipeVariablesDTO,
   UserPresetDTO,
   ActivePresetDTO,
   UserPresetCreateDTO,
@@ -661,6 +662,8 @@ export interface SpindleAPI {
 
   /** Chat mutation helpers */
   chat: {
+    /** Save variables for a new assistant reply at the end of the chat. False means the expected state changed. Requires chat-swipe-variables-v1 and chats + chat_mutation permissions. */
+    setSwipeVariables(chatId: string, messageId: string, input: SetSwipeVariablesDTO): Promise<boolean>;
     getMessages(chatId: string): Promise<Array<ChatMessageDTO & {
       /** Normalized role derived from `is_user` and Spindle system-message metadata. */
       role: "system" | "user" | "assistant";

@@ -34,8 +34,8 @@ import type {
   CharacterUpdateDTO,
   ChatDTO,
   ChatUpdateDTO,
-
   SetSwipeVariablesDTO,
+  ConditionalChatMetadataDTO,
   UserPresetDTO,
   ActivePresetDTO,
   UserPresetCreateDTO,
@@ -714,6 +714,12 @@ export interface SpindleAPI {
       patch: {
         content?: string;
         metadata?: SpindleMessageMetadataDTO;
+        /**
+         * Merge top-level metadata fields with the latest stored metadata.
+         * Nested values are replaced; null is stored as a value. Cannot be
+         * combined with metadata. Requires host capability `chat-metadata-patch-v1`.
+         */
+        metadata_patch?: SpindleMessageMetadataDTO;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];
@@ -1087,6 +1093,9 @@ export interface SpindleAPI {
     /** Get the user's currently active chat (as tracked by the frontend). Returns null if none. */
     getActive(userId?: string): Promise<ChatDTO | null>;
     update(chatId: string, input: ChatUpdateDTO, userId?: string): Promise<ChatDTO>;
+    /** Atomically replace metadata when all expectations match. Returns null on conflict or deletion.
+     * Requires both chats and chat_mutation permissions and chat-conditional-metadata-v1. */
+    compareAndSetMetadata(chatId: string, input: ConditionalChatMetadataDTO, userId?: string): Promise<ChatDTO | null>;
     delete(chatId: string, userId?: string): Promise<boolean>;
     /** Get top-K chat memory chunks for a chat via vector search. */
     getMemories(chatId: string, options?: { topK?: number; userId?: string }): Promise<ChatMemoryResultDTO>;

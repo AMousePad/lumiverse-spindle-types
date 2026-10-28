@@ -14,6 +14,7 @@ export type LlmMessagePartDTO = {
     type: "text";
     text: string;
     cache_control?: Record<string, unknown>;
+    thought_signature?: string;
 } | {
     type: "image";
     data: string;
@@ -48,7 +49,11 @@ export interface LlmMessageDTO {
     role: "system" | "user" | "assistant";
     content: string | LlmMessagePartDTO[];
     name?: string;
+    /** Marks a trailing assistant message as a generation prefix. */
+    partial?: boolean;
     cache_control?: Record<string, unknown>;
+    /** Opaque Gemini signature on a non-tool response part; replay unmodified. */
+    thought_signature?: string;
     /**
      * Thinking-mode reasoning content from the previous assistant turn, echoed
      * back on the next request. Required by DeepSeek's thinking-mode models
@@ -1285,6 +1290,19 @@ export interface SetSwipeVariablesDTO {
     expected_swipes: string[];
     variables: ChatVariableValuesDTO[];
 }
+export interface ConditionalChatMetadataDTO {
+    expected_metadata: Record<string, unknown>;
+    metadata: Record<string, unknown>;
+    /** Omit to ignore new/deleted messages; null requires an empty chat. */
+    expected_last_message_id?: string | null;
+    /** Also require this message's saved selection, text and Spindle metadata to match. */
+    expected_message?: {
+        id: string;
+        swipe_id: number;
+        swipes: string[];
+        metadata: Record<string, unknown>;
+    };
+}
 /** Payload for `CHAT_SWITCHED` events. */
 export interface ChatSwitchedPayloadDTO {
     /** The chat the user switched to, or `null` when returning to the home screen. */
@@ -2119,6 +2137,8 @@ export interface MessageGenerationResultDTO {
 export interface DryRunRequestDTO {
     /** Retain the response macro context for beginMessage. Expires after two minutes. */
     retainResponseContext?: boolean;
+    /** Include prepared messages with media, tool calls and reasoning intact. Requires generation-request-messages-v1. */
+    includeRequestMessages?: boolean;
     chatId: string;
     connectionId?: string;
     personaId?: string;
@@ -2280,6 +2300,9 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
 }
 export interface DryRunResultDTO {
     responseContextId?: string;
+    /** Prepared messages returned only when includeRequestMessages is true. */
+    request_messages?: LlmMessageDTO[];
+    /** Prepared assistant prefix, already included in request_messages when requested. Returned with includeRequestMessages or retainResponseContext. */
     assistantPrefill?: string;
     /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
     variable_state?: MacroVariableSnapshotDTO;
@@ -3754,6 +3777,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     patch: {
         content?: string;
         metadata?: Record<string, unknown>;
+        metadata_patch?: Record<string, unknown>;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];
@@ -4117,6 +4141,12 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     requestId: string;
     chatId: string;
     input: ChatUpdateDTO;
+    userId?: string;
+} | {
+    type: "chats_compare_metadata";
+    requestId: string;
+    chatId: string;
+    input: ConditionalChatMetadataDTO;
     userId?: string;
 } | {
     type: "chats_delete";

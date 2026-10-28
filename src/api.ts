@@ -3905,6 +3905,7 @@ export type WorkerToHost =
       patch: {
         content?: string;
         metadata?: Record<string, unknown>;
+        metadata_patch?: Record<string, unknown>;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];

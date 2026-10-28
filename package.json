@@ -1,6 +1,6 @@
 {
   "name": "lumiverse-spindle-types",
-  "version": "0.6.59",
+  "version": "0.6.64",
   "type": "module",
   "types": "./dist/index.d.ts",
   "keywords": [

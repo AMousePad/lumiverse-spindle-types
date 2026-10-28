@@ -20,6 +20,7 @@ import type {
   GenerationRequestDTO,
   ChatAppendMessageOptionsDTO,
   SpindleMessageMetadataDTO,
+  SwipeReasoningDTO,
   RequestInitDTO,
   ConnectionProfileDTO,
   ConnectionModelDTO,
@@ -694,7 +695,7 @@ export interface SpindleAPI {
      *  - If only `swipe_id` is supplied, it acts as a navigation and content
      *    is re-derived from the existing swipes array.
      *  - `reasoning.text === null` clears `extra.reasoning`; `reasoning.duration
-     *    === null` clears `extra.reasoning_duration`. The two are independent.
+     *    === null` clears `extra.reasoningDuration`. The two are independent.
      *
      * When any of `swipes`/`swipe_id`/`swipe_dates` are supplied, a
      * `SWIPE_EDITED` event is emitted alongside (or instead of) `MESSAGE_EDITED`.
@@ -705,6 +706,12 @@ export interface SpindleAPI {
       patch: {
         content?: string;
         metadata?: SpindleMessageMetadataDTO;
+        /**
+         * Merge top-level metadata fields with the latest stored metadata.
+         * Nested values are replaced; null is stored as a value. Cannot be
+         * combined with metadata. Requires host capability `chat-metadata-patch-v1`.
+         */
+        metadata_patch?: SpindleMessageMetadataDTO;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];
@@ -712,6 +719,13 @@ export interface SpindleAPI {
           text?: string | null;
           duration?: number | null;
         };
+        /**
+         * Replace reasoning for all swipes without changing the selected swipe.
+         * One entry per resulting swipe, in the same order. Null clears a slot;
+         * an omitted duration clears its duration. Cannot be combined with reasoning.
+         * Requires host capability `chat-swipe-reasoning-v1`.
+         */
+        swipe_reasoning?: (SwipeReasoningDTO | null)[];
         /** Internal-only escape hatch for extension/system rewrites that should not invalidate chat chunks. */
         skipChunkRebuild?: boolean;
       }
@@ -1071,7 +1085,8 @@ export interface SpindleAPI {
     /** Get the user's currently active chat (as tracked by the frontend). Returns null if none. */
     getActive(userId?: string): Promise<ChatDTO | null>;
     update(chatId: string, input: ChatUpdateDTO, userId?: string): Promise<ChatDTO>;
-    /** Atomically replace metadata when all expectations match. Returns null on conflict or deletion. Requires chat-conditional-metadata-v1. */
+    /** Atomically replace metadata when all expectations match. Returns null on conflict or deletion.
+     * Requires both chats and chat_mutation permissions and chat-conditional-metadata-v1. */
     compareAndSetMetadata(chatId: string, input: ConditionalChatMetadataDTO, userId?: string): Promise<ChatDTO | null>;
     delete(chatId: string, userId?: string): Promise<boolean>;
     /** Get top-K chat memory chunks for a chat via vector search. */

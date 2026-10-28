@@ -14,6 +14,7 @@ export type LlmMessagePartDTO = {
     type: "text";
     text: string;
     cache_control?: Record<string, unknown>;
+    thought_signature?: string;
 } | {
     type: "image";
     data: string;
@@ -48,7 +49,11 @@ export interface LlmMessageDTO {
     role: "system" | "user" | "assistant";
     content: string | LlmMessagePartDTO[];
     name?: string;
+    /** Marks a trailing assistant message as a generation prefix. */
+    partial?: boolean;
     cache_control?: Record<string, unknown>;
+    /** Opaque Gemini signature on a non-tool response part; replay unmodified. */
+    thought_signature?: string;
     /**
      * Thinking-mode reasoning content from the previous assistant turn, echoed
      * back on the next request. Required by DeepSeek's thinking-mode models
@@ -2104,6 +2109,8 @@ export interface WorldInfoActivatedEventDTO {
     stats?: Record<string, unknown>;
 }
 export interface DryRunRequestDTO {
+    /** Include prepared messages with media, tool calls and reasoning intact. Requires generation-request-messages-v1. */
+    includeRequestMessages?: boolean;
     chatId: string;
     connectionId?: string;
     personaId?: string;
@@ -2264,6 +2271,10 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
     preset_contexts?: Array<MessagePresetContextDTO | null>;
 }
 export interface DryRunResultDTO {
+    /** Prepared messages returned only when includeRequestMessages is true. */
+    request_messages?: LlmMessageDTO[];
+    /** Prepared assistant prefix, already included in request_messages. Returned only with includeRequestMessages. */
+    assistantPrefill?: string;
     /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
     variable_state?: MacroVariableSnapshotDTO;
     messages: LlmMessageDTO[];
@@ -3063,6 +3074,11 @@ export interface GenerationStoppedPayloadDTO {
     /** Partial content accumulated before the stop. */
     content?: string;
 }
+/** Stored reasoning for one swipe. Durations are in milliseconds. */
+export interface SwipeReasoningDTO {
+    text: string | null;
+    duration?: number | null;
+}
 /**
  * Wire shape of a chat message as delivered in WebSocket event payloads
  * (e.g. `MESSAGE_SENT`, `MESSAGE_EDITED`, `MESSAGE_SWIPED`).
@@ -3716,6 +3732,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
     patch: {
         content?: string;
         metadata?: Record<string, unknown>;
+        metadata_patch?: Record<string, unknown>;
         swipes?: string[];
         swipe_id?: number;
         swipe_dates?: number[];
@@ -3723,6 +3740,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
             text?: string | null;
             duration?: number | null;
         };
+        swipe_reasoning?: (SwipeReasoningDTO | null)[];
         skipChunkRebuild?: boolean;
     };
 } | {

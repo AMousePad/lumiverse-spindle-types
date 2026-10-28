@@ -80,6 +80,7 @@ export {
 export type {
   LlmMessagePartDTO,
   LlmMessageDTO,
+  SwipeReasoningDTO,
   LlmThinkingBlockDTO,
   SpindleUserRoleDTO,
   InterceptorGenerationType,

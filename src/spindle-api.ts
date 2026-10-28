@@ -34,6 +34,7 @@ import type {
   CharacterUpdateDTO,
   ChatDTO,
   ChatUpdateDTO,
+  ConditionalChatMetadataDTO,
   UserPresetDTO,
   ActivePresetDTO,
   UserPresetCreateDTO,
@@ -1084,6 +1085,9 @@ export interface SpindleAPI {
     /** Get the user's currently active chat (as tracked by the frontend). Returns null if none. */
     getActive(userId?: string): Promise<ChatDTO | null>;
     update(chatId: string, input: ChatUpdateDTO, userId?: string): Promise<ChatDTO>;
+    /** Atomically replace metadata when all expectations match. Returns null on conflict or deletion.
+     * Requires both chats and chat_mutation permissions and chat-conditional-metadata-v1. */
+    compareAndSetMetadata(chatId: string, input: ConditionalChatMetadataDTO, userId?: string): Promise<ChatDTO | null>;
     delete(chatId: string, userId?: string): Promise<boolean>;
     /** Get top-K chat memory chunks for a chat via vector search. */
     getMemories(chatId: string, options?: { topK?: number; userId?: string }): Promise<ChatMemoryResultDTO>;

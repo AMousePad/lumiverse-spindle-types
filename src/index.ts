@@ -133,6 +133,7 @@ export type {
   CharacterUpdateDTO,
     ChatDTO,
     ChatUpdateDTO,
+    ConditionalChatMetadataDTO,
     ChatSwitchedPayloadDTO,
     ChatChangedPayloadDTO,
     ChatForkedPayloadDTO,

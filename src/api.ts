@@ -1385,6 +1385,20 @@ export interface ChatUpdateDTO {
   metadata?: Record<string, unknown>;
 }
 
+export interface ConditionalChatMetadataDTO {
+  expected_metadata: Record<string, unknown>;
+  metadata: Record<string, unknown>;
+  /** Omit to ignore new/deleted messages; null requires an empty chat. */
+  expected_last_message_id?: string | null;
+  /** Also require this message's saved selection, text and Spindle metadata to match. */
+  expected_message?: {
+    id: string;
+    swipe_id: number;
+    swipes: string[];
+    metadata: Record<string, unknown>;
+  };
+}
+
 /** Payload for `CHAT_SWITCHED` events. */
 export interface ChatSwitchedPayloadDTO {
   /** The chat the user switched to, or `null` when returning to the home screen. */
@@ -4076,6 +4090,7 @@ export type WorkerToHost =
   | { type: "chats_get"; requestId: string; chatId: string; userId?: string }
   | { type: "chats_get_active"; requestId: string; userId?: string }
   | { type: "chats_update"; requestId: string; chatId: string; input: ChatUpdateDTO; userId?: string }
+  | { type: "chats_compare_metadata"; requestId: string; chatId: string; input: ConditionalChatMetadataDTO; userId?: string }
   | { type: "chats_delete"; requestId: string; chatId: string; userId?: string }
   // ─── User Presets (gated: "presets") ────────────────────────────────
   | { type: "presets_list"; requestId: string; limit?: number; offset?: number; userId?: string }

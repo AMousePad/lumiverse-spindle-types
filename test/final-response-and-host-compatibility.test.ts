@@ -22,6 +22,7 @@ test("host compatibility constants are canonical and immutable", () => {
     "message-preset-context-v1": 1,
     "chat-swipe-reasoning-v1": 1,
     "chat-swipe-variables-v1": 1,
+    "generation-message-sessions-v1": 1,
     "decisions-v1": 1,
     "decision-images-v1": 1,
     "embeddings-v1": 1,

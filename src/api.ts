@@ -474,6 +474,9 @@ export type GenerationDispatchSourceDTO =
     };
 
 export interface GenerationRequestDTO {
+  /** Bind a raw stream to a message generation and its swipe. */
+  sessionId?: string;
+  swipeIndex?: number;
   type: "raw" | "quiet" | "batch";
   messages?: LlmMessageDTO[];
   parameters?: Record<string, unknown>;
@@ -2292,7 +2295,18 @@ export interface WorldInfoActivatedEventDTO {
 
 // ─── Dry Run DTOs ──────────────────────────────────────────────────────
 
+export interface MessageGenerationInputDTO {
+  chatId: string;
+  messageId: string;
+  responseContextIds: string[];
+  frontendSessionId?: string;
+  userId?: string;
+}
+export interface MessageGenerationResultDTO { messageId: string; completed: boolean }
+
 export interface DryRunRequestDTO {
+  /** Retain the response macro context for beginMessage. Expires after two minutes. */
+  retainResponseContext?: boolean;
   chatId: string;
   connectionId?: string;
   personaId?: string;
@@ -2460,6 +2474,8 @@ export interface SpindleMessageMetadataDTO extends Record<string, unknown> {
 }
 
 export interface DryRunResultDTO {
+  responseContextId?: string;
+  assistantPrefill?: string;
   /** Returned only with forcePresetId: true. Requires message-preset-context-v1: 1. */
   variable_state?: MacroVariableSnapshotDTO;
   messages: LlmMessageDTO[];
@@ -3288,6 +3304,8 @@ export interface BackendProcessStopOptionsDTO {
 
 /** Payload for `GENERATION_STARTED` events. */
 export interface GenerationStartedPayloadDTO {
+  renderMode?: "persisted-message";
+  extensionId?: string;
   generationId: string;
   chatId: string;
   model: string;
@@ -3810,6 +3828,8 @@ export type WorkerToHost =
     }
   | { type: "register_tool"; tool: ToolRegistrationDTO }
   | { type: "unregister_tool"; name: string }
+  | { type: "message_generation_begin"; requestId: string; input: MessageGenerationInputDTO }
+  | { type: "message_generation_finish" | "message_generation_abort"; requestId: string; sessionId: string }
   | { type: "request_generation"; requestId: string; input: GenerationRequestDTO }
   /**
    * Start a streaming generation. The host responds asynchronously with

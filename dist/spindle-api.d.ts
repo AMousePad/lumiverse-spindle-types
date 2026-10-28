@@ -302,6 +302,13 @@ export interface SpindleAPI {
          * permission and an active interceptor callback.
          */
         quietTracked(input: QuietTrackedRequestDTO): Promise<QuietTrackedResultDTO>;
+        /** Start a tracked generation for a blank saved reply. Requires generation, chats and chat_mutation. */
+        beginMessage(input: import("./api.js").MessageGenerationInputDTO): Promise<{
+            id: string;
+        }>;
+        /** Process saved swipes and notify completion once for the selected successful reply. */
+        finishMessage(sessionId: string): Promise<import("./api.js").MessageGenerationResultDTO>;
+        abortMessage(sessionId: string): Promise<void>;
         raw(input: GenerationRequestDTO): Promise<unknown>;
         quiet(input: GenerationRequestDTO): Promise<unknown>;
         batch(input: GenerationRequestDTO): Promise<unknown>;

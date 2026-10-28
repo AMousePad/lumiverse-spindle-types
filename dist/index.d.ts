@@ -38,3 +38,4 @@ export type { SpindleTTSSpeakInput, SpindleTTSSpeakOptions, SpindleTTSAPI } from
 export { SPINDLE_TTS_HOST_CAPABILITIES } from "./text-to-speech.js";
 export type { SpindleSystemAudioUnavailableReason, SpindleSystemAudioAvailability, SpindleSystemAudioFrame, SpindleSystemAudioChannelFrame, SpindleSystemAudioEndReason, SpindleSystemAudioStartOptions, SpindleSystemAudioSession, SpindleSystemAudioAPI, } from "./system-audio.js";
 export { SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES } from "./system-audio.js";
+export type { MessageGenerationInputDTO, MessageGenerationResultDTO } from "./api.js";

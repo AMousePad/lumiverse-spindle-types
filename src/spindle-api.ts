@@ -20,6 +20,7 @@ import type {
   GenerationRequestDTO,
   ChatAppendMessageOptionsDTO,
   SpindleMessageMetadataDTO,
+  SwipeReasoningDTO,
   RequestInitDTO,
   ConnectionProfileDTO,
   ConnectionModelDTO,
@@ -693,7 +694,7 @@ export interface SpindleAPI {
      *  - If only `swipe_id` is supplied, it acts as a navigation and content
      *    is re-derived from the existing swipes array.
      *  - `reasoning.text === null` clears `extra.reasoning`; `reasoning.duration
-     *    === null` clears `extra.reasoning_duration`. The two are independent.
+     *    === null` clears `extra.reasoningDuration`. The two are independent.
      *
      * When any of `swipes`/`swipe_id`/`swipe_dates` are supplied, a
      * `SWIPE_EDITED` event is emitted alongside (or instead of) `MESSAGE_EDITED`.
@@ -717,6 +718,13 @@ export interface SpindleAPI {
           text?: string | null;
           duration?: number | null;
         };
+        /**
+         * Replace reasoning for all swipes without changing the selected swipe.
+         * One entry per resulting swipe, in the same order. Null clears a slot;
+         * an omitted duration clears its duration. Cannot be combined with reasoning.
+         * Requires host capability `chat-swipe-reasoning-v1`.
+         */
+        swipe_reasoning?: (SwipeReasoningDTO | null)[];
         /** Internal-only escape hatch for extension/system rewrites that should not invalidate chat chunks. */
         skipChunkRebuild?: boolean;
       }

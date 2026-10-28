@@ -3050,6 +3050,11 @@ export interface GenerationStoppedPayloadDTO {
     /** Partial content accumulated before the stop. */
     content?: string;
 }
+/** Stored reasoning for one swipe. Durations are in milliseconds. */
+export interface SwipeReasoningDTO {
+    text: string | null;
+    duration?: number | null;
+}
 /**
  * Wire shape of a chat message as delivered in WebSocket event payloads
  * (e.g. `MESSAGE_SENT`, `MESSAGE_EDITED`, `MESSAGE_SWIPED`).
@@ -3711,6 +3716,7 @@ export type WorkerToHost = import("./decisions.js").DecisionWorkerMessage | impo
             text?: string | null;
             duration?: number | null;
         };
+        swipe_reasoning?: (SwipeReasoningDTO | null)[];
         skipChunkRebuild?: boolean;
     };
 } | {

@@ -110,6 +110,8 @@ export type {
   GenerationDispatchSourceDTO,
   ConnectionDispatchDescriptorDTO,
   GenerationRequestDTO,
+  GenerationParametersDTO,
+  GeminiMediaResolutionDTO,
   GenerationReasoningOverrideDTO,
   ReasoningEffortDTO,
   ReasoningSettingsDTO,

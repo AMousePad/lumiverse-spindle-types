@@ -445,13 +445,19 @@ export type GenerationDispatchSourceDTO = {
     connectionId: string;
     expectedConnectionDispatchRevision: string;
 };
+/** Request-wide Gemini GenerateContent media detail. Ultra-high requires a per-part API. */
+export type GeminiMediaResolutionDTO = "low" | "medium" | "high" | "unspecified" | "MEDIA_RESOLUTION_LOW" | "MEDIA_RESOLUTION_MEDIUM" | "MEDIA_RESOLUTION_HIGH" | "MEDIA_RESOLUTION_UNSPECIFIED";
+export interface GenerationParametersDTO extends Record<string, unknown> {
+    /** Google/Vertex only. Omit to inherit connection settings. Does not resize or compress media. */
+    media_resolution?: GeminiMediaResolutionDTO;
+}
 export interface GenerationRequestDTO {
     /** Bind a raw stream to a message generation and its swipe. */
     sessionId?: string;
     swipeIndex?: number;
     type: "raw" | "quiet" | "batch";
     messages?: LlmMessageDTO[];
-    parameters?: Record<string, unknown>;
+    parameters?: GenerationParametersDTO;
     connection_id?: string;
     /** Optional tool/function definitions for inline function calling (raw/quiet only). */
     tools?: ToolSchemaDTO[];

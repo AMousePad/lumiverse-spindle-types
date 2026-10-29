@@ -14,7 +14,9 @@ export interface SpindleTTSAPI {
    * Requires media. Stops current host TTS playback, then speaks. Text is spoken as given
    * with the connection's default voice. A message plays like its Play button: saved audio
    * when the message has it, otherwise the host's voice pipeline (which may save the audio
-   * to the message). Resolves when this playback ends or is stopped; rejects when it cannot start
+   * to the message). Extensions control their own opt-in; the general chat TTS enable/auto-play
+   * settings do not gate these calls. Shared volume, speed and voice settings still apply.
+   * Resolves when this playback ends or is stopped; rejects when it cannot start
    * or synthesis fails.
    */
   speak(input: SpindleTTSSpeakInput): Promise<void>

@@ -15,6 +15,8 @@ export interface DesktopCaptureDevice {
   /** Stable across reconnects for this native installation, instance and account. Older clients omit this. */
   stableIdentity?: boolean;
   approvalStatusSupported?: boolean;
+  /** Can finalize a video early through capture.finish(). */
+  recordingControlSupported?: boolean;
   /** Connected displays; omitted by older desktop clients. Refresh listDevices for hotplug changes. */
   displays?: DesktopCaptureDisplay[];
   name: string;
@@ -42,6 +44,8 @@ export interface DesktopCaptureApprovalStatus {
 
 export type DesktopCaptureRequest = {
   deviceId: string;
+  /** Caller-generated key, unique within the runtime/account, used to finish this request. */
+  requestKey?: string;
   /** Capture this exact display with native approval. Omit to use Desktop's source picker. */
   displayId?: string;
   connectionId: string;
@@ -49,6 +53,7 @@ export type DesktopCaptureRequest = {
   userId?: string;
 } & (
   | { kind: "image" }
+  /** Record for at most 1–120 seconds. Native video is H.264 MP4, up to 1080p/30 FPS at an 8 Mbps target. */
   | { kind: "video"; mode: "record" | "replay"; durationSeconds: number }
 );
 
@@ -69,6 +74,12 @@ export interface SpindleDesktopAPI {
     /** Read-only advisory status for this extension, capture kind and exact destination. Never grants access. */
     getApprovalStatus(input: DesktopCaptureApprovalQuery): Promise<DesktopCaptureApprovalStatus>;
     request(input: DesktopCaptureRequest): Promise<CapturedMediaRef>;
+    /** Finalize a pending record-mode video. The original request resolves with the shorter clip.
+     * Idempotent; false means the clip is already finished or no matching request exists.
+     * Requires desktop-capture-finish-v1 and a device with recordingControlSupported.
+     * This does not approve a source, bypass consent, or start another capture.
+     */
+    finish(requestKey: string, options?: { userId?: string }): Promise<boolean>;
     release(assetId: string, options?: { userId?: string }): Promise<void>;
   };
 }
@@ -77,6 +88,7 @@ export type DesktopCaptureWorkerMessage =
   | { type: "desktop_capture_devices"; requestId: string; userId?: string }
   | { type: "desktop_capture_approval_status"; requestId: string; input: DesktopCaptureApprovalQuery }
   | { type: "desktop_capture_request"; requestId: string; input: DesktopCaptureRequest }
+  | { type: "desktop_capture_finish"; requestId: string; requestKey: string; userId?: string }
   | { type: "desktop_capture_release"; requestId: string; assetId: string; userId?: string };
 
 export interface DesktopCaptureDestination {
@@ -111,7 +123,8 @@ export type DesktopCaptureCommand =
       maxPixels: number;
       expiresAt: number;
     }
-  | { type: "cancel"; requestId: string };
+  | { type: "cancel"; requestId: string }
+  | { type: "finish"; requestId: string };
 
 export type DesktopCaptureReply =
   | {

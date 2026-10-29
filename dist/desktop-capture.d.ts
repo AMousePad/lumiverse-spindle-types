@@ -68,7 +68,25 @@ export interface CapturedMediaRef {
     durationSeconds?: number;
     connectionId: string;
     expiresAt: number;
+    /** Encoded size, when reported by the host. */
+    byteSize?: number;
 }
+/** Host-side optimization. Bytes remain private and the handle keeps its original scope and expiry. */
+export type DesktopCaptureOptimizeRequest = {
+    assetId: string;
+    connectionId: string;
+    userId?: string;
+} & ({
+    kind: "image";
+    maxEdge: number;
+    format: "jpeg" | "webp" | "png";
+    quality: number;
+} | {
+    kind: "video";
+    maxEdge: number;
+    fps: number;
+    bitrateKbps: number;
+});
 export interface SpindleDesktopAPI {
     capture: {
         listDevices(options?: {
@@ -77,6 +95,10 @@ export interface SpindleDesktopAPI {
         /** Read-only advisory status for this extension, capture kind and exact destination. Never grants access. */
         getApprovalStatus(input: DesktopCaptureApprovalQuery): Promise<DesktopCaptureApprovalStatus>;
         request(input: DesktopCaptureRequest): Promise<CapturedMediaRef>;
+        /** Requires desktop-capture-optimize-v1. Replaces this handle's media after a successful conversion.
+         * No upscaling; video output is silent H.264 MP4. Failure leaves the original handle available.
+         */
+        optimize(input: DesktopCaptureOptimizeRequest): Promise<CapturedMediaRef>;
         /** Finalize a pending record-mode video. The original request resolves with the shorter clip.
          * Idempotent; false means the clip is already finished or no matching request exists.
          * Requires desktop-capture-finish-v1 and a device with recordingControlSupported.
@@ -102,6 +124,10 @@ export type DesktopCaptureWorkerMessage = {
     type: "desktop_capture_request";
     requestId: string;
     input: DesktopCaptureRequest;
+} | {
+    type: "desktop_capture_optimize";
+    requestId: string;
+    input: DesktopCaptureOptimizeRequest;
 } | {
     type: "desktop_capture_finish";
     requestId: string;

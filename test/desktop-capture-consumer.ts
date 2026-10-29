@@ -39,6 +39,18 @@ export function captureWireContract(): WorkerToHost {
   } };
 }
 
+export async function optimizeCapturedVideo(spindle: SpindleAPI, asset: CapturedMediaRef, userId: string) {
+  if (!(spindle.host.capabilities["desktop-capture-optimize-v1"] >= 1)) return asset;
+  return spindle.desktop.capture.optimize({ assetId: asset.assetId, connectionId: asset.connectionId,
+    userId, kind: "video", maxEdge: 1280, fps: 15, bitrateKbps: 2500 });
+}
+
+export function optimizationWireContract(): WorkerToHost {
+  return { type: "desktop_capture_optimize", requestId: "optimize", input: {
+    assetId: "private", connectionId: "connection", kind: "image", maxEdge: 1280, format: "jpeg", quality: 85,
+  } };
+}
+
 export async function finishFromSameShareAction(spindle: SpindleAPI, requestKey: string, userId: string): Promise<boolean> {
   return spindle.desktop.capture.finish(requestKey, { userId });
 }

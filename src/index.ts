@@ -58,6 +58,7 @@ export type { SpindlePermission as SpindlePermissionType } from "./permissions.j
 export type {
   DesktopCaptureKind, DesktopCaptureDisplay, DesktopCaptureDevice, DesktopCaptureRequest, CapturedMediaRef,
   DesktopCaptureApprovalQuery, DesktopCaptureApprovalStatus,
+  DesktopCaptureOptimizeRequest,
   SpindleDesktopAPI, DesktopCaptureWorkerMessage, DesktopCaptureDestination,
   DesktopCaptureCommand, DesktopCaptureReply,
 } from "./desktop-capture.js";

@@ -1777,6 +1777,9 @@ export interface SpindleAPI {
    * Send OS-level push notifications to users and check push status.
    * Notifications are attributed to your extension name.
    */
+  /** Three built-in native iOS layouts (permission: push_notification). */
+  liveActivities: import("./live-activities.js").SpindleLiveActivitiesAPI;
+
   push: {
     /**
      * Send a push notification to a user's registered devices.
@@ -2349,7 +2352,8 @@ export interface SpindleAPI {
     unregister(commandIds?: string[]): void;
     /**
      * Register a handler called when the user selects one of this
-     * extension's commands from the palette. The handler receives
+     * extension's commands from the palette or a configured desktop key binding. For bindings,
+     * `context.trigger` identifies the binding and focused/global scope. The handler receives
      * the command ID and a snapshot of the frontend's current state.
      * Returns an unsubscribe function.
      */

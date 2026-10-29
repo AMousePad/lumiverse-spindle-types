@@ -1,3 +1,4 @@
+export type { LiveActivityPresentation, LiveActivityStartInput, LiveActivityResult, LiveActivityStatus, SpindleLiveActivitiesAPI, LiveActivityWorkerMessage } from "./live-activities.js";
 export type { DecisionImageAsset, DecisionBox, DecisionJsonValue, DecisionDescription, DecisionState, DecisionQuestion, DecisionAnswer, DecisionAnswerFor, DecisionAnswers, DecisionResult, DecisionEvaluationInput, DecisionConnectionProfileDTO, DecisionModelDTO, DecisionProviderDTO, SpindleDecisionsAPI, DecisionWorkerMessage } from "./decisions.js";
 export type { EmbeddingConnectionDTO, EmbeddingsEmbedInput, EmbeddingsEmbedResult, SpindleEmbeddingsAPI, EmbeddingsWorkerMessage } from "./embeddings.js";
 
@@ -56,6 +57,7 @@ export { SPINDLE_THEME_AUTHORING_HOST_CAPABILITIES } from "./theme.js";
 export type { SpindlePermission as SpindlePermissionType } from "./permissions.js";
 export type {
   DesktopCaptureKind, DesktopCaptureDevice, DesktopCaptureRequest, CapturedMediaRef,
+  DesktopCaptureApprovalQuery, DesktopCaptureApprovalStatus,
   SpindleDesktopAPI, DesktopCaptureWorkerMessage, DesktopCaptureDestination,
   DesktopCaptureCommand, DesktopCaptureReply,
 } from "./desktop-capture.js";

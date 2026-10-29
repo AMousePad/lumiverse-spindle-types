@@ -3092,6 +3092,8 @@ export interface SpindleCommandDTO {
  * so the extension can act on the right chat/character/page.
  */
 export interface SpindleCommandContextDTO {
+  /** Present for an owner-configured desktop binding; no raw keyboard input is exposed. Informational, not an authorization token. */
+  trigger?: { type: "keybind"; bindingId: string; scope: "focused" | "global" };
   /** Current route path (e.g. `"/chat/abc-123"`, `"/"`, `"/characters/xyz"`). */
   route: string;
   /** Active chat ID, if the user is in a chat view. */
@@ -3818,6 +3820,7 @@ export interface ProviderManager {
 }
 
 export type WorkerToHost =
+  | import("./live-activities.js").LiveActivityWorkerMessage
   | import("./decisions.js").DecisionWorkerMessage
   | import("./embeddings.js").EmbeddingsWorkerMessage
   | import("./file-transfers.js").FileTransferWorkerMessage

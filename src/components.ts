@@ -749,6 +749,15 @@ export interface SpindleHostSurfaceHandle {
 }
 
 export interface SpindleComponentsHelper {
+  /** Embed a user-configured desktop binding editor for one of this extension's
+   * registered commands. Feature-detect this optional method. It stays inside
+   * the supplied extension-owned panel/settings root; it never opens Settings.
+   * Global bindings use the same one-time native owner opt-in as host Settings. */
+  mountKeybindingEditor?(target: SpindleComponentTarget, options: { commandId: string }): {
+    readonly componentId: string;
+    readonly element: HTMLElement;
+    destroy(): void;
+  };
   // Text inputs
   mountTextInput(target: SpindleComponentTarget, options?: SpindleTextInputOptions): SpindleTextInputHandle;
   mountTextArea(target: SpindleComponentTarget, options?: SpindleTextAreaOptions): SpindleTextAreaHandle;

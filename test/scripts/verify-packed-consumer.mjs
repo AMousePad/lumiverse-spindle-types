@@ -167,7 +167,7 @@ try {
     [
       "--input-type=module",
       "-e",
-      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_HOST_CAPABILITIES?.['decisions-v1'] !== 1 || !m.isValidPermission?.('decisions')) process.exit(1); if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (m.SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES?.['system-audio-v1'] !== 1) process.exit(1); if (m.SPINDLE_HOST_CAPABILITIES?.['file-transfers-v1'] !== 1) process.exit(1); if (m.SPINDLE_FILE_CHUNK_BYTES !== 1048576) process.exit(1); if (m.SPINDLE_FILE_MAX_BYTES !== 107374182400) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
+      "import('lumiverse-spindle-types').then(m => { if (m.SPINDLE_HOST_CAPABILITIES?.['decisions-v1'] !== 1 || !m.isValidPermission?.('decisions')) process.exit(1); if (m.SPINDLE_STT_HOST_CAPABILITIES?.['speech-to-text-v1'] !== 1) process.exit(1); if (m.SPINDLE_SYSTEM_AUDIO_HOST_CAPABILITIES?.['system-audio-v1'] !== 1) process.exit(1); if (m.SPINDLE_HOST_CAPABILITIES?.['file-transfers-v1'] !== 1) process.exit(1); if (m.SPINDLE_HOST_CAPABILITIES?.['command-session-routing-v1'] !== 1) process.exit(1); if (m.SPINDLE_FILE_CHUNK_BYTES !== 1048576) process.exit(1); if (m.SPINDLE_FILE_MAX_BYTES !== 107374182400) process.exit(1); if (typeof m.validateIdentifier !== 'function') process.exit(1); console.log('Node ESM import verified'); })",
     ],
     {
       cwd: fixtureDir,

@@ -41,6 +41,7 @@ test("host compatibility constants are canonical and immutable", () => {
     "text-editor-close-v1": 1,
     "frontend-extensibility-v2": 1,
     "frontend-runtime-capabilities-v1": 1,
+    "command-session-routing-v1": 1,
     "mcp-servers-v1": 1,
     "file-transfers-v1": 1,
   });

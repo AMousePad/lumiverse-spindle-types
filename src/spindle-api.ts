@@ -114,6 +114,7 @@ import type {
   SpindleModalItemDTO,
   SpindleCommandDTO,
   SpindleCommandContextDTO,
+  SpindleCommandOriginDTO,
   SpindleUIDrawerTabDTO,
   SpindleUISettingsTabDTO,
   FrontendProcessSpawnOptionsDTO,
@@ -2355,12 +2356,18 @@ export interface SpindleAPI {
      * extension's commands from the palette or a configured desktop key binding. For bindings,
      * `context.trigger` identifies the binding and focused/global scope. The handler receives
      * the command ID and a snapshot of the frontend's current state.
-     * Returns an unsubscribe function.
+     * Hosts advertising command-session-routing-v1 also supply an authenticated
+     * origin separately from the frontend-controlled context. Older hosts omit
+     * origin, and older clients may omit its frontendSessionId. Require both
+     * before handing work to a specific document; never broadcast capture or
+     * microphone triggers as a fallback. Existing two-argument handlers work
+     * unchanged. Returns an unsubscribe function.
      */
     onInvoked(
       handler: (
         commandId: string,
         context: SpindleCommandContextDTO,
+        origin?: SpindleCommandOriginDTO,
       ) => void | Promise<void>,
     ): () => void;
   };

@@ -1,4 +1,4 @@
-import type { SpindleAPI, LiveActivityPresentation, WorkerToHost } from "../src/index.js";
+import type { SpindleAPI, LiveActivityPresentation, WorkerToHost } from "lumiverse-spindle-types";
 declare const spindle: SpindleAPI;
 const status = await spindle.liveActivities.getStatus();
 const layout: "status" | "progress" | "image" = status.layouts[0];

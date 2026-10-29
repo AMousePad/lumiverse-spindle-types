@@ -2870,9 +2870,9 @@ export interface SpindleCommandDTO {
     scope?: "global" | "chat" | "chat-idle" | "landing" | "character";
 }
 /**
- * Context snapshot sent to the extension when a command is invoked
- * from the command palette. Contains the frontend's current UI state
- * so the extension can act on the right chat/character/page.
+ * Frontend-supplied UI context for a command palette or desktop binding invocation.
+ * This snapshot is informational, not authenticated account/document identity;
+ * use the separate SpindleCommandOriginDTO callback argument for routing.
  */
 export interface SpindleCommandContextDTO {
     /** Present for an owner-configured desktop binding; no raw keyboard input is exposed. Informational, not an authorization token. */
@@ -2889,6 +2889,21 @@ export interface SpindleCommandContextDTO {
     characterId?: string;
     /** Whether the active chat is a group chat. */
     isGroupChat?: boolean;
+}
+/**
+ * Authenticated origin of a command invocation, supplied separately from the
+ * frontend-controlled UI context by hosts with command-session-routing-v1.
+ * Existing permission and ownership checks still apply.
+ */
+export interface SpindleCommandOriginDTO {
+    /** Account authenticated on the invoking frontend's WebSocket connection. */
+    userId: string;
+    /**
+     * Invoking document's connection-scoped identity. Older clients may omit it.
+     * Require it for actions that must run in a specific window, such as microphone
+     * input; do not fall back to broadcasting or selecting another subscriber.
+     */
+    frontendSessionId?: string;
 }
 /**
  * Read-only snapshot of a drawer tab discoverable via
@@ -5240,6 +5255,8 @@ export type HostToWorker = {
     commandId: string;
     context: SpindleCommandContextDTO;
     userId: string;
+    /** Authenticated connection's document identity; absent for older clients. */
+    frontendSessionId?: string;
 }
 /**
  * One streamed chunk for a generation started via

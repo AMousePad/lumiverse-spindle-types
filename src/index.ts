@@ -284,6 +284,7 @@ export type {
   SpindleModalItemDTO,
    SpindleCommandDTO,
    SpindleCommandContextDTO,
+   SpindleCommandOriginDTO,
    SpindleUIDrawerTabDTO,
    SpindleUISettingsTabDTO,
    FrontendProcessStateDTO,

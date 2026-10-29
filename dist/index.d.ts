@@ -14,7 +14,7 @@ export { SPINDLE_HOST_CAPABILITIES, SPINDLE_COMPATIBILITY_ERROR_CODE, } from "./
 export type { SpindleThemeAsset, SpindleThemeAssetUploadOptions, SpindleThemeAssetUpdate, SpindleThemePackComponentDraft, SpindleThemePackDraft, SpindleThemePackImportResult, SpindleThemePackInstallOptions, SpindleThemePackInstallResult, SpindleThemeComponentCatalogEntry, SpindleThemeVariableCatalogEntry, SpindleThemeEditorTarget, SpindleThemeEditorOptions, SpindleThemeAuthoringAPI, } from "./theme.js";
 export { SPINDLE_THEME_AUTHORING_HOST_CAPABILITIES } from "./theme.js";
 export type { SpindlePermission as SpindlePermissionType } from "./permissions.js";
-export type { DesktopCaptureKind, DesktopCaptureDevice, DesktopCaptureRequest, CapturedMediaRef, DesktopCaptureApprovalQuery, DesktopCaptureApprovalStatus, SpindleDesktopAPI, DesktopCaptureWorkerMessage, DesktopCaptureDestination, DesktopCaptureCommand, DesktopCaptureReply, } from "./desktop-capture.js";
+export type { DesktopCaptureKind, DesktopCaptureDisplay, DesktopCaptureDevice, DesktopCaptureRequest, CapturedMediaRef, DesktopCaptureApprovalQuery, DesktopCaptureApprovalStatus, SpindleDesktopAPI, DesktopCaptureWorkerMessage, DesktopCaptureDestination, DesktopCaptureCommand, DesktopCaptureReply, } from "./desktop-capture.js";
 export { ALL_PERMISSIONS, isValidPermission } from "./permissions.js";
 export type { SpindleCapability as SpindleCapabilityType } from "./capabilities.js";
 export { ALL_CAPABILITIES, isValidCapability } from "./capabilities.js";

@@ -1,4 +1,12 @@
-import type { CapturedMediaRef, DesktopCaptureApprovalStatus, DesktopCaptureReply, LlmMessagePartDTO, SpindleAPI, SpindleCommandContextDTO, SpindleFrontendContext, WorkerToHost } from "lumiverse-spindle-types";
+import type { CapturedMediaRef, DesktopCaptureDisplay, DesktopCaptureApprovalStatus, DesktopCaptureReply, LlmMessagePartDTO, SpindleAPI, SpindleCommandContextDTO, SpindleFrontendContext, WorkerToHost } from "lumiverse-spindle-types";
+
+export async function captureDisplay(spindle: SpindleAPI, connectionId: string): Promise<CapturedMediaRef | undefined> {
+  const device = (await spindle.desktop.capture.listDevices()).find(device => device.displays?.length);
+  const display: DesktopCaptureDisplay | undefined = device?.displays?.[0];
+  if (!device || !display) return;
+  await spindle.desktop.capture.getApprovalStatus({ deviceId: device.id, displayId: display.id, connectionId, kind: "image" });
+  return spindle.desktop.capture.request({ deviceId: device.id, displayId: display.id, connectionId, kind: "image", purpose: "Describe the selected display" });
+}
 
 export function embedCommandBinding(ctx: SpindleFrontendContext, target: HTMLElement) {
   if (!ctx.client?.getInfo().bridges.desktop || !ctx.components.mountKeybindingEditor) return;

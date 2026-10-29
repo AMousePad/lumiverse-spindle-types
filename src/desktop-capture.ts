@@ -1,10 +1,22 @@
 export type DesktopCaptureKind = "image" | "video";
 
+/** Metadata only. Discovery never captures pixels or grants permission. */
+export interface DesktopCaptureDisplay {
+  /** Opaque identity scoped to this desktop installation, instance and account. */
+  id: string;
+  name: string;
+  width: number;
+  height: number;
+  primary: boolean;
+}
+
 export interface DesktopCaptureDevice {
   id: string;
   /** Stable across reconnects for this native installation, instance and account. Older clients omit this. */
   stableIdentity?: boolean;
   approvalStatusSupported?: boolean;
+  /** Connected displays; omitted by older desktop clients. Refresh listDevices for hotplug changes. */
+  displays?: DesktopCaptureDisplay[];
   name: string;
   platform: "linux" | "macos" | "windows";
   capabilities: { image: boolean; video: boolean; replay: boolean };
@@ -13,6 +25,7 @@ export interface DesktopCaptureDevice {
 
 export interface DesktopCaptureApprovalQuery {
   deviceId: string;
+  displayId?: string;
   connectionId: string;
   kind: DesktopCaptureKind;
   userId?: string;
@@ -20,6 +33,7 @@ export interface DesktopCaptureApprovalQuery {
 
 export interface DesktopCaptureApprovalStatus {
   deviceId: string;
+  displayId?: string;
   kind: DesktopCaptureKind;
   approval: "required" | "remembered" | "paused" | "unavailable" | "unknown";
   source: "ready" | "missing" | "permission_required" | "unknown";
@@ -28,6 +42,8 @@ export interface DesktopCaptureApprovalStatus {
 
 export type DesktopCaptureRequest = {
   deviceId: string;
+  /** Capture this exact display with native approval. Omit to use Desktop's source picker. */
+  displayId?: string;
   connectionId: string;
   purpose: string;
   userId?: string;
@@ -75,6 +91,7 @@ export type DesktopCaptureCommand =
   | {
       type: "approval_status";
       requestId: string;
+      displayId?: string;
       extension: { id: string; identifier: string; name: string; approvalRevision?: string };
       kind: DesktopCaptureKind;
       destination: DesktopCaptureDestination;
@@ -83,6 +100,7 @@ export type DesktopCaptureCommand =
   | {
       type: "capture";
       requestId: string;
+      displayId?: string;
       extension: { id: string; identifier: string; name: string; approvalRevision?: string };
       purpose: string;
       kind: DesktopCaptureKind;

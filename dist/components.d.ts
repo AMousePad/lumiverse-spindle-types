@@ -380,6 +380,22 @@ export interface SpindleSelectOptionsBase {
     searchPlaceholder?: string;
     /** Minimum option count before the search field is shown. Default: `8`. */
     searchThreshold?: number;
+    /** Always show the search input, including for small remote result pages. */
+    forceSearch?: boolean;
+    /** Called when search text changes (including the initial empty query). */
+    onSearchChange?: (value: string) => void;
+    /** Options are filtered by the caller; disable the local text filter. */
+    remoteSearch?: boolean;
+    /** An incremental page is being loaded. */
+    loading?: boolean;
+    /** More options can be loaded. */
+    hasMore?: boolean;
+    /** Request the next page. Guard against overlapping requests in the caller. */
+    onLoadMore?: () => void;
+    /** Load near the end of the scroll area; the accessible load button remains available. Default false. */
+    loadMoreOnScroll?: boolean;
+    loadingMessage?: string;
+    loadMoreLabel?: string;
     /**
      * Message rendered when the option list itself is empty (i.e. no options
      * were supplied). For "no matches against the current search" use

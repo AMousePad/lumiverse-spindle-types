@@ -1188,6 +1188,8 @@ export interface CharacterDTO {
     alternate_greetings: string[];
     creator: string;
     image_id: string | null;
+    /** Host-resolved thumbnail URL, accessible with Characters permission. Null when unavailable. */
+    avatar_url?: string | null;
     /**
      * IDs of world books attached directly to this character. The legacy
      * single-id form is auto-migrated, so consumers can rely on the array.
@@ -4145,6 +4147,7 @@ export type WorkerToHost = import("./live-activities.js").LiveActivityWorkerMess
     requestId: string;
     limit?: number;
     offset?: number;
+    search?: string;
     userId?: string;
 } | {
     type: "characters_get";

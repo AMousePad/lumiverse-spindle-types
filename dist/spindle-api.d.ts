@@ -871,6 +871,8 @@ export interface SpindleAPI {
         list(options?: {
             limit?: number;
             offset?: number;
+            /** Search the character library (maximum 200 characters). Requires character-search-v1. */
+            search?: string;
             userId?: string;
         }): Promise<{
             data: CharacterDTO[];

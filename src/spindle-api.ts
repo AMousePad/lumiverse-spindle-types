@@ -1070,7 +1070,9 @@ export interface SpindleAPI {
    * For operator-scoped extensions, pass userId to scope to a specific user.
    */
   characters: {
-    list(options?: { limit?: number; offset?: number; userId?: string }): Promise<{ data: CharacterDTO[]; total: number }>;
+    list(options?: { limit?: number; offset?: number;
+      /** Search the character library (maximum 200 characters). Requires character-search-v1. */
+      search?: string; userId?: string }): Promise<{ data: CharacterDTO[]; total: number }>;
     get(characterId: string, userId?: string): Promise<CharacterDTO | null>;
     /**
      * List the character's gallery images in gallery order. Returns `[]` when

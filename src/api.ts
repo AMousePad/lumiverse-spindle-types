@@ -1293,6 +1293,8 @@ export interface CharacterDTO {
   alternate_greetings: string[];
   creator: string;
   image_id: string | null;
+  /** Host-resolved thumbnail URL, accessible with Characters permission. Null when unavailable. */
+  avatar_url?: string | null;
   /**
    * IDs of world books attached directly to this character. The legacy
    * single-id form is auto-migrated, so consumers can rely on the array.
@@ -4183,7 +4185,7 @@ export type WorkerToHost =
   | { type: "vars_list_chat"; requestId: string; chatId: string }
   | { type: "vars_has_chat"; requestId: string; chatId: string; key: string }
   // ─── Characters (gated: "characters") ──────────────────────────────
-  | { type: "characters_list"; requestId: string; limit?: number; offset?: number; userId?: string }
+  | { type: "characters_list"; requestId: string; limit?: number; offset?: number; search?: string; userId?: string }
   | { type: "characters_get"; requestId: string; characterId: string; userId?: string }
   | { type: "characters_get_gallery"; requestId: string; characterId: string; userId?: string }
   | { type: "characters_create"; requestId: string; input: CharacterCreateDTO; userId?: string }

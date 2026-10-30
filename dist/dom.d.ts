@@ -1018,6 +1018,7 @@ export declare const SPINDLE_CONNECTION_KINDS_HOST_CAPABILITIES: Readonly<{
     "connection-kinds-v1": 1;
 }>;
 export interface SpindleFrontendConnectionsAPI {
+    organization?: import('./connection-organization.js').SpindleConnectionOrganizationAPI;
     list(): Promise<ConnectionProfileDTO[]>;
     /**
      * Lists the user's profiles of one kind as credential-free summaries. Free.

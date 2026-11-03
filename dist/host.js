@@ -6,6 +6,7 @@ export const SPINDLE_HOST_CAPABILITIES = Object.freeze({
     "chat-conditional-metadata-v1": 1,
     "generation-request-messages-v1": 1,
     "chat-metadata-patch-v1": 1,
+    "chat-append-identity-v1": 1,
     "chat-lean-messages-v1": 1,
     "chat-swipe-reasoning-v1": 1,
     "preset-extension-data-v1": 1,

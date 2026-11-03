@@ -121,6 +121,7 @@ export type {
   ConnectionReasoningBindingsDTO,
   ChatAppendGenerationOptionsDTO,
   ChatAppendMessageOptionsDTO,
+  ChatAppendMessageDTO,
   StreamChunkDTO,
   RequestInitDTO,
   ConnectionProfileDTO,

@@ -19,6 +19,7 @@ import type {
   ToolRegistrationDTO,
   GenerationRequestDTO,
   ChatAppendMessageOptionsDTO,
+  ChatAppendMessageDTO,
   SpindleMessageMetadataDTO,
   SwipeReasoningDTO,
   RequestInitDTO,
@@ -684,11 +685,7 @@ export interface SpindleAPI {
     getMessages(chatId: string, options?: undefined): Promise<ChatGetMessageDTO[]>;
     appendMessage(
       chatId: string,
-      message: {
-        role: "system" | "user" | "assistant";
-        content: string;
-        metadata?: Record<string, unknown>;
-      },
+      message: ChatAppendMessageDTO,
       options?: ChatAppendMessageOptionsDTO
     ): Promise<{ id: string; generationId?: string }>;
     /**

@@ -2041,6 +2041,8 @@ export interface WorldInfoInterceptorPlacementDTO {
  * token-budget calculation.
  */
 export interface WorldInfoInterceptorCtxDTO {
+  /** "query" marks a read through `world_books.resolveForChat`, not a prompt being built. */
+  readonly purpose?: "prompt" | "query";
   readonly chatId: string;
   readonly characterId: string;
   readonly userId?: string;
@@ -2096,6 +2098,14 @@ export interface WorldInfoInterceptorResultDTO {
   readonly mutated?: readonly WorldInfoInterceptorMutationDTO[];
   readonly captured?: readonly string[];
   readonly activationOverrides?: WorldInfoActivationOverridesDTO;
+  /** Candidates for this prompt only. Never saved, scoped by the host to this extension and chat. */
+  readonly additionalEntries?: readonly WorldInfoInterceptorEntryDTO[];
+}
+
+/** One active world info entry after macros ran. */
+export interface ResolvedWorldInfoEntryDTO {
+  content: string;
+  role: "system" | "user" | "assistant";
 }
 
 // ─── Databank DTOs ───────────────────────────────────────────────────────
@@ -4275,6 +4285,7 @@ export type WorkerToHost =
   | { type: "dlc_get_catalog"; requestId: string; userId?: string }
   // ─── Activated World Info (gated: "world_books") ───────────────────
   | { type: "world_books_get_activated"; requestId: string; chatId: string; userId?: string }
+  | { type: "world_books_resolve_for_chat"; requestId: string; chatId: string; reserveTokens?: number; userId?: string }
   // ─── Global World Books (gated: "world_books") ───────────────────────
   | { type: "world_books_get_global"; requestId: string; userId?: string }
   | { type: "world_books_set_global"; requestId: string; worldBookIds: string[]; userId?: string }

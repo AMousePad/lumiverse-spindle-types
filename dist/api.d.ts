@@ -1879,6 +1879,8 @@ export interface WorldInfoInterceptorPlacementDTO {
  * token-budget calculation.
  */
 export interface WorldInfoInterceptorCtxDTO {
+    /** "query" marks a read through `world_books.resolveForChat`, not a prompt being built. */
+    readonly purpose?: "prompt" | "query";
     readonly chatId: string;
     readonly characterId: string;
     readonly userId?: string;
@@ -1932,6 +1934,13 @@ export interface WorldInfoInterceptorResultDTO {
     readonly mutated?: readonly WorldInfoInterceptorMutationDTO[];
     readonly captured?: readonly string[];
     readonly activationOverrides?: WorldInfoActivationOverridesDTO;
+    /** Candidates for this prompt only. Never saved, scoped by the host to this extension and chat. */
+    readonly additionalEntries?: readonly WorldInfoInterceptorEntryDTO[];
+}
+/** One active world info entry after macros ran. */
+export interface ResolvedWorldInfoEntryDTO {
+    content: string;
+    role: "system" | "user" | "assistant";
 }
 export type DatabankScopeDTO = "global" | "character" | "chat";
 export type DatabankDocumentStatusDTO = "pending" | "processing" | "ready" | "error";
@@ -4499,6 +4508,12 @@ export type WorkerToHost = import("./live-activities.js").LiveActivityWorkerMess
     type: "world_books_get_activated";
     requestId: string;
     chatId: string;
+    userId?: string;
+} | {
+    type: "world_books_resolve_for_chat";
+    requestId: string;
+    chatId: string;
+    reserveTokens?: number;
     userId?: string;
 } | {
     type: "world_books_get_global";

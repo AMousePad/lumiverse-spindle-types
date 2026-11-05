@@ -22,6 +22,8 @@ export interface RuntimeMessageDTO {
     extra: {
         greeting_index?: unknown;
     };
+    /** This extension's data on the message. Kept when the text changes. */
+    ownMetadata?: unknown;
 }
 export interface RuntimeStateSnapshotDTO {
     revision: RuntimeStateRevisionDTO;
@@ -42,7 +44,9 @@ export type RuntimeStateCommandDTO = {
 } | {
     kind: "message.edit";
     id: string;
-    content: string;
+    content?: string;
+    role?: "user" | "assistant" | "system";
+    ownMetadata?: unknown;
 } | {
     kind: "message.delete";
     id: string;
@@ -51,6 +55,8 @@ export type RuntimeStateCommandDTO = {
     id: string;
     content: string;
     role: "user" | "assistant" | "system";
+    beforeId?: string;
+    ownMetadata?: unknown;
 } | {
     kind: "character.update";
     id: string;

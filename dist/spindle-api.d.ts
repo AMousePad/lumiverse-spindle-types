@@ -1000,6 +1000,14 @@ export interface SpindleAPI {
         /** Get activated world info entries (keyword + vector) for a chat. */
         getActivated(chatId: string, userId?: string): Promise<ActivatedWorldInfoEntryDTO[]>;
         /**
+         * Active world info for a chat as final text and role, without saving state.
+         * Requires world_books, chats, characters, personas and presets. `reserveTokens` limits the result to the context size minus that amount.
+         */
+        resolveForChat(chatId: string, options?: {
+            reserveTokens?: number;
+            userId?: string;
+        }): Promise<import("./api.js").ResolvedWorldInfoEntryDTO[]>;
+        /**
          * Get the IDs of the user's globally-active world books (the
          * "globalWorldBooks" setting). Global books apply to every chat.
          */

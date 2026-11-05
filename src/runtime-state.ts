@@ -22,6 +22,8 @@ export interface RuntimeMessageDTO {
   created_at: number;
   send_date: number;
   extra: { greeting_index?: unknown };
+  /** This extension's data on the message. Kept when the text changes. */
+  ownMetadata?: unknown;
 }
 
 export interface RuntimeStateSnapshotDTO {
@@ -37,9 +39,9 @@ export interface RuntimeStateSnapshotDTO {
 export type RuntimeStateCommandDTO =
   | { kind: "chat.metadata"; key: string; value: unknown }
   | { kind: "chat.variables"; values: Record<string, string | null> }
-  | { kind: "message.edit"; id: string; content: string }
+  | { kind: "message.edit"; id: string; content?: string; role?: "user" | "assistant" | "system"; ownMetadata?: unknown }
   | { kind: "message.delete"; id: string }
-  | { kind: "message.create"; id: string; content: string; role: "user" | "assistant" | "system" }
+  | { kind: "message.create"; id: string; content: string; role: "user" | "assistant" | "system"; beforeId?: string; ownMetadata?: unknown }
   | { kind: "character.update"; id: string; patch: { name?: string; description?: string; first_mes?: string } }
   | { kind: "persona.update"; id: string; patch: { name?: string; description?: string } }
   | { kind: "lore.create"; bookId: string; patch: Record<string, unknown> }

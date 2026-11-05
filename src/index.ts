@@ -215,6 +215,7 @@ export type {
   PersonaCreateDTO,
   PersonaUpdateDTO,
   ActivatedWorldInfoEntryDTO,
+  ResolvedWorldInfoEntryDTO,
   WorldBookSourceDTO,
   WorldInfoActivatedEventDTO,
   DryRunRequestDTO,

@@ -518,6 +518,15 @@ export interface GenerationRequestDTO {
      */
     signal?: AbortSignal;
 }
+export interface ChatAppendMessageDTO {
+    role: "system" | "user" | "assistant";
+    content: string;
+    metadata?: Record<string, unknown>;
+    /** Display name; defaults to the role's name. Requires chat-append-identity-v1. */
+    name?: string;
+    /** Assistant messages only; the character must belong to the chat's user. Requires chat-append-identity-v1. */
+    characterId?: string;
+}
 /** Options passed to chat generation when `spindle.chat.appendMessage()` starts a normal reply. */
 export interface ChatAppendGenerationOptionsDTO {
     /** Omit to use the user's default connection profile. */
@@ -3828,11 +3837,7 @@ export type WorkerToHost = import("./live-activities.js").LiveActivityWorkerMess
     type: "chat_append_message";
     requestId: string;
     chatId: string;
-    message: {
-        role: "system" | "user" | "assistant";
-        content: string;
-        metadata?: Record<string, unknown>;
-    };
+    message: ChatAppendMessageDTO;
     options?: ChatAppendMessageOptionsDTO;
 } | {
     type: "chat_update_message";
